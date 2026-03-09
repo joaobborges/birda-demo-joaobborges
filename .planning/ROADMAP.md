@@ -39,12 +39,13 @@ See: `.planning/milestones/v1.0-ROADMAP.md` for full details.
   3. All primary CTA buttons use the design system blue (#1F87FE) with pill shape, and all spacing between elements matches theme tokens
   4. All fixed bottom CTA containers sit at consistent 24px bottom / 16px horizontal padding across onboarding, paywall, and any future screens
   5. Progress dots display white-at-50%-opacity (inactive) and blue (active), hold fixed position across screens, name input disables CTA until text is entered, and no content overflows on Stay in the Loop or Mailing List screens
-**Plans:** 3 plans
+**Plans:** 4 plans
 
 Plans:
 - [ ] 04-01-PLAN.md -- Font loading, splash screen, and theme infrastructure (fixedBottomCTA, typography rewrite)
 - [ ] 04-02-PLAN.md -- Component fixes: Button (color + disabled), ProgressDots, OnboardingLayout, name.tsx
 - [ ] 04-03-PLAN.md -- Token enforcement sweep across all 14 screen/component files + overflow fixes
+- [ ] 04-04-PLAN.md -- UAT gap closure: runtime font loading, splash screen config, layout safe area fix
 
 ### Phase 5: Welcome Screen & Auth Drawer
 **Goal**: Users see an eye-catching animated welcome screen and can choose how to sign in via a bottom sheet drawer
@@ -99,7 +100,7 @@ Plans:
 | 1. Foundation | v1.0 | 2/2 | Complete | 2026-03-09 |
 | 2. Onboarding and Paywall | v1.0 | 5/5 | Complete | 2026-03-09 |
 | 3. Map and Screens | v1.0 | 3/3 | Complete | 2026-03-09 |
-| 4. Design System & Onboarding Polish | v1.1 | 0/3 | Planning | - |
+| 4. Design System & Onboarding Polish | v1.1 | 3/4 | Executing | - |
 | 5. Welcome Screen & Auth Drawer | v1.1 | 0/? | Not started | - |
 | 6. Paywall Redesign | v1.1 | 0/? | Not started | - |
 | 7. Native Tabs & Map Drawer | v1.1 | 0/? | Not started | - |
