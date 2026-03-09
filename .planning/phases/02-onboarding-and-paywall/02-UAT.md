@@ -1,9 +1,9 @@
 ---
-status: complete
+status: diagnosed
 phase: 02-onboarding-and-paywall
 source: 02-01-SUMMARY.md, 02-02-SUMMARY.md, 02-03-SUMMARY.md
 started: 2026-03-09T12:00:00Z
-updated: 2026-03-09T12:22:00Z
+updated: 2026-03-09T12:25:00Z
 ---
 
 ## Current Test
@@ -69,57 +69,98 @@ skipped: 0
   reason: "User reported: Login button should have exact same height/width as Create Account (ghost button). No spacing between elements - need 4px gap between buttons, proper margin between checkbox and buttons. Illustration placeholder too large - reduce to half size."
   severity: major
   test: 1
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "Login button uses variant='link' (bare text, no container) instead of a ghost variant with matching dimensions. Footer View has no gap between children. Checkbox row has no marginBottom. Hero placeholder uses flex:1 causing it to fill all space."
+  artifacts:
+    - path: "src/components/ui/Button.tsx"
+      issue: "link variant renders bare Text with no container box - no ghost variant exists"
+    - path: "app/(onboarding)/welcome.tsx"
+      issue: "Footer View has no gap, checkbox row has no marginBottom, heroPlaceholder uses flex:1"
+    - path: "src/theme/components.ts"
+      issue: "No ghost button variant defined in design system"
+  missing:
+    - "Add ghost variant to Button.tsx with same dimensions as primary but transparent background"
+    - "Add ghost token to src/theme/components.ts buttons map"
+    - "Add gap: spacing['1'] (4px) to footer View in welcome.tsx"
+    - "Add marginBottom to checkbox row for spacing above buttons"
+    - "Replace flex:1 on heroPlaceholder with fixed/proportional height (~half current size)"
 
 - truth: "Illustration/image area is full-bleed, extending to screen edges and behind status bar and progress dots"
   status: failed
   reason: "User reported: Image container not full-bleed. Should take full width, bleed to edges and top of screen, sit behind status bar and progress dots. Applies to Welcome screen, all 4 feature tour screens, and quiz screens (birding journey, goals). This is a systemic layout issue across all onboarding screens."
   severity: major
   test: 2
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "OnboardingLayout applies paddingHorizontal:24 and paddingTop:top+20 to entire container, preventing any child from bleeding to screen edges or behind status bar."
+  artifacts:
+    - path: "src/components/onboarding/OnboardingLayout.tsx"
+      issue: "Global paddingHorizontal:24 and paddingTop:top+20 confine all children including images. No concept of bleed zone vs padded zone."
+    - path: "app/(onboarding)/welcome.tsx"
+      issue: "heroPlaceholder inside padded children area with borderRadius:24, cannot escape padding"
+    - path: "app/(onboarding)/ai-bird-id.tsx"
+      issue: "imagePlaceholder fixed height:280 with borderRadius:24, confined by padding"
+  missing:
+    - "Add dedicated full-bleed illustration slot/prop to OnboardingLayout that renders outside padded container"
+    - "Restructure layout into two zones: top illustration (no padding, full-bleed) and bottom content (padded)"
+    - "ProgressDots and status bar overlay on top of illustration via absolute positioning or z-index"
+    - "Remove borderRadius from image placeholders, use full-width/full-bleed styling"
 
 - truth: "Birding journey avatar/image changes dynamically based on selected experience level chip"
   status: failed
   reason: "User reported: Avatar/image at top should change based on selected chip. New = small egg, Garden = small bird, Intermediate = bigger bird, Advanced = even larger bird. Need logic to swap image when selection changes."
   severity: minor
   test: 4
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "Avatar is a static placeholder View with no dynamic rendering based on selected chip state."
+  artifacts:
+    - path: "app/(onboarding)/birding-journey.tsx"
+      issue: "Static <View style={styles.avatarPlaceholder} /> - selected state never used to vary avatar"
+  missing:
+    - "Create mapping from LevelKey to image source/size (egg, small bird, medium bird, large bird)"
+    - "Replace static View with dynamic Image that reads selected state"
+    - "Add transition animation when image changes"
 
 - truth: "Paywall toggle animates smoothly between monthly/annual options"
   status: failed
   reason: "User reported: Toggle spring animation too fast/aggressive. Needs subtle, smooth transition."
   severity: minor
   test: 6
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "withSpring config uses damping:15 which is too low, causing aggressive/bouncy animation."
+  artifacts:
+    - path: "app/(onboarding)/paywall.tsx"
+      issue: "withSpring(..., { damping: 15 }) for toggle width and translateX - too bouncy"
+  missing:
+    - "Increase damping to 20-25 and reduce stiffness to 80-120 for smoother transition"
+    - "Or switch to withTiming with Easing.out(Easing.cubic) ~250-300ms"
 
 - truth: "Status bar area is transparent so hero image shows through on paywall"
   status: failed
   reason: "User reported: Top section with status bar has white background blocking the hero image. Needs to be transparent."
   severity: major
   test: 6
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "OnboardingLayout sets backgroundColor:semantic.bgPage (white) on container with paddingTop:top+20, creating opaque area behind status bar. Paywall's marginTop:-20 only claws back 20px, not the full safe area inset."
+  artifacts:
+    - path: "src/components/onboarding/OnboardingLayout.tsx"
+      issue: "backgroundColor:bgPage and paddingTop:top+20 create opaque white area behind status bar"
+    - path: "app/(onboarding)/paywall.tsx"
+      issue: "Hero marginTop:-20 insufficient to escape full paddingTop (top+20)"
+    - path: "app/(onboarding)/_layout.tsx"
+      issue: "Stack layout missing statusBarTranslucent and statusBarStyle:light"
+  missing:
+    - "Add transparentHeader prop to OnboardingLayout to zero out paddingTop for screens needing full-bleed"
+    - "Add statusBarTranslucent:true to Stack screenOptions in _layout.tsx"
+    - "Use expo-status-bar StatusBar translucent transparent on paywall screen"
 
 - truth: "Onboarding buttons are fixed to the bottom of the screen in their own section, always visible above scrollable content"
   status: failed
   reason: "User reported: Buttons across all onboarding screens need to be in a fixed section pinned to the bottom, staying visible above any scrollable content."
   severity: major
   test: 6
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "OnboardingLayout content area is a plain View (no ScrollView) and footer is in flex flow - when content overflows, footer scrolls away."
+  artifacts:
+    - path: "src/components/onboarding/OnboardingLayout.tsx"
+      issue: "Content is plain View with flex:1, footer in same flex column - not pinned"
+    - path: "app/(onboarding)/paywall.tsx"
+      issue: "Action buttons inline in content instead of footer prop - scroll away with content"
+  missing:
+    - "Wrap children in ScrollView with contentContainerStyle flexGrow:1 in OnboardingLayout"
+    - "Keep footer View outside ScrollView, pinned at bottom of flex column"
+    - "Move paywall action buttons from inline content to footer prop"
+    - "Apply same pattern across all onboarding screens: scrollable children, fixed footer"
