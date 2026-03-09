@@ -9,6 +9,7 @@ export default function MainLayout() {
         options={{
           headerShown: true,
           title: 'Profile',
+          headerBackTitle: '',
         }}
       />
       <Stack.Screen
@@ -16,6 +17,7 @@ export default function MainLayout() {
         options={{
           headerShown: true,
           title: 'Community Sightings',
+          headerBackTitle: '',
         }}
       />
     </Stack>

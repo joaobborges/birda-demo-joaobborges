@@ -138,14 +138,14 @@ export default function MapScreen() {
       {/* Floating top bar */}
       <Animated.View entering={FadeIn.delay(300)} style={[styles.topBar, { top: top + 12 }]}>
         <Pressable style={styles.iconButton} onPress={() => push('/profile')}>
-          <Ionicons name="person-circle-outline" size={24} color={semantic.textPrimary} />
+          <Ionicons name="person-circle" size={24} color={semantic.textPrimary} />
         </Pressable>
         <View style={styles.topBarRight}>
           <Pressable style={styles.iconButton} onPress={() => push('/community')}>
-            <Ionicons name="people-outline" size={22} color={semantic.textPrimary} />
+            <Ionicons name="people" size={22} color={semantic.textPrimary} />
           </Pressable>
           <View style={styles.iconButton}>
-            <Ionicons name="notifications-outline" size={22} color={semantic.textPrimary} />
+            <Ionicons name="notifications" size={22} color={semantic.textPrimary} />
             <View style={styles.notificationBadge} />
           </View>
         </View>
@@ -155,13 +155,13 @@ export default function MapScreen() {
       <Animated.View entering={FadeIn.delay(400)} style={[styles.bottomBar, { bottom: bottom + 20 }]}>
         <Pressable style={styles.bottomButton}>
           <View style={styles.bottomButtonContent}>
-            <Ionicons name="camera-outline" size={18} color={semantic.textInput} />
+            <Ionicons name="camera" size={18} color={semantic.textInput} />
             <Text style={styles.bottomButtonText}>Capture</Text>
           </View>
         </Pressable>
         <Pressable style={styles.bottomButton}>
           <View style={styles.bottomButtonContent}>
-            <Ionicons name="book-outline" size={18} color={semantic.textInput} />
+            <Ionicons name="book" size={18} color={semantic.textInput} />
             <Text style={styles.bottomButtonText}>Logbook</Text>
           </View>
         </Pressable>
