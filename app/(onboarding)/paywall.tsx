@@ -48,20 +48,34 @@ export default function PaywallScreen() {
   const annualPrice = isNatureDay ? '$31.99' : '$39.99'
 
   return (
-    <OnboardingLayout>
-      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.scrollContent}>
-        {/* Hero image placeholder */}
+    <OnboardingLayout
+      illustration={
         <View
           style={[
-            styles.hero,
+            styles.illustration,
             { backgroundColor: isNatureDay ? semantic.accent : semantic.bgTinted },
           ]}
         />
-
+      }
+      footer={
+        <View style={styles.footerButtons}>
+          <Button
+            title={isNatureDay ? 'Claim My Discount' : 'Start Free Trial'}
+            onPress={handleSubscribe}
+          />
+          <Button
+            title="Continue with free plan"
+            variant="link"
+            onPress={handleFree}
+          />
+        </View>
+      }
+    >
+      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.scrollContent}>
         {/* Nature Day promotional banner */}
         {isNatureDay ? (
           <View style={styles.banner}>
-            <Text style={styles.bannerText}>🌿 Nature Day — 20% off today only</Text>
+            <Text style={styles.bannerText}>Nature Day -- 20% off today only</Text>
           </View>
         ) : null}
 
@@ -115,35 +129,21 @@ export default function PaywallScreen() {
             {plan === 'annual' ? <Text style={styles.valueBadge}>Best value</Text> : null}
           </Pressable>
         </View>
-
-        {/* Action buttons */}
-        <View style={styles.actions}>
-          <Button
-            title={isNatureDay ? 'Claim My Discount' : 'Start Free Trial'}
-            onPress={handleSubscribe}
-          />
-          <Button
-            title="Continue with free plan"
-            variant="link"
-            onPress={handleFree}
-          />
-        </View>
       </Animated.View>
     </OnboardingLayout>
   )
 }
 
 const styles = StyleSheet.create({
+  illustration: {
+    height: 220,
+  },
   scrollContent: {
+    paddingTop: 24,
     gap: 24,
   },
-  hero: {
-    height: 220,
-    marginHorizontal: -24,
-    marginTop: -20,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-    borderCurve: 'continuous',
+  footerButtons: {
+    gap: 8,
   },
   banner: {
     backgroundColor: semantic.statusSuccessBg,
@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderCurve: 'continuous',
     alignSelf: 'center',
-    marginTop: -20,
   },
   bannerText: {
     fontSize: 15,
@@ -236,8 +235,5 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     overflow: 'hidden',
     marginTop: 4,
-  },
-  actions: {
-    gap: 8,
   },
 })

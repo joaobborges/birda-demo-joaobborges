@@ -1,10 +1,11 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
 
 export default function WelcomeScreen() {
   const { push } = useRouter()
@@ -19,16 +20,15 @@ export default function WelcomeScreen() {
 
   return (
     <OnboardingLayout
+      illustration={<View style={styles.illustration} />}
       footer={
-        <View style={{ opacity: termsAccepted ? 1 : 0.5 }}>
+        <View style={{ opacity: termsAccepted ? 1 : 0.5, gap: spacing['1'] }}>
           <Button title="Create Account" onPress={handleNavigate} />
-          <Button title="Log in" variant="link" onPress={handleNavigate} />
+          <Button title="Log in" variant="ghost" onPress={handleNavigate} />
         </View>
       }
     >
-      <View style={styles.heroPlaceholder} />
-
-      <Animated.View entering={FadeIn.delay(100).duration(300)}>
+      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.content}>
         <Text style={styles.heading}>Welcome to Birda</Text>
         <Text style={styles.description}>
           Discover, identify, and log birds around you
@@ -57,13 +57,15 @@ export default function WelcomeScreen() {
   )
 }
 
+const { height: screenHeight } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
-  heroPlaceholder: {
-    flex: 1,
+  illustration: {
+    height: screenHeight * 0.45,
     backgroundColor: semantic.bgTinted,
-    borderRadius: 24,
-    borderCurve: 'continuous',
-    marginBottom: 32,
+  },
+  content: {
+    paddingTop: 24,
   },
   heading: {
     fontSize: 30,
@@ -79,6 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 24,
+    marginBottom: spacing['4'],
     gap: 12,
   },
   checkbox: {

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
@@ -11,6 +11,7 @@ export default function DiscoverScreen() {
 
   return (
     <OnboardingLayout
+      illustration={<View style={styles.illustration} />}
       header={<ProgressDots total={4} current={2} />}
       footer={
         <Button
@@ -19,8 +20,7 @@ export default function DiscoverScreen() {
         />
       }
     >
-      <Animated.View entering={FadeIn.delay(100).duration(300)}>
-        <View style={styles.imagePlaceholder} />
+      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.content}>
         <Text style={styles.heading}>Discover</Text>
         <Text style={styles.description}>
           Discover nearby birds and locations
@@ -30,13 +30,15 @@ export default function DiscoverScreen() {
   )
 }
 
+const { height: screenHeight } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
-  imagePlaceholder: {
-    height: 280,
+  illustration: {
+    height: screenHeight * 0.5,
     backgroundColor: semantic.bgTinted,
-    borderRadius: 24,
-    borderCurve: 'continuous',
-    marginBottom: 32,
+  },
+  content: {
+    paddingTop: 24,
   },
   heading: {
     fontSize: 28,

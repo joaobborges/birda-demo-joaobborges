@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
@@ -33,11 +33,11 @@ export default function GoalsScreen() {
 
   return (
     <OnboardingLayout
+      illustration={<View style={styles.illustration} />}
       header={<ProgressDots total={3} current={2} />}
       footer={<Button title="Continue" onPress={handleContinue} />}
     >
-      <Animated.View entering={FadeIn.delay(100).duration(300)}>
-        <View style={styles.avatarPlaceholder} />
+      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.content}>
         <Text style={styles.heading}>What are your goals?</Text>
 
         <View style={styles.options}>
@@ -62,15 +62,15 @@ export default function GoalsScreen() {
   )
 }
 
+const { height: screenHeight } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
-  avatarPlaceholder: {
-    height: 120,
-    width: 120,
+  illustration: {
+    height: screenHeight * 0.4,
     backgroundColor: semantic.bgTinted,
-    borderRadius: 60,
-    borderCurve: 'continuous',
-    alignSelf: 'center',
-    marginBottom: 24,
+  },
+  content: {
+    paddingTop: 24,
   },
   heading: {
     fontSize: 24,
