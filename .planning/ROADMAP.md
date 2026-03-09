@@ -27,11 +27,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. A returning user who has completed onboarding sees the map immediately on app launch with no flash of the welcome screen
   3. React Compiler is active and components are auto-memoized (verified via React DevTools or compiler output)
   4. Running the linter flags any use of `&&` with potentially falsy render values and any barrel file imports
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md — Tooling and config: hydration guard, React Compiler, ESLint setup
+- [ ] 01-02-PLAN.md — Theme token extension and full hex-to-token migration sweep
 
 ### Phase 2: Onboarding and Paywall
 **Goal**: A first-time user experiences a smooth, animated onboarding wizard with consistent styling and lands on a personalized paywall with working plan toggle and discount variant
@@ -72,6 +72,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/0 | Not started | - |
+| 1. Foundation | 0/2 | Not started | - |
 | 2. Onboarding and Paywall | 0/0 | Not started | - |
 | 3. Map and Screens | 0/0 | Not started | - |
