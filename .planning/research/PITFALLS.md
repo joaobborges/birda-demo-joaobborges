@@ -1,302 +1,286 @@
-# Domain Pitfalls
+# Pitfalls Research
 
-**Domain:** Map-heavy bird watching mobile app (Expo SDK 55 / React Native 0.83 / New Architecture)
+**Domain:** Polish & refinement features for existing Expo/React Native app (Birda v1.1)
 **Researched:** 2026-03-09
-**Confidence:** MEDIUM-HIGH (based on training data, codebase analysis, and known RN ecosystem patterns; no live web verification available)
+**Confidence:** HIGH (codebase analysis + official docs + verified community reports)
 
 ## Critical Pitfalls
 
-Mistakes that cause rewrites, production crashes, or major performance regressions.
+### Pitfall 1: Splash Screen White Flash from Font Loading Race Condition
 
-### Pitfall 1: react-native-map-clustering Wrapping MapView Incorrectly
-**What goes wrong:** `react-native-map-clustering` provides a `ClusteredMapView` that replaces the standard `MapView`. Developers often try to add clustering by wrapping existing `<MapView>` with clustering logic or rendering `<Marker>` components outside the `ClusteredMapView` children. The clustering library expects markers as direct children and uses internal cloning to manage them. Mixing custom marker rendering patterns (like the current `visibleBirds.map()`) with clustering's own marker management causes markers to either not cluster or to render duplicates.
+**What goes wrong:**
+A white frame flashes between native splash dismissal and the first JS render. The current `_layout.tsx` gates `SplashScreen.hideAsync()` on Zustand hydration only. Adding Rubik font loading via `useFonts` introduces a second async dependency. If `hideAsync()` fires after hydration but before fonts load, users see system font text for 100-200ms before Rubik renders (Flash of Unstyled Text). Additionally, the splash `backgroundColor` in `app.json` is `#ffffff` while the welcome screen background may differ, creating a visible color seam even without FOUT.
 
-**Why it happens:** The current codebase renders markers via `visibleBirds.map()` inside a plain `<MapView>`. Swapping to `ClusteredMapView` requires changing how markers are provided -- they must be direct `<Marker>` children, not wrapped in fragments or conditional containers.
+**Why it happens:**
+The root layout currently has one async gate (Zustand hydration). Adding font loading creates two independent async operations. Developers typically add `useFonts` and check `fontsLoaded` separately, but forget to unify the readiness check with the existing hydration gate. The splash hides when the first condition resolves, not when both resolve.
 
-**Consequences:** Markers don't cluster, appear duplicated, or clustering calculations run on every render causing severe frame drops during pan/zoom. On 50+ markers this becomes a visible stutter.
+**How to avoid:**
+1. Embed Rubik at build time via the `expo-font` config plugin: `["expo-font", { "fonts": ["./assets/fonts/Rubik-Light.ttf", "./assets/fonts/Rubik-Regular.ttf", "./assets/fonts/Rubik-Medium.ttf", "./assets/fonts/Rubik-SemiBold.ttf"] }]` in `app.json` plugins. This eliminates runtime font loading entirely -- fonts available synchronously from launch. Requires EAS rebuild.
+2. If using runtime loading instead, gate `hideAsync()` on `isHydrated && fontsLoaded` in a single check.
+3. Match `splash.backgroundColor` in `app.json` to the welcome screen's actual background color.
+4. All Rubik weights used in `typography.ts` (300, 400, 500, 600) must have corresponding font files. Missing a weight causes silent fallback to system font for that weight only -- no error thrown.
 
-**Prevention:**
-- Replace `<MapView>` with `<ClusteredMapView>` from `react-native-map-clustering` and render `<Marker>` components as direct children (no wrapping Views)
-- Remove the manual `getVisibleBirds()` zoom-filtering logic -- clustering handles density management. Keep rarity-based filtering as a separate concern if needed, but don't mix it with clustering's own visibility logic
-- Set `clusterColor`, `clusterTextColor`, and `clusterFontFamily` for consistent styling
-- Use `superClusterRef` to access cluster data if custom cluster rendering is needed
+**Warning signs:**
+- System font visible for a split second on cold launch (test by force-quitting and reopening, NOT fast refresh)
+- Different background color flash between splash and first screen
+- `useFonts` hook returning `false` after `hideAsync` already fired
+- One weight (e.g., Rubik-Light/300) renders in system font while others render correctly
 
-**Detection:** Markers visually overlap instead of forming cluster bubbles. FPS drops below 30 during map pan with 20+ markers.
-
-**Phase relevance:** Map Enhancement phase -- when adding clustering to the existing map screen.
-
----
-
-### Pitfall 2: Reanimated Shared Values Updated from JS Thread Instead of UI Thread
-**What goes wrong:** Animations stutter or skip frames because shared value updates are triggered from React state changes (JS thread) rather than from worklets (UI thread). The current paywall toggle animation uses `togglePosition.set()` inside a regular function (`selectPlan`), which works but creates a JS-to-UI bridge hop. For complex animations (entering animations, gesture-driven animations), this pattern causes visible jank.
-
-**Why it happens:** Reanimated 4.x (the version in this project) still supports `.set()` from JS thread for convenience, but the animation only runs at 60fps when driven entirely from the UI thread. Developers mix `useState` for logic and shared values for animation without realizing the state update triggers a full re-render that competes with the animation.
-
-**Consequences:** Toggle animations, button press effects, and entering animations visually hitch. On lower-end Android devices, animations can drop to 20-30fps.
-
-**Prevention:**
-- For gesture-driven animations: use `Gesture.Tap()` with `.onBegin`/`.onEnd` worklets that directly update shared values -- never go through `setState`
-- For toggle/switch animations: update the shared value directly in a worklet, defer the React state update with `runOnJS` only for non-visual state (like which plan is selected)
-- Only animate `transform` and `opacity` (GPU-composited properties). Never animate `width`, `height`, `padding`, `margin`, `borderRadius`, or `backgroundColor` directly
-- Use `useAnimatedStyle` for all animated properties, never inline `style={{ transform: [...] }}`
-- The existing `Button` component pattern (GestureDetector + Gesture.Tap) is correct -- replicate this pattern for all interactive animations
-
-**Detection:** Use the planned FPS monitor (Reanimated `useFrameCallback`) to profile animations. Any animation consistently below 55fps on iOS or 50fps on Android indicates a JS thread bottleneck.
-
-**Phase relevance:** Onboarding Polish and Paywall phases -- when adding spring animations and gesture-driven effects.
+**Phase to address:**
+Foundation phase -- must be the very first change. All subsequent screens depend on fonts and splash being correct.
 
 ---
 
-### Pitfall 3: Form Sheet Presentation Not Using Native Modal on iOS
-**What goes wrong:** Developers build "form sheet" modals using React Native's `<Modal>` component or custom animated Views instead of using `react-native-screens`' native `formSheet` presentation. The result looks close but misses native behaviors: the pull-to-dismiss gesture, the dimming of the parent screen, proper keyboard avoidance, and the elastic bounce at the top of the sheet.
+### Pitfall 2: Bottom Sheet Gesture Conflicts with MapView Pan and Zoom
 
-**Why it happens:** React Native's built-in `<Modal>` doesn't support iOS form sheet presentation natively. Expo Router with `react-native-screens` v4.23+ (which this project has) supports `presentation: 'formSheet'` on Stack screens, but it requires specific configuration that isn't obvious from documentation.
+**What goes wrong:**
+A swipeable bottom sheet (e.g., `@gorhom/bottom-sheet`) and `react-native-maps` MapView both consume pan/swipe gestures. Dragging to dismiss the sheet simultaneously pans the map underneath. Pinch-to-zoom on the map near the sheet edge can trigger the sheet. On Android specifically, the sheet can "stick" at partial positions because gesture arbitration differs from iOS. The existing `GestureHandlerRootView` in `_layout.tsx` makes gesture arbitration global, compounding the problem.
 
-**Consequences:** Profile and Community screens feel non-native. Pull-to-dismiss doesn't work. The sheet doesn't respect safe areas correctly. Keyboard pushes content incorrectly on form inputs.
+**Why it happens:**
+Both MapView and bottom sheets register native gesture recognizers. The gesture handler system cannot disambiguate "user is dragging the sheet" from "user is panning the map" without explicit configuration. This is documented as a known issue (gorhom/react-native-bottom-sheet#1828). The `pointerEvents` configuration on overlay containers and `simultaneousHandlers` setup are almost always missed on first implementation.
 
-**Prevention:**
-- Use Expo Router's Stack screen options: `presentation: 'formSheet'` in the `(main)` layout for profile and community routes
-- Set `sheetCornerRadius`, `sheetExpandsWhenScrolledToEdge`, and `sheetGrabberVisible` for native feel
-- For the `(main)` layout, define profile and community as screens with `presentation: 'formSheet'`:
-  ```tsx
-  <Stack.Screen name="profile" options={{ presentation: 'formSheet', sheetCornerRadius: 20, sheetGrabberVisible: true }} />
-  ```
-- Do NOT wrap form sheet content in `SafeAreaView` -- the sheet handles its own safe areas
-- Test on physical iOS device; iOS Simulator form sheet behavior differs subtly from real hardware
+**How to avoid:**
+1. Set `pointerEvents="box-none"` on the container wrapping the bottom sheet so map touches pass through when not hitting the sheet directly.
+2. Wrap scrollable content inside the sheet with `<NativeViewGestureHandler>` from `react-native-gesture-handler`.
+3. When the sheet is expanded beyond a threshold, disable map interaction via `scrollEnabled={false}` and `zoomEnabled={false}` on MapView. Re-enable when sheet collapses.
+4. Use `enablePanDownToClose` and configure `activeOffsetY={[- 10, 10]}` on the sheet to require a deliberate vertical swipe before capturing the gesture.
+5. Test pinch-to-zoom near the sheet edge specifically -- this is a different failure mode than pan conflicts.
 
-**Detection:** Sheet appears as a full-screen push instead of a floating card. No grabber bar visible at top. No pull-to-dismiss gesture.
+**Warning signs:**
+- Map scrolls when dragging the sheet handle
+- Sheet cannot be dismissed by swiping down while positioned over the map
+- Ghost touches on map markers through the sheet backdrop
+- Sheet "bounces" between snap points unpredictably on Android
 
-**Phase relevance:** Form Sheet / Profile & Community phase.
-
----
-
-### Pitfall 4: Zustand Store Hydration Race Causing Flash of Onboarding
-**What goes wrong:** The app shows the onboarding flow for a split second before redirecting to the main screen for returning users. This happens because `useOnboardingStore.completed` defaults to `false` until AsyncStorage hydration completes, and the root `app/index.tsx` makes a routing decision before hydration finishes.
-
-**Why it happens:** Zustand's `persist` middleware hydrates asynchronously. The component mounts, reads `completed === false` (the default), navigates to onboarding, then hydration completes with `completed === true`, but the user has already seen the onboarding flash.
-
-**Consequences:** Returning users see a flicker of the welcome screen. On slow devices or cold starts, this can last 200-500ms -- enough to be noticeable and feel buggy. This is a known issue flagged in the CONCERNS.md.
-
-**Prevention:**
-- Gate routing on `useOnboardingStore.persist.hasHydrated()`:
-  ```tsx
-  const hasHydrated = useOnboardingStore.persist.hasHydrated()
-  if (!hasHydrated) return <SplashScreen /> // or null
-  ```
-- Use the `onRehydrateStorage` callback to set a loading flag
-- Show the splash screen / app icon until hydration completes
-- This is a one-line fix but critical for demo polish
-
-**Detection:** Open app after completing onboarding. If the welcome screen flashes briefly before the map appears, hydration is racing.
-
-**Phase relevance:** Should be fixed in the very first phase (Foundation/Polish), before any demo.
+**Phase to address:**
+Map drawer phase -- the single hardest integration point in this milestone. Build before other features that depend on overlay positioning.
 
 ---
 
-### Pitfall 5: Production Build Missing Hermes Bytecode Precompilation
-**What goes wrong:** The production build ships raw JavaScript instead of Hermes bytecode (`.hbc`). App startup is 2-4x slower because Hermes must parse and compile JS at runtime instead of loading precompiled bytecode.
+### Pitfall 3: Mosaic Auto-Scroll Animation Memory Pressure and Frame Drops
 
-**Why it happens:** Hermes is enabled by default in Expo SDK 55, but certain Metro configurations or build misconfigurations can prevent bytecode precompilation. The project has `metro.config.js` with experimental imports support -- custom Metro configs are the #1 cause of accidentally bypassing Hermes compilation.
+**What goes wrong:**
+A mosaic grid of bird images with continuous auto-scrolling animation causes memory to climb steadily and frame drops to appear within 30 seconds. Each `expo-image` instance decodes and caches a bitmap in memory. With 30-50 tiles rendered simultaneously, decoded bitmaps can consume 300-500MB. Combined with Reanimated `withRepeat(withTiming(...), -1)` for continuous scroll, the UI thread never idles. There is a documented performance regression with Reanimated 4.x on New Architecture (Fabric) for many simultaneous animated components (GitHub issue #8250).
 
-**Consequences:** Cold start time increases from ~800ms to 2-3 seconds. App Store reviewers and demo viewers notice slow launches immediately.
+**Why it happens:**
+Developers render all mosaic tiles as individual `<Image>` components at full resolution. The animation never pauses, so the GPU composites every frame. On New Architecture, Reanimated's animation driver has known overhead compared to legacy architecture. iOS will kill the app if image memory exceeds ~1GB. Even without a kill, thermal throttling on the device makes subsequent screens feel sluggish.
 
-**Prevention:**
-- Verify Hermes is producing `.hbc` files by inspecting the build output: `npx react-native-info` in the build
-- In `eas.json`, ensure the production profile does NOT set `EXPO_USE_HERMES=0`
-- Test with `eas build --platform ios --profile production` and check bundle size -- Hermes bytecode bundles are smaller than raw JS
-- After building, verify with: `unzip -l app.ipa | grep -i hbc` (iOS) or inspect the APK for `.hbc` files (Android)
-- Do NOT use `eval()`, `new Function()`, or dynamic `require()` with variable paths -- these break Hermes optimization
+**How to avoid:**
+1. Limit visible tiles to 12-16 images maximum -- enough to fill the screen with the mosaic look without excessive memory.
+2. Use `expo-image` (already in deps) with explicit `style={{ width: tileSize, height: tileSize }}` to force decode at display size, not source resolution. Set `contentFit="cover"`.
+3. Animate a SINGLE `Animated.View` wrapper with `transform: [{ translateY }]` that moves the entire grid. Do NOT animate individual tiles.
+4. Only animate `transform` and `opacity` -- never width, height, or layout properties.
+5. Cancel the animation when the screen loses focus: use `useFocusEffect` to call `cancelAnimation(scrollY)` on blur and restart on focus.
+6. Set `recyclingKey` on each `expo-image` to enable native image recycling.
+7. Consider pre-compositing the mosaic into a single image at build time for the smoothest result with zero runtime cost.
 
-**Detection:** Production cold start takes >2 seconds. Bundle size is suspiciously large. Hermes doesn't appear in `runtime` in build logs.
+**Warning signs:**
+- Memory usage climbing steadily while on welcome screen (check Xcode Memory Gauge)
+- Frame rate below 55fps in Perf Monitor
+- App killed by iOS after sitting on welcome screen for 60+ seconds
+- Device becomes warm on a static screen
 
-**Phase relevance:** Production Optimization phase -- final phase before demo.
-
-## Moderate Pitfalls
-
-### Pitfall 6: Custom Markers with Images Causing Map Jank
-**What goes wrong:** Using `<Image>` components inside `<Marker>` custom callouts causes the map to re-render images on every frame during pan/zoom. Each marker with an image creates a native bitmap snapshot -- with 20+ markers, this causes significant frame drops.
-
-**Prevention:**
-- Use default map pins or simple View-based markers for the map view (colored dots with initials)
-- Show bird images only in the info card (which is already outside the MapView)
-- If custom image markers are needed, use `tracksViewChanges={false}` on every `<Marker>` after the initial image load -- this tells the native map to cache the marker bitmap
-- Pre-render marker images to a fixed size (32x32 or 44x44) and use local assets, not remote URLs
-
-**Detection:** Map panning feels sluggish with 10+ markers. FPS drops correlate with number of visible markers.
-
-**Phase relevance:** Map Enhancement phase.
+**Phase to address:**
+Welcome screen phase -- implement with performance testing from the start. Profile with Xcode Instruments before merging.
 
 ---
 
-### Pitfall 7: Entering Animations Replaying on Tab/Route Focus
-**What goes wrong:** Reanimated `entering` animations (like `FadeIn`, `FadeInDown`, `SlideInDown`) replay every time a screen regains focus -- not just on first mount. This means navigating from the map to the profile sheet and back causes the floating top bar and bottom bar to fade in again, which looks broken.
+### Pitfall 4: Paywall Dismiss Navigation Stack Corruption
 
-**Prevention:**
-- Use `entering` animations only for truly one-time elements (onboarding screens that get popped from the stack)
-- For persistent UI like the map's floating bars, use `useAnimatedStyle` with a shared value that transitions once on mount and never resets:
-  ```tsx
-  const mounted = useSharedValue(0)
-  useEffect(() => { mounted.value = withTiming(1) }, [])
-  ```
-- Alternatively, check if the component has already mounted using a ref and skip the entering animation on subsequent focus events
-- For the bird info card, `SlideInDown` on mount is correct because it remounts each time a new bird is selected
+**What goes wrong:**
+When the user dismisses the redesigned paywall to go home, the navigation stack retains the paywall and onboarding screens in history. The iOS back swipe gesture returns the user to the paywall instead of staying on the home screen. Alternatively, `router.replace` from within a nested stack only replaces within that stack, not at the root level -- so the `(onboarding)` group remains mounted with its entire screen stack.
 
-**Detection:** Navigate away from map and back. If floating buttons animate in again, this pitfall is active. Already present in the current codebase (lines 101, 117 of `index.tsx`).
+**Why it happens:**
+Birda uses Expo Router route groups: `(onboarding)` and `(main)`. The root `index.tsx` uses `<Redirect>` based on `completed` state. If paywall dismiss uses `router.push('/(main)')`, the onboarding group stays in the stack. If it uses `router.replace`, it only replaces within the current group context. The `router.dismissAll()` method dismisses screens in the closest stack but does not cross group boundaries. This is a documented limitation (expo/router#495).
 
-**Phase relevance:** Map Enhancement and Onboarding Polish phases.
+**How to avoid:**
+1. Set `completed: true` in the Zustand store FIRST, then use `router.replace('/')`. The root `index.tsx` redirect will naturally route to `/(main)` based on the updated state. This leverages the existing redirect pattern.
+2. Ensure `completed: true` is persisted to AsyncStorage BEFORE navigation. Since Zustand persist is async, add a small delay or use `onFinishHydration` to confirm persistence.
+3. Never use `router.push('/(main)')` from within `(onboarding)` -- this creates a stack where back gesture returns to onboarding.
+4. Test the edge case: user force-quits while on the paywall before `completed` persists. On reopen, they should see the paywall again (not a corrupted state).
 
----
+**Warning signs:**
+- Back swipe from home screen shows the paywall
+- `useNavigationState` shows onboarding routes still in the stack after dismissal
+- Memory stays elevated after leaving onboarding (screens still mounted)
+- App reopens to a blank screen after force-quit during paywall transition
 
-### Pitfall 8: react-native-maps New Architecture (Fabric) Compatibility Issues
-**What goes wrong:** The project has `newArchEnabled: true` in `app.json`. `react-native-maps` v1.26.x has partial Fabric (New Architecture) support. Some features work, others crash silently or behave differently: custom callouts may not render, `onRegionChangeComplete` may fire with stale data, and clustering libraries that depend on the old architecture's `UIManager` will fail entirely.
-
-**Prevention:**
-- Pin `react-native-maps` to the exact version (1.26.20) -- do not upgrade without testing
-- Test `react-native-map-clustering` with New Architecture enabled before integrating -- it may need a version that supports Fabric
-- If clustering crashes with New Architecture, the fallback is implementing basic clustering manually using `supercluster` directly (the same library `react-native-map-clustering` uses internally)
-- Test on both iOS and Android physical devices -- Fabric issues often manifest on only one platform
-- Keep `newArchEnabled: true` (it's the future), but have a plan to disable it if map issues are blocking
-
-**Detection:** Map markers don't appear. `onPress` on markers doesn't fire. App crashes on map interaction with a native stack trace mentioning `Fabric` or `UIManager`.
-
-**Phase relevance:** Map Enhancement phase -- verify immediately when adding clustering.
+**Phase to address:**
+Paywall phase -- must be verified as part of implementation. Cannot be deferred.
 
 ---
 
-### Pitfall 9: Hardcoded Toggle Width Breaking on Different Screen Sizes
-**What goes wrong:** The paywall toggle indicator uses `width: 148` and `translateX: togglePosition.get() * 148` (hardcoded pixel values). On SE-sized screens (320pt width), the toggle overflows. On larger screens, the indicator doesn't fill its option area. This is already flagged as a known bug in CONCERNS.md but the fix approach matters.
+### Pitfall 5: Tab Bar Conflicting with Existing Floating Bottom UI
 
-**Prevention:**
-- Use `onLayout` to measure the toggle container width, then calculate indicator width as `(containerWidth - padding) / 2`
-- Store the measured width in a shared value so animation calculations stay on the UI thread:
-  ```tsx
-  const containerWidth = useSharedValue(0)
-  const onLayout = (e: LayoutChangeEvent) => {
-    containerWidth.value = e.nativeEvent.layout.width
-  }
-  const indicatorStyle = useAnimatedStyle(() => ({
-    width: (containerWidth.value - 8) / 2, // 8 = padding
-    transform: [{ translateX: withSpring(togglePosition.value * ((containerWidth.value - 8) / 2)) }]
-  }))
-  ```
-- Never hardcode pixel widths for responsive elements -- use `onLayout` + shared values or percentage-based layouts
+**What goes wrong:**
+The map screen currently has a floating bottom bar with Capture and Logbook buttons (absolute positioned at `bottom: bottom + 20` in `(main)/index.tsx` lines 155-168). Adding an iOS native tab bar via Expo Router `Tabs` layout creates a second bottom navigation layer. The tab bar renders below the safe area while the floating UI renders above it, causing overlap, double tap targets, or the floating UI being hidden behind the tab bar.
 
-**Detection:** View paywall on iPhone SE simulator vs. iPhone 15 Pro Max. Toggle indicator misalignment is immediately visible.
+**Why it happens:**
+The floating bottom bar is `position: absolute` rendered inside the map screen component. A tab bar from Expo Router `Tabs` layout lives outside the screen component in the layout wrapper. These are two completely separate positioning systems. The floating UI uses `useSafeAreaInsets().bottom` for offset but has no awareness of the tab bar height. There is no React hook to get tab bar height from inside a screen rendered by the Tabs layout (the `useBottomTabBarHeight` hook requires `@react-navigation/bottom-tabs` as a direct dependency).
 
-**Phase relevance:** Paywall phase.
+**How to avoid:**
+1. This is an architectural decision, not a code fix. Choose ONE approach:
+   - **Option A (recommended):** Convert `(main)/_layout.tsx` from `Stack` to `Tabs` layout. Map becomes the default tab. Capture and Logbook become tab screens. Remove the floating bottom bar entirely. The tab bar IS the navigation.
+   - **Option B:** Keep the floating bottom bar and do NOT add a native tab bar. Style the floating buttons to look tab-like.
+2. If using Option A, the `profile` and `community` screens need to become stack screens nested inside a tab, not siblings of the tab layout.
+3. Do NOT try to have both a native tab bar and floating buttons -- it creates cognitive overload and tap target ambiguity.
 
----
+**Warning signs:**
+- Two sets of Capture/Logbook controls visible simultaneously
+- Tapping in the bottom area triggers unexpected navigation
+- Safe area padding appears doubled on notchless devices
 
-### Pitfall 10: React Compiler Breaking Reanimated Worklets
-**What goes wrong:** The project plans to add `babel-plugin-react-compiler` for auto-memoization. React Compiler can transform functions that Reanimated expects to be worklets, breaking the `'worklet'` directive detection. Compiled output may wrap worklet functions in ways that prevent Reanimated's Babel plugin from processing them.
-
-**Prevention:**
-- Add Reanimated's Babel plugin BEFORE React Compiler in the Babel config -- plugin order matters
-- Use `react-compiler-healthcheck` to verify compatibility before enabling
-- Exclude files with heavy Reanimated usage from React Compiler using the `compilationMode: "annotation"` option, or use `'use no memo'` directive in files with worklets
-- Test animations thoroughly after enabling React Compiler -- silent breakage is common (animations just stop working without errors)
-- Reanimated 4.x has better React Compiler compatibility than 3.x, but edge cases exist
-
-**Detection:** Animations freeze or don't start after enabling React Compiler. Console warnings about worklet compilation failures.
-
-**Phase relevance:** Production Optimization phase -- when adding React Compiler.
-
-## Minor Pitfalls
-
-### Pitfall 11: expo-font Config Plugin Not Loading Custom Fonts
-**What goes wrong:** Using `expo-font` as a config plugin (in `app.json` plugins array) for build-time font embedding requires fonts to be in the correct directory and referenced properly. Fonts load at build time but the font family names used in styles don't match the actual PostScript names embedded in the font files.
-
-**Prevention:**
-- Place font files in `assets/fonts/`
-- In `app.json`, configure the plugin: `["expo-font", { "fonts": ["./assets/fonts/Inter-Regular.ttf", ...] }]`
-- Use the exact PostScript name (not filename) in `fontFamily` styles. Check PostScript name by opening the `.ttf` file on macOS Font Book
-- Test on a fresh build (not just a reload) -- config plugin fonts require a native rebuild
-
-**Detection:** Text renders in system font instead of custom font. No error thrown -- it silently falls back.
-
-**Phase relevance:** Foundation/Polish phase.
+**Phase to address:**
+Navigation/tab bar phase -- requires architectural decision before any implementation begins.
 
 ---
 
-### Pitfall 12: LegendList Missing `estimatedItemSize` Causing Blank Frames
-**What goes wrong:** `@legendapp/list` (LegendList) requires `estimatedItemSize` for proper virtualization. Without it, initial render shows blank space where items should be, then items pop in after a frame or two.
+### Pitfall 6: Design System Token Migration Breaking Existing Screens
 
-**Prevention:**
-- Always provide `estimatedItemSize` matching the approximate height of list items
-- For the community feed, measure one item's height and use that value
-- If items have variable heights, use the average height as the estimate
+**What goes wrong:**
+The codebase has screens with hardcoded styles (fontSize, fontWeight, color hex values) that bypass existing `semantic` and `typography` tokens. When token values are adjusted during enforcement, screens using tokens change appearance while screens with hardcoded values stay the same -- creating visual inconsistency across the flow. If token names are renamed, TypeScript errors block the build for every consumer.
 
-**Detection:** Community feed shows blank white space that fills in after scrolling. Items "pop in" visually.
+**Why it happens:**
+The theme system exists (`src/theme/`) with semantic color tokens and typography presets. The map screen uses `semantic.*` extensively, but onboarding screens and paywall likely have inline hex values and raw font sizes. Migration is piecemeal -- some screens get updated, others don't.
 
-**Phase relevance:** Community Form Sheet phase.
+**How to avoid:**
+1. Audit first: `grep -r '#[0-9A-Fa-f]\{6\}' src/ --include='*.tsx'` to find every hardcoded hex value outside theme files.
+2. Never rename existing tokens -- add new ones and create aliases if needed. `textPrimary` keeps working even if a more specific token is introduced.
+3. Migrate one route group at a time: all `(onboarding)` screens first, then `(main)`. Verify visually after each group.
+4. Separate value changes from migration: change token values in one commit, migrate hardcoded values in a subsequent commit. Never both at once.
+5. Replace inline `fontWeight`/`fontSize` pairs with `typography.*` presets. The typography tokens already define all the combinations used in the app.
 
----
+**Warning signs:**
+- Some screens look slightly different after a token value change while others stay the same
+- Adjacent screens in the same flow have subtly different heading sizes or colors
+- TypeScript errors on imported token names after refactoring theme files
 
-### Pitfall 13: boxShadow Syntax Not Supported on Android < API 28
-**What goes wrong:** The codebase uses the CSS-like `boxShadow` property (e.g., `boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)'`). This is a React Native 0.83+ feature but has inconsistent support across Android versions. On older Android devices, shadows simply don't render.
-
-**Prevention:**
-- For this demo (iOS primary), this is acceptable since iOS renders shadows correctly
-- For Android compatibility, add `elevation` as a fallback alongside `boxShadow`
-- Test on Android API 28+ minimum for `boxShadow` support
-
-**Detection:** UI elements appear "flat" on Android devices without visible shadows.
-
-**Phase relevance:** Production Optimization / Android QA phase.
+**Phase to address:**
+Foundation phase -- before any visual feature work so all subsequent screens build on enforced tokens.
 
 ---
 
-### Pitfall 14: Map `showsUserLocation` Without Location Permission Handling
-**What goes wrong:** The current `MapView` has `showsUserLocation` enabled but there's no location permission request flow. On iOS 17+, the app will show a system permission dialog the first time the map loads. If denied, the map still works but the blue dot doesn't appear -- no error handling exists for this case.
+### Pitfall 7: Z-Index Layer Wars Between Drawer, Floating UI, and BirdInfoCard
 
-**Prevention:**
-- Add `expo-location` and request permission explicitly before showing `showsUserLocation`
-- Handle the "denied" case gracefully (hide user location dot, no error)
-- For the demo, consider removing `showsUserLocation` entirely if location isn't part of the core demo flow -- it adds a permission prompt that interrupts the demo experience
-- If keeping it, add `NSLocationWhenInUseUsageDescription` to `app.json` under `ios.infoPlist` with a clear message
+**What goes wrong:**
+The map screen already has three overlay layers: floating top bar, floating bottom bar, and `BirdInfoCard`. Adding a full-width swipeable map drawer creates a fourth layer. The drawer appears behind the floating UI, or the BirdInfoCard renders on top of the drawer backdrop, or tap events pass through layers incorrectly.
 
-**Detection:** iOS shows a jarring system permission dialog immediately when entering the map screen, before the user understands why location is needed.
+**Why it happens:**
+React Native `zIndex` behaves inconsistently across platforms. On iOS, sibling order in the component tree determines layering by default. On Android, `elevation` affects rendering order independently of tree position. A bottom sheet from `@gorhom/bottom-sheet` may portal its content to a different position in the tree than expected, especially with Expo Router's layout nesting.
 
-**Phase relevance:** Map Enhancement phase -- decide early whether to keep or remove `showsUserLocation`.
+**How to avoid:**
+1. Render the bottom sheet as the LAST child in the screen component -- after all floating UI elements. Component tree order = visual order on iOS.
+2. Use the sheet's `backdropComponent` to create a scrim that covers the floating UI when the sheet is open.
+3. Auto-dismiss `BirdInfoCard` when the drawer opens -- they serve overlapping information purposes.
+4. On Android, set explicit `elevation` values: map=0, floating UI=2, BirdInfoCard=3, drawer backdrop=4, drawer=5.
+5. Test on both platforms -- the layering WILL differ without platform-specific adjustments.
 
-## Phase-Specific Warnings
+**Warning signs:**
+- Floating buttons visible on top of the sheet backdrop
+- BirdInfoCard renders above the open drawer
+- Tapping through the drawer backdrop triggers map marker selection
+- Drawer shadow renders incorrectly on Android
 
-| Phase Topic | Likely Pitfall | Mitigation |
-|-------------|---------------|------------|
-| Foundation / Polish | Zustand hydration race (Pitfall 4) | Fix before anything else -- gate routing on `hasHydrated()` |
-| Foundation / Polish | Custom font loading (Pitfall 11) | Verify PostScript names match style declarations; rebuild native |
-| Onboarding Polish | Entering animations replaying (Pitfall 7) | Use mount-once pattern for persistent UI, `entering` only for push screens |
-| Paywall | Hardcoded toggle width (Pitfall 9) | Use `onLayout` + shared values for responsive indicator |
-| Paywall | JS thread animation stutters (Pitfall 2) | Drive toggle animation from worklets, defer state with `runOnJS` |
-| Map Enhancement | Clustering integration (Pitfall 1) | Replace MapView wholesale; don't mix manual filtering with clustering |
-| Map Enhancement | New Architecture + maps (Pitfall 8) | Test clustering lib with Fabric before committing to it |
-| Map Enhancement | Custom image markers (Pitfall 6) | Use `tracksViewChanges={false}` or simple markers |
-| Map Enhancement | Location permission UX (Pitfall 14) | Decide on `showsUserLocation` before demo |
-| Form Sheets | Non-native modal implementation (Pitfall 3) | Use `presentation: 'formSheet'` on Stack screen options |
-| Community Feed | LegendList blank frames (Pitfall 12) | Provide `estimatedItemSize` |
-| Production Optimization | React Compiler + Reanimated conflict (Pitfall 10) | Babel plugin order; exclude worklet-heavy files |
-| Production Optimization | Missing Hermes bytecode (Pitfall 5) | Verify `.hbc` in build output; check Metro config |
-| Production Optimization | Android shadow fallback (Pitfall 13) | Add `elevation` alongside `boxShadow` |
+**Phase to address:**
+Map drawer phase -- solve together with gesture conflicts (Pitfall 2). These are intertwined problems.
 
-## Existing Codebase Issues That Amplify Pitfalls
+## Technical Debt Patterns
 
-These are not new pitfalls but existing patterns from CONCERNS.md that interact with the pitfalls above:
+| Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
+|----------|-------------------|----------------|-----------------|
+| Hardcoded hex colors in StyleSheet | Faster initial screen creation | Every design tweak requires grep-and-replace across multiple files | Never -- theme tokens exist and are ready to use |
+| Inline `fontWeight`/`fontSize` instead of typography tokens | Skip learning token names | Typography changes miss screens, visual drift between flows | Never -- `typography.*` presets already cover all use cases |
+| Runtime font loading via `useFonts` instead of build-time embedding | No native rebuild required | Race condition with splash screen, FOUT risk on cold launch | Only during rapid iteration; switch to build-time before demo |
+| Animating layout properties (width, height, padding) | Simpler animation code | Frame drops on every frame; layout recalculation blocks UI thread | Never for continuous/repeating animations; acceptable for rare one-shot transitions |
+| Single `Animated.View` per mosaic tile | More flexible per-tile animation control | 50 simultaneous animated nodes tank performance on New Arch | Never -- wrap all tiles in one animated container |
 
-1. **No memoization of `visibleBirds`** -- when clustering is added, this unmemoized computation will fight with the clustering library's own calculations, causing double work on every region change
-2. **Hardcoded colors everywhere** -- when building the paywall variants and form sheets, the lack of theme tokens means new screens will continue the pattern, making future theming even harder
-3. **No centralized onboarding flow definition** -- adding entering animations to each screen means touching every file; a shared layout would let animations be defined once
-4. **Zero test coverage** -- every pitfall mitigation is unverifiable without manual testing on physical devices
+## Integration Gotchas
+
+| Integration | Common Mistake | Correct Approach |
+|-------------|----------------|------------------|
+| `@gorhom/bottom-sheet` + MapView | Mounting sheet as sibling to map without gesture isolation | `pointerEvents="box-none"` on container; `NativeViewGestureHandler` for scrollable content; disable map interaction when sheet expanded |
+| `expo-font` + `expo-splash-screen` | Loading fonts with `useFonts` hook but hiding splash before fonts ready | Embed fonts at build time via config plugin (preferred) or gate `hideAsync()` on `fontsLoaded && isHydrated` |
+| Expo Router `Tabs` + existing `Stack` in `(main)` | Adding `Tabs` inside existing `Stack`, creating double navigation chrome | Replace `(main)/_layout.tsx` from `Stack` to `Tabs`; do not nest Tabs inside Stack |
+| `expo-image` in animated mosaic grid | Decoding images at full source resolution in a dense grid | Set explicit width/height matching display tile size; use `contentFit="cover"` and `recyclingKey` |
+| Paywall dismiss + Zustand persist | Navigating to home without setting `completed: true` first | Set `completed: true` in store BEFORE calling `router.replace('/')`, let redirect handle routing |
+| Reanimated `withRepeat` on New Architecture | Assuming identical performance to legacy architecture | Profile early; Reanimated 4.x has documented perf regressions on Fabric with many animated nodes |
+
+## Performance Traps
+
+| Trap | Symptoms | Prevention | When It Breaks |
+|------|----------|------------|----------------|
+| 30-50 `expo-image` tiles in mosaic at full resolution | Memory climbs past 400MB, app killed on 3GB RAM devices | Limit to 12-16 tiles, decode at display size | Immediately on iPhone SE / older devices |
+| `withRepeat(withTiming(...), -1)` continuous mosaic scroll | UI thread never idles, battery drain, thermal throttling within 30s | Cancel animation on screen blur; use `useFocusEffect` cleanup | After ~30 seconds of continuous animation |
+| Bottom sheet spring animation + map `animateToRegion` simultaneously | Both fight for gesture control, janky competing animations | Disable map animation while sheet is animating; use `onAnimate` callback | When user interacts with both in quick succession |
+| Re-entering map screen replays `FadeIn` entering animations on floating UI | Floating bars fade in again after every push/pop navigation | Use `useSharedValue` + `useEffect` mount-once pattern instead of `entering` prop | Every time user navigates to profile/community and back |
+
+## UX Pitfalls
+
+| Pitfall | User Impact | Better Approach |
+|---------|-------------|-----------------|
+| White flash between splash and welcome screen | App feels unpolished, breaks premium impression on first interaction | Match splash backgroundColor to welcome screen background; gate on all async loads |
+| System font visible before Rubik loads (FOUT) | Jarring text reflow as metrics change when font swaps | Embed Rubik at build time via expo-font config plugin -- zero FOUT |
+| Paywall back-swipeable from home screen | User accidentally returns to paywall, confusion about where they are | Use state-driven redirect pattern + `router.replace('/')` |
+| Bottom sheet overlapping BirdInfoCard | Two information panels fight for attention, unclear what to dismiss | Auto-dismiss BirdInfoCard when drawer opens |
+| Tab bar AND floating buttons both visible | Duplicated navigation controls, cognitive overload | Choose one approach: native tab bar OR floating buttons, never both |
+| Mosaic animation continues when off-screen | Battery drain, performance degradation on subsequent screens | Cancel animation with `cancelAnimation()` on screen blur |
+| Contrast failure on muted text | Text unreadable for users with low vision (`neutral400` on white = 3.0:1, below WCAG AA 4.5:1) | Use `neutral500` minimum for any readable text; reserve `neutral400` for decorative elements only |
+
+## "Looks Done But Isn't" Checklist
+
+- [ ] **Splash screen:** Test on COLD launch (force quit + reopen), not fast refresh. Hot reload completely masks the white flash.
+- [ ] **Font weights:** Verify ALL four Rubik weights render correctly (Light 300, Regular 400, Medium 500, SemiBold 600). Missing one weight file causes silent fallback for that weight only.
+- [ ] **Bottom sheet gestures:** Test pinch-to-zoom on the map near the sheet edge, not just panning. Pinch conflicts are a different failure mode than pan conflicts.
+- [ ] **Mosaic memory:** Leave welcome screen open for 60+ seconds and check memory in Xcode Instruments. Short tests miss the climbing memory pattern.
+- [ ] **Paywall dismiss persistence:** Kill the app WHILE on the paywall, before `completed` persists to AsyncStorage. Reopen -- does it resume correctly or show a blank/corrupted screen?
+- [ ] **Tab bar on multiple devices:** Test with and without Dynamic Island/notch. Tab bar height differs between device generations; floating UI offset math may only work on one.
+- [ ] **Token migration completeness:** Run `grep -r '#[0-9A-Fa-f]\{6\}' src/ --include='*.tsx' | grep -v theme/` -- any results mean hardcoded values still exist.
+- [ ] **Map drawer + cluster animation:** Open the drawer while a cluster expansion `animateToRegion` is running. Two competing map animations can deadlock.
+- [ ] **Entering animation replay:** Navigate to profile, come back to map. If floating bars fade in again, the entering animation is replaying (current code at lines 139 and 155 of `(main)/index.tsx` uses `FadeIn` which WILL replay).
+
+## Recovery Strategies
+
+| Pitfall | Recovery Cost | Recovery Steps |
+|---------|---------------|----------------|
+| White flash on splash | LOW | Update `app.json` splash backgroundColor + gate `hideAsync` on all async loads. Single file change + rebuild. |
+| FOUT from runtime font loading | LOW | Switch to build-time font embedding via config plugin. Requires EAS rebuild but minimal code changes. |
+| Gesture conflict sheet + map | MEDIUM | Add gesture exclusion zones, restructure component tree, test both platforms. ~2 hours of iteration. |
+| Token migration breaks screens | LOW | Revert token value changes, add new tokens as aliases, migrate incrementally per route group. |
+| Mosaic memory leak | MEDIUM | Reduce tile count to 12-16, add explicit image sizing. May need to switch to pre-composited snapshot if still leaking. |
+| Navigation stack corruption | LOW | Switch from `push` to state-driven `replace('/')`. Single function change + store update ordering. |
+| Tab bar + floating UI conflict | MEDIUM | Architectural decision required. Remove one navigation mechanism. ~1 hour to restructure layout. |
+| Z-index layer ordering | MEDIUM | Restructure component render order, add platform-specific elevation values. Requires testing on both platforms. |
+| Entering animation replay | LOW | Replace `entering={FadeIn}` with mount-once shared value pattern. ~15 minutes per component. |
+
+## Pitfall-to-Phase Mapping
+
+| Pitfall | Prevention Phase | Verification |
+|---------|------------------|--------------|
+| Splash white flash (P1) | Foundation (splash + font setup) | Cold launch on physical device shows zero white frames |
+| Font loading FOUT (P1) | Foundation (splash + font setup) | All text renders in Rubik on first visible frame; all 4 weights correct |
+| Design token migration (P6) | Foundation (design system enforcement) | `grep -r '#[0-9A-Fa-f]\{6\}' src/ --include='*.tsx' | grep -v theme/` returns zero results |
+| Mosaic memory/perf (P3) | Welcome screen phase | Xcode Instruments shows stable memory < 200MB after 60s on welcome screen |
+| Bottom sheet + map gestures (P2) | Map drawer phase | Can drag sheet without moving map; can pan/pinch map without triggering sheet |
+| Z-index layer ordering (P7) | Map drawer phase | Drawer covers floating UI; backdrop blocks all map interaction |
+| Tab bar + floating UI (P5) | Navigation phase | Only one bottom navigation mechanism visible per screen state |
+| Paywall dismiss stack (P4) | Paywall phase | Back gesture from home does NOT return to paywall; cold restart after paywall goes to correct screen |
+| Entering animation replay | Foundation or Map phase | Navigate to profile and back -- floating bars do NOT animate in again |
 
 ## Sources
 
-- Codebase analysis: `app/(main)/index.tsx`, `app/(onboarding)/paywall.tsx`, `app.json`, `package.json`, `app/_layout.tsx`
-- Known issues: `.planning/codebase/CONCERNS.md` (2026-03-06 audit)
-- Project spec: `.planning/PROJECT.md`
-- React Native Maps documentation and known issues (training data, MEDIUM confidence)
-- Reanimated 4.x worklet/compiler patterns (training data, MEDIUM confidence)
-- react-native-screens form sheet presentation (training data, MEDIUM confidence)
-- Expo SDK 55 / React Native 0.83 New Architecture compatibility (training data, MEDIUM confidence)
+- [Expo SplashScreen docs](https://docs.expo.dev/versions/latest/sdk/splash-screen/)
+- [Expo Fonts docs (build-time embedding)](https://docs.expo.dev/develop/user-interface/fonts/)
+- [Reanimated Performance guide](https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/)
+- [Reanimated New Arch perf regression -- Issue #8250](https://github.com/software-mansion/react-native-reanimated/issues/8250)
+- [gorhom/bottom-sheet + react-native-maps -- Issue #1828](https://github.com/gorhom/react-native-bottom-sheet/issues/1828)
+- [gorhom/bottom-sheet troubleshooting](https://gorhom.dev/react-native-bottom-sheet/troubleshooting)
+- [Expo Router navigation and reset -- Discussion #495](https://github.com/expo/router/discussions/495)
+- [Expo Router native tabs](https://docs.expo.dev/router/advanced/native-tabs/)
+- [expo-font useFonts race condition -- Issue #21885](https://github.com/expo/expo/issues/21885)
+- [expo-image documentation](https://docs.expo.dev/versions/latest/sdk/image/)
+- [React Native Performance overview](https://reactnative.dev/docs/performance)
+- Codebase analysis: `app/_layout.tsx`, `app/(main)/index.tsx`, `app/index.tsx`, `app/(main)/_layout.tsx`, `src/theme/colors.ts`, `src/theme/typography.ts`, `app.json`, `package.json`
 
 ---
-
-*Pitfalls audit: 2026-03-09*
+*Pitfalls research for: Birda v1.1 Polish & Refinement*
+*Researched: 2026-03-09*

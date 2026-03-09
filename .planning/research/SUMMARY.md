@@ -1,182 +1,166 @@
 # Project Research Summary
 
-**Project:** Birda -- Bird Watching Companion App (Interview Prototype)
-**Domain:** Map-centric mobile app prototype (Expo/React Native)
+**Project:** Birda v1.1 Polish & Refinement
+**Domain:** Mobile bird watching app (React Native / Expo) -- prototype polish milestone
 **Researched:** 2026-03-09
-**Confidence:** MEDIUM-HIGH
+**Confidence:** HIGH
 
 ## Executive Summary
 
-Birda is a brownfield Expo SDK 55 / React Native 0.83 prototype designed to demonstrate senior mobile engineering craft in an interview setting. The codebase already has the core stack installed (Expo Router, Zustand, Reanimated 4, react-native-maps, LegendList) with a working onboarding flow and map screen. The work ahead is polish and completion, not greenfield construction. Only two new npm packages are needed: `react-native-map-clustering` for map markers and ESLint tooling for code quality. Everything else is configuration, extraction, and new screens using already-installed libraries.
+Birda v1.1 is a polish milestone for an existing Expo SDK 55 / React Native 0.83 prototype. The app already has a working onboarding flow, map with bird markers, and basic navigation. This milestone adds visual refinement (splash screen, Rubik font loading, design token enforcement), interaction upgrades (bottom sheet drawers, auto-scrolling welcome mosaic), a paywall redesign, and native iOS tab navigation. The existing stack handles nearly everything -- only two new packages are needed: `@gorhom/bottom-sheet` for drawer interactions and `@expo-google-fonts/rubik` for the font assets.
 
-The recommended approach is foundation-first: fix the Zustand hydration race condition, extract theme tokens from 13+ files of hardcoded colors, configure React Compiler, then layer on feature work in dependency order -- onboarding polish, map clustering, form sheet screens (profile/community), and paywall refinement. This ordering ensures the demo is presentable at any stopping point. The architecture follows a full-bleed map shell with native iOS form sheet overlays (no tab navigator), which is the correct pattern for map-first apps and already partially implemented.
+The recommended approach is foundation-first: load the Rubik font (which was never actually loaded despite being referenced in typography tokens) and enforce the design system across all screens before building any new features. This prevents the "some screens match, some don't" problem that compounds as features are added. The mosaic animation, bottom sheets, and paywall redesign all build on the enforced design system. The native tab bar conversion comes last because it is the highest-risk structural change and benefits from a stable codebase to fall back on.
 
-The primary risks are: (1) react-native-map-clustering compatibility with New Architecture/Fabric -- this must be verified immediately during integration, with a fallback to raw Supercluster if it fails; (2) React Compiler potentially breaking Reanimated worklets -- Babel plugin ordering is critical; (3) entering animations replaying on route focus, which is an existing bug that will look especially bad in a demo. All three have known mitigations documented in the pitfalls research.
+The primary risks are: (1) splash-to-app transition flashing white or showing system font before Rubik loads -- mitigated by embedding fonts at build time via the expo-font config plugin, (2) gesture conflicts between the map bottom sheet and MapView pan/zoom -- mitigated by explicit gesture isolation and disabling map interaction when the sheet is expanded, and (3) paywall dismiss leaving onboarding screens in the navigation stack -- mitigated by using the existing state-driven redirect pattern (`completeOnboarding()` then `router.replace('/')`).
 
 ## Key Findings
 
 ### Recommended Stack
 
-The stack is 90% installed. The project runs on Expo SDK 55 with React Native 0.83 (New Architecture enabled), Expo Router for file-based navigation, Zustand 5 for state management, and Reanimated 4 for animations. These are current, well-matched versions with no compatibility concerns.
+The existing stack (Expo SDK 55, RN 0.83, Expo Router, Zustand 5, Reanimated 4.2.1) is validated and unchanged. Only two new packages are needed.
 
-**Core technologies (already installed):**
-- **Expo SDK 55 + RN 0.83:** New Architecture enabled, native module support via EAS Dev Client
-- **Expo Router:** File-based navigation with native Stack screens
-- **react-native-screens 4.23:** Native formSheet presentation with detents (verified in source)
-- **Zustand 5 + AsyncStorage:** Client-only persistent state, no backend needed
-- **Reanimated 4 + Gesture Handler:** UI-thread animations and gesture-driven interactions
-- **LegendList 2.0.19:** Dynamic-height list virtualization for community feed
-- **expo-image:** High-performance image loading with blurhash support
+**New dependencies:**
+- `@gorhom/bottom-sheet ^5.2.8`: Bottom sheet drawers for auth and map bird detail -- peer dependencies explicitly support Reanimated >=4.0.0- (confirmed via npm, support added in v5.1.8). GestureHandlerRootView already wraps the app.
+- `@expo-google-fonts/rubik ^0.4.2`: Rubik font TTF assets for build-time embedding via expo-font config plugin. The project references `fontFamily: 'Rubik'` everywhere but the font was never loaded -- this is the critical gap.
 
-**To install:**
-- `react-native-map-clustering` (^3.4) -- Supercluster-based marker clustering
-- ESLint 9 + `@expo/eslint-config` + `eslint-plugin-react` + `eslint-plugin-no-barrel-files`
+**No new packages needed for:**
+- Splash screen: expo-splash-screen already installed, needs config plugin options only
+- Mosaic animation: Reanimated `useFrameCallback` pattern, ~40 lines of code
+- Native tab bar: `expo-router/unstable-native-tabs` (NativeTabs), built into expo-router
 
-**Key "do not use" decisions:** No expo-linear-gradient (RN 0.83 has built-in gradients), no gorhom/bottom-sheet (native formSheet is superior), no NativeWind (mid-project style migration is wasteful), no React Query (no backend/API calls).
+**Explicitly avoid:**
+- `react-native-true-sheet`: Features research recommended it based on outdated gorhom compatibility info, but gorhom v5.2.8 is confirmed compatible with Reanimated 4
+- Any marquee/ticker library: Reanimated handles this natively
+- `@react-navigation/bottom-tabs`: NativeTabs provides genuine UITabBarController
 
 ### Expected Features
 
 **Must have (table stakes):**
-- Multi-step onboarding with progress indication (exists, needs polish)
-- Paywall screen with animated plan toggle (exists, needs responsive width fix)
-- Full-bleed map with bird markers and info card (exists)
-- Marker clustering (not built -- use react-native-map-clustering)
-- Profile screen as native form sheet (not built)
-- Community feed with LegendList (not built)
-- Theme/color token consistency (not done -- hardcoded colors across 13+ files)
-- Store hydration guard to prevent flash of onboarding (not done -- visible bug)
+- Splash screen with Birda logo and fade transition
+- Design system enforcement (Rubik font actually loaded, typography/spacing tokens used across all screens)
+- Onboarding layout fixes (progress dots, spacing, overflow on smaller devices)
+- Fixed bottom CTA padding (safe area + consistent inset)
 
-**Should have (differentiators that win interviews):**
-- React Compiler integration (single config change, major talking point)
-- ESLint crash prevention rules (jsx-no-leaked-render, no-barrel-files)
-- FPS monitor via Reanimated useFrameCallback in debug panel
-- Shared onboarding layout extraction (7 duplicated StyleSheets is a code smell)
-- Production bundle optimizations (tree shaking, R8, Hermes verification)
-- `borderCurve: 'continuous'` throughout (native iOS polish detail)
+**Should have (differentiators):**
+- Auto-scrolling bird image mosaic on welcome screen (the "wow" moment)
+- Auth bottom drawer (Apple/Google/Email options via bottom sheet)
+- Redesigned single paywall (hero image + benefit bullets + pricing card, dismiss-to-home)
+- Full-width swipeable map drawer (replaces floating BirdInfoCard)
+- Native iOS tab bar for Map/Capture/Logbook (NativeTabs with SF Symbols)
 
-**Defer entirely:**
-- Real auth/backend, camera capture, working logbook, push notifications, payment processing, ML bird ID, dark mode, i18n, automated tests, CI/CD pipeline
+**Defer (v2+):**
+- Actual auth integration (requires backend, out of scope for prototype)
+- Payment processing (paywall is visual demo only)
+- Tab navigator refactor beyond Map/Capture/Logbook
 
 ### Architecture Approach
 
-The app uses a full-bleed map shell pattern: the map is the always-visible primary surface, with all secondary screens (profile, community) presented as native iOS form sheets via react-native-screens. There is no tab navigator -- floating UI buttons overlay the map and trigger sheet presentations. State is exclusively client-side via a single Zustand store (onboarding data). Bird data is a static typed array. This is the correct architecture for a map-first app and should not change.
+The architecture follows a modify-in-place strategy. No new stores, no new persistence layers, no new data sources. The main structural change is converting `(main)/_layout.tsx` from Stack to NativeTabs, which replaces the floating bottom bar with a native UITabBarController. The floating top bar (profile, community, notifications) remains. Profile and community become push screens within the map tab's navigation stack. Bottom sheets render at the screen level (not portaled) since there is no tab navigator z-index issue in the current structure.
 
 **Major components:**
-1. **Root Layout** -- GestureHandlerRootView wrapper, StatusBar config, DevPanel mount point
-2. **Router Guard** (app/index.tsx) -- gates navigation on `onboarding.completed` after hydration
-3. **Onboarding Stack** -- linear 8-screen wizard flow with disabled back gesture
-4. **Map Screen** -- ClusteredMapView + floating UI overlay + BirdInfoCard
-5. **Profile/Community Sheets** -- formSheet presentation reading from store and static data
-6. **OnboardingStore** -- Zustand with AsyncStorage persist, single source of user state
-7. **Theme module** -- color tokens, typography, spacing (to be extracted from hardcoded values)
+1. `MosaicAnimation` (new) -- self-contained Reanimated component using `useFrameCallback` for frame-accurate continuous vertical scrolling of bird image columns
+2. `@gorhom/bottom-sheet` -- used for auth drawer (single snap point ~40%) and map bird detail drawer (two snap points at 50%/95%)
+3. `NativeTabs` layout (modified) -- replaces Stack in (main)/_layout.tsx, provides Map/Capture/Logbook tabs with SF Symbol icons
+4. Paywall screen (modified) -- visual redesign with dismiss-to-home via `completeOnboarding()` + `router.replace('/')`
 
 ### Critical Pitfalls
 
-1. **Zustand hydration race condition** -- returning users see a flash of onboarding. Fix: gate routing on `hasHydrated()`. This is a one-line fix but must be done first.
-2. **react-native-map-clustering + New Architecture** -- clustering library may not support Fabric. Test immediately during integration; fallback is raw Supercluster. Markers must be direct children of ClusteredMapView, not wrapped in fragments.
-3. **React Compiler breaking Reanimated worklets** -- Babel plugin ordering matters. Reanimated plugin must come BEFORE React Compiler. Use `'use no memo'` directive in worklet-heavy files if needed.
-4. **Entering animations replaying on route focus** -- floating UI elements on map re-animate when returning from sheets. Use mount-once shared value pattern instead of `entering` prop.
-5. **Hardcoded paywall toggle width** -- breaks on different screen sizes. Fix with `onLayout` + shared values for responsive calculation.
+1. **Splash/font white flash** -- The app gates splash hide on Zustand hydration only. Adding font loading creates a second async dependency. Mitigation: embed fonts at build time via expo-font config plugin (fonts available synchronously, zero FOUT). Requires EAS rebuild.
+
+2. **Bottom sheet + map gesture conflicts** -- MapView and bottom sheet both consume pan gestures. Mitigation: `pointerEvents="box-none"` on sheet container, disable map interaction when sheet is expanded past threshold, configure `activeOffsetY` on sheet to require deliberate vertical swipe.
+
+3. **Paywall dismiss stack corruption** -- Using `router.push('/(main)')` from onboarding leaves the paywall in the back stack. Mitigation: set `completed: true` in Zustand store first, then `router.replace('/')`. The existing redirect guard routes to `/(main)` based on state.
+
+4. **Mosaic memory pressure** -- 30-50 bird image tiles at full resolution can consume 300-500MB. Mitigation: limit to 12-16 tiles, decode at display size via explicit dimensions on expo-image, animate a single container view (not individual tiles), cancel animation on screen blur.
+
+5. **Tab bar + floating bottom bar overlap** -- Adding NativeTabs while keeping the floating bottom bar creates duplicate navigation. Mitigation: remove floating bottom bar entirely when NativeTabs is added; keep floating top bar only.
 
 ## Implications for Roadmap
 
-### Phase 1: Foundation and Tooling
-**Rationale:** Theme tokens, hydration fix, and tooling affect every subsequent phase. Doing this first means all future code is consistent and correct from the start.
-**Delivers:** Unified color/typography system, working return-user flow, auto-memoization, lint safety net
-**Addresses:** Theme consistency (table stakes), store hydration guard (table stakes), React Compiler (differentiator), ESLint rules (differentiator)
-**Avoids:** Pitfall 4 (hydration race), Pitfall 11 (font loading), Pitfall 10 (compiler + worklets -- verify early)
+Based on research, suggested phase structure:
 
-### Phase 2: Onboarding Polish
-**Rationale:** Onboarding is the first-run experience. A polished onboarding means the demo is presentable even if later phases are incomplete. Depends on Phase 1 theme tokens.
-**Delivers:** Smooth animated wizard flow, shared layout (DRY), uncontrolled inputs, spring animations
-**Addresses:** Onboarding polish (table stakes), shared layout extraction (differentiator), uncontrolled TextInput (differentiator)
-**Avoids:** Pitfall 2 (JS-thread animations), Pitfall 7 (entering animation replay on push screens is fine)
+### Phase 1: Foundation (Design System + Splash)
+**Rationale:** Every subsequent feature depends on fonts being loaded and design tokens being enforced. The Rubik font gap is the single most pervasive issue -- it affects every screen. Splash screen config change requires an EAS rebuild, so batch it with font embedding (also requires rebuild).
+**Delivers:** Working Rubik font across all screens, branded splash screen, all hardcoded styles replaced with theme tokens, fixed bottom CTA padding.
+**Addresses:** Splash screen, design system enforcement, onboarding layout fixes, bottom CTA standardization.
+**Avoids:** Splash white flash (Pitfall 1), FOUT (Pitfall 1), token migration inconsistency (Pitfall 6).
 
-### Phase 3: Map Enhancement
-**Rationale:** The map is the primary screen and the core value proposition. Clustering changes the MapView import fundamentally, so it must be done before wiring sheet navigation from the map.
-**Delivers:** Clustered markers, extracted BirdMarker/BirdInfoCard components, refined floating UI
-**Addresses:** Marker clustering (table stakes), component extraction (architecture quality)
-**Avoids:** Pitfall 1 (clustering integration), Pitfall 6 (image markers jank), Pitfall 8 (New Architecture compatibility), Pitfall 14 (location permission UX)
+### Phase 2: Welcome Screen + Auth Drawer
+**Rationale:** The welcome screen is the first thing users see after the splash. The mosaic animation is the "hero" visual feature of this milestone. The auth drawer is triggered from the welcome screen buttons, so they are naturally coupled.
+**Delivers:** Auto-scrolling bird mosaic, bottom sheet auth drawer with Apple/Google/Email buttons.
+**Uses:** @gorhom/bottom-sheet (new), Reanimated useFrameCallback (existing), expo-image (existing).
+**Avoids:** Mosaic memory pressure (Pitfall 3) by limiting tiles and using proper image sizing from the start.
 
-### Phase 4: Form Sheets (Profile and Community)
-**Rationale:** Profile and community screens are opened from the map. The map must be stable first. These screens establish the form sheet convention for any future overlays.
-**Delivers:** Native iOS profile sheet, community feed with LegendList, form sheet configuration pattern
-**Addresses:** Profile screen (table stakes), community feed (table stakes)
-**Avoids:** Pitfall 3 (non-native modal), Pitfall 12 (LegendList blank frames)
+### Phase 3: Paywall Redesign
+**Rationale:** The paywall is the last onboarding screen before home. It depends on design tokens (Phase 1) being in place. The dismiss-to-home navigation change is a critical flow alteration that must be verified independently.
+**Delivers:** Hero image + benefits + pricing card paywall, dismiss navigates to home via state-driven redirect.
+**Avoids:** Navigation stack corruption (Pitfall 4) by using `completeOnboarding()` + `router.replace('/')`.
 
-### Phase 5: Paywall Polish
-**Rationale:** Paywall is in the onboarding flow (can run in parallel with Phases 3-4). Needs responsive toggle fix and variant architecture cleanup.
-**Delivers:** Responsive plan toggle, variant data extraction, spring animations, Nature Day banner
-**Addresses:** Paywall polish (table stakes), A/B variant architecture (differentiator)
-**Avoids:** Pitfall 9 (hardcoded toggle width), Pitfall 2 (JS-thread toggle animation)
+### Phase 4: Native Tab Bar + Map Drawer
+**Rationale:** This is the highest-risk change -- it modifies the navigation structure of the main app. Do it after all onboarding work is stable. The map drawer (bottom sheet on map) shares the same bottom sheet library as Phase 2 but adds gesture conflict complexity with MapView.
+**Delivers:** Native iOS tab bar (Map/Capture/Logbook) with SF Symbols, placeholder tab screens, full-width swipeable map bird detail drawer.
+**Avoids:** Tab bar + floating UI conflict (Pitfall 5) by removing floating bottom bar, gesture conflicts (Pitfall 2) by isolating gestures, z-index layer issues (Pitfall 7) by rendering sheet last in component tree.
 
-### Phase 6: Dev Tooling and Debug Panel
-**Rationale:** Debug panel enhancements (FPS monitor, state inspector) support development throughout but the FPS monitor specifically validates Phase 7 optimizations. Lower priority than user-facing features.
-**Delivers:** FPS monitor via useFrameCallback, improved DevPanel UX, state inspector
-**Addresses:** FPS monitor (differentiator), debug panel (differentiator)
-
-### Phase 7: Production Optimization and QA
-**Rationale:** Optimization must come last -- features must be complete before they can be measured and optimized. Verifies Hermes bytecode, tree shaking, bundle size.
-**Delivers:** Verified production build, 60fps animations, correct Hermes compilation, Android shadow fallbacks
-**Addresses:** Production bundle optimizations (differentiator), 60fps verification (table stakes)
-**Avoids:** Pitfall 5 (missing Hermes bytecode), Pitfall 13 (Android shadow fallback), Pitfall 10 (final React Compiler verification)
+### Phase 5: Final Polish
+**Rationale:** Pure refinement after all features are integrated. No new components.
+**Delivers:** Debug button repositioned to top of screen, cross-feature integration testing, entering animation replay fix on map floating UI.
 
 ### Phase Ordering Rationale
 
-- **Foundation first** because theme tokens and React Compiler configuration propagate to every component written afterward. The hydration fix eliminates the most visible bug.
-- **Onboarding before map** because onboarding is the first-run experience -- if the demo starts there, it must be polished.
-- **Map before sheets** because sheets are opened from the map. The map's clustering changes its component structure, which must stabilize before wiring navigation to sheets.
-- **Paywall is semi-independent** -- it lives in the onboarding flow and can be polished in parallel with map/sheet work.
-- **Optimization last** because premature optimization is waste; features must exist before they can be profiled.
+- **Foundation first** because the font gap and token inconsistency affect every screen. Fixing this early means all new code uses the design system from day one, eliminating the "migrate later" debt pattern.
+- **Welcome + Auth before Paywall** because the welcome screen is the first impression and the mosaic is the highest-impact visual feature. Also, building the bottom sheet for auth validates the gorhom integration before the more complex map drawer use case.
+- **Paywall standalone** because the dismiss-to-home navigation change alters the onboarding completion flow and needs isolated testing to catch stack corruption.
+- **Tab bar last** because converting from Stack to NativeTabs is structurally invasive. If it proves problematic (alpha API), the fallback is restyling the existing floating bottom bar -- which only works if everything else is already polished.
 
 ### Research Flags
 
 Phases likely needing deeper research during planning:
-- **Phase 3 (Map Enhancement):** react-native-map-clustering + New Architecture compatibility is unverified. Must test on device before committing to the library. Have Supercluster fallback ready.
-- **Phase 1 (Foundation):** React Compiler + Reanimated 4 interaction needs hands-on verification. Babel plugin order and worklet exclusion patterns must be tested.
+- **Phase 2 (Welcome Mosaic):** Performance profiling needed -- Reanimated 4.x has documented regressions on New Architecture with many animated nodes. Need to validate tile count and memory impact on target devices.
+- **Phase 4 (Native Tabs + Map Drawer):** NativeTabs is alpha (`unstable-native-tabs`). Needs testing for edge cases with iOS 18 and for push-screen-within-tab navigation pattern. Map drawer gesture isolation needs iterative testing.
 
-Phases with standard, well-documented patterns (skip deep research):
-- **Phase 2 (Onboarding Polish):** Standard Reanimated animation patterns, shared layout extraction is straightforward refactoring.
-- **Phase 4 (Form Sheets):** react-native-screens formSheet is verified in the installed source code. Configuration-only work.
-- **Phase 5 (Paywall Polish):** onLayout + shared values is a well-documented Reanimated pattern.
-- **Phase 7 (Production Optimization):** Standard Expo/EAS build configuration documented in official guides.
+Phases with standard patterns (skip research-phase):
+- **Phase 1 (Foundation):** Well-documented expo-font config plugin, expo-splash-screen config, and straightforward token replacement sweep.
+- **Phase 3 (Paywall):** Standard screen redesign with a known navigation pattern (state-driven redirect).
+- **Phase 5 (Polish):** Minor layout adjustments, no new patterns.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | All core dependencies verified from installed package.json and node_modules. Only react-native-map-clustering version needs npm resolution. |
-| Features | MEDIUM | Feature priorities are sound for interview context. Birding app domain knowledge from training data (not verified). Interview evaluation criteria based on general industry knowledge. |
-| Architecture | HIGH | Architecture verified from existing codebase. Form sheet APIs confirmed in installed react-native-screens source. Patterns are standard Expo Router conventions. |
-| Pitfalls | MEDIUM-HIGH | Pitfalls are grounded in codebase analysis and known RN ecosystem issues. New Architecture + clustering compatibility is the main uncertainty. |
+| Stack | HIGH | Both new packages verified via npm. Peer dependencies confirmed. Existing stack unchanged. |
+| Features | HIGH | Feature list is well-scoped. All features achievable with recommended stack. Competitor analysis provides clear direction. |
+| Architecture | HIGH | Codebase fully analyzed. Integration points are clear. Build order accounts for dependencies. |
+| Pitfalls | HIGH | All pitfalls sourced from official docs, verified GitHub issues, and codebase analysis. Recovery strategies identified for each. |
 
-**Overall confidence:** MEDIUM-HIGH
+**Overall confidence:** HIGH
 
 ### Gaps to Address
 
-- **react-native-map-clustering + Fabric compatibility:** No way to verify without running `npm install` and testing on device. Plan for Supercluster fallback during Phase 3 planning.
-- **React Compiler + Reanimated 4 edge cases:** Known to mostly work but silent animation breakage is possible. Needs manual testing after enabling.
-- **ESLint 9 + @expo/eslint-config compatibility:** Exact version compatibility with SDK 55 unverified. Resolve at install time.
-- **LegendList stability:** Smaller community than FlashList. If issues arise, vanilla FlatList is sufficient for ~50 mock items.
-- **`experimental_backgroundImage` for gradients:** Marked experimental in RN 0.83. Functional but may have edge cases on Android. Test gradient rendering on both platforms.
+- **gorhom runtime validation:** The STACK researcher confirmed gorhom v5.2.8 peer deps support Reanimated 4. The ARCHITECTURE and FEATURES researchers recommended alternatives based on older information. This summary resolves the conflict in favor of gorhom. However, if gorhom exhibits issues at runtime, the fallback is a custom Reanimated bottom sheet (~100 lines, the codebase already uses Gesture.Pan patterns).
+
+- **NativeTabs alpha stability:** The API is imported from `unstable-native-tabs`. Acceptable for a prototype/demo, but no guarantee against breaking changes. Fallback: restyle the existing floating bottom bar with icon-above-label layout and active states.
+
+- **Mosaic performance on older devices:** The 12-16 tile recommendation is general guidance. Actual performance on iPhone SE (3GB RAM) needs device testing. Nuclear fallback: pre-composited mosaic as a single static image.
+
+- **Build-time font naming:** The expo-font config plugin registers fonts under their TTF file names (e.g., `Rubik_400Regular`). The exact names need verification after installing `@expo-google-fonts/rubik` -- typography tokens must map weight references to these specific names.
 
 ## Sources
 
 ### Primary (HIGH confidence)
-- Project `package.json` -- all installed dependency versions verified
-- Project `node_modules/` -- react-native-screens formSheet API, React Compiler 1.0, LegendList 2.0.19 verified in source
-- PRD (`PRD-CLAUDE/01-PRD.md`) -- feature scope, architecture decisions, library choices
-- Codebase analysis (`.planning/codebase/`) -- current implementation state, known issues
+- [@gorhom/bottom-sheet npm](https://www.npmjs.com/package/@gorhom/bottom-sheet) -- v5.2.8 peer deps verified: `react-native-reanimated: ">=3.16.0 || >=4.0.0-"`
+- [Expo SplashScreen docs](https://docs.expo.dev/versions/latest/sdk/splash-screen/) -- config plugin API
+- [Expo Fonts docs](https://docs.expo.dev/develop/user-interface/fonts/) -- build-time embedding via config plugin
+- [@expo-google-fonts/rubik npm](https://www.npmjs.com/package/@expo-google-fonts/rubik) -- v0.4.2
+- [Reanimated useFrameCallback](https://docs.swmansion.com/react-native-reanimated/examples/marquee/) -- marquee pattern
+- Codebase analysis (all source files read directly)
 
 ### Secondary (MEDIUM confidence)
-- React Native 0.83 New Architecture patterns (training data)
-- Reanimated 4.x worklet/compiler interaction patterns (training data)
-- react-native-map-clustering usage patterns (training data)
-- react-native-screens 4.x form sheet API (training data, confirmed against installed source)
+- [Expo Router Native Tabs docs](https://docs.expo.dev/router/advanced/native-tabs/) -- NativeTabs API (alpha/unstable)
+- [Expo SDK 55 changelog](https://expo.dev/changelog/sdk-55) -- NativeTabs availability
+- [gorhom/bottom-sheet Reanimated v4 issue #2546](https://github.com/gorhom/react-native-bottom-sheet/issues/2546) -- compatibility confirmed in v5.1.8+
 
 ### Tertiary (LOW confidence)
-- Birding app domain knowledge (eBird, Merlin, Birda comparisons -- training data, not web-verified)
-- Mobile engineering interview evaluation patterns (general industry knowledge)
+- [Reanimated New Arch perf regression #8250](https://github.com/software-mansion/react-native-reanimated/issues/8250) -- may affect mosaic performance, needs device validation
 
 ---
 *Research completed: 2026-03-09*
