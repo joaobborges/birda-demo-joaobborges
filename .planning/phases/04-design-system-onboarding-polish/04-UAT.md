@@ -1,9 +1,9 @@
 ---
-status: complete
+status: diagnosed
 phase: 04-design-system-onboarding-polish
 source: [04-01-SUMMARY.md, 04-02-SUMMARY.md, 04-03-SUMMARY.md]
 started: 2026-03-09T20:00:00Z
-updated: 2026-03-09T20:05:00Z
+updated: 2026-03-09T20:08:00Z
 ---
 
 ## Current Test
@@ -65,9 +65,13 @@ skipped: 0
   reason: "User reported: i dont see the splash screen"
   severity: major
   test: 2
-  root_cause: ""
-  artifacts: []
-  missing: []
+  root_cause: "expo-splash-screen plugin in app.json registered as bare string with no config. Top-level splash key is deprecated in SDK 55 and ignored. No image specified in plugin options."
+  artifacts:
+    - path: "app.json"
+      issue: "Line 47: expo-splash-screen plugin has no configuration object. Lines 11-15: deprecated top-level splash key ignored."
+  missing:
+    - "Configure expo-splash-screen plugin with image, resizeMode, backgroundColor"
+    - "Remove deprecated top-level splash key"
   debug_session: ""
 
 - truth: "Text renders in Rubik typeface with visible weight differences"
@@ -75,17 +79,29 @@ skipped: 0
   reason: "User reported: its not loading"
   severity: major
   test: 3
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "No useFonts() hook anywhere in codebase. expo-font config plugin only works in EAS/production builds, not Expo Go. No runtime font loading exists."
+  artifacts:
+    - path: "app/_layout.tsx"
+      issue: "Missing useFonts() hook and font-readiness gating"
+    - path: "app.json"
+      issue: "Config plugin is correct for production but insufficient alone for dev"
+  missing:
+    - "Add useFonts() hook with 5 Rubik variants in app/_layout.tsx"
+    - "Gate rendering and splash hide on fontsLoaded being true"
+  debug_session: ".planning/debug/rubik-font-not-loading.md"
 
 - truth: "Reminders and mailing-list screens display all content without clipping or overflow"
   status: failed
   reason: "User reported: still not set as it should - title clipped at top, layout broken with large empty space"
   severity: major
   test: 8
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "OnboardingLayout only applies safe area top padding when illustration or header props are provided. Reminders passes neither, so content starts at y=0 behind notch. flexGrow:1 on scrollContent creates unbounded empty space."
+  artifacts:
+    - path: "src/components/onboarding/OnboardingLayout.tsx"
+      issue: "Lines 20-33: no fallback safe area padding. Line 70: flexGrow:1 causes empty space"
+    - path: "app/(onboarding)/reminders.tsx"
+      issue: "Passes no illustration or header prop, triggering unpadded path"
+  missing:
+    - "Add fallback paddingTop with safe area inset when neither illustration nor header provided"
+    - "Fix vertical content distribution for screens without illustration"
+  debug_session: ".planning/debug/reminders-layout-broken.md"
