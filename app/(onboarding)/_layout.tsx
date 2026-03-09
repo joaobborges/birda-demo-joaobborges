@@ -1,13 +1,18 @@
 import { Stack } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 
 export default function OnboardingLayout() {
   return (
-    <Stack
-      screenOptions={{
-        gestureEnabled: false,
-        headerShown: false,
-        animation: 'fade',
-      }}
-    />
+    <>
+      <StatusBar style="dark" translucent />
+      <Stack
+        screenOptions={{
+          gestureEnabled: false,
+          headerShown: false,
+          animation: 'fade',
+          statusBarTranslucent: true,
+        }}
+      />
+    </>
   )
 }

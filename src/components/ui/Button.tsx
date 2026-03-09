@@ -13,7 +13,7 @@ import { semantic } from '@/theme/colors'
 interface ButtonProps {
   title: string
   onPress: () => void
-  variant?: 'primary' | 'secondary' | 'link'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'link'
 }
 
 export function Button({ title, onPress, variant = 'primary' }: ButtonProps) {
@@ -56,14 +56,22 @@ export function Button({ title, onPress, variant = 'primary' }: ButtonProps) {
       <Animated.View
         style={[
           styles.button,
-          variant === 'secondary' ? styles.secondary : styles.primary,
+          variant === 'secondary'
+            ? styles.secondary
+            : variant === 'ghost'
+              ? styles.ghost
+              : styles.primary,
           animatedStyle,
         ]}
       >
         <Text
           style={[
             styles.text,
-            variant === 'secondary' ? styles.secondaryText : styles.primaryText,
+            variant === 'secondary'
+              ? styles.secondaryText
+              : variant === 'ghost'
+                ? styles.ghostText
+                : styles.primaryText,
           ]}
         >
           {title}
@@ -98,6 +106,12 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: semantic.actionSecondary,
+  },
+  ghost: {
+    backgroundColor: 'transparent',
+  },
+  ghostText: {
+    color: semantic.textSecondary,
   },
   linkText: {
     fontSize: 15,

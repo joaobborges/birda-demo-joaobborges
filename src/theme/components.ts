@@ -34,6 +34,13 @@ export const buttons = {
     borderRadius: borderRadius.full,
     borderCurve: 'continuous' as const,
   },
+  ghost: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    backgroundColor: 'transparent',
+    borderRadius: borderRadius.full,
+    borderCurve: 'continuous' as const,
+  },
 } as const;
 
 export type BorderRadiusToken = keyof typeof borderRadius;

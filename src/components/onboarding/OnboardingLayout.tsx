@@ -1,22 +1,48 @@
 import { type ReactNode } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, ScrollView, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { semantic } from '@/theme/colors'
 
 interface OnboardingLayoutProps {
+  illustration?: ReactNode
   header?: ReactNode
   children: ReactNode
   footer?: ReactNode
 }
 
-export function OnboardingLayout({ header, children, footer }: OnboardingLayoutProps) {
+export function OnboardingLayout({ illustration, header, children, footer }: OnboardingLayoutProps) {
   const { top, bottom } = useSafeAreaInsets()
 
   return (
-    <View style={[styles.container, { paddingTop: top + 20, paddingBottom: bottom + 20 }]}>
-      {header ? header : null}
-      <View style={styles.content}>{children}</View>
-      {footer ? <View style={styles.footer}>{footer}</View> : null}
+    <View style={styles.container}>
+      {illustration ? (
+        <View style={styles.illustrationZone}>
+          {illustration}
+          {header ? (
+            <View style={[styles.headerOverlay, { top: top + 12 }]}>
+              {header}
+            </View>
+          ) : null}
+        </View>
+      ) : header ? (
+        <View style={{ paddingTop: top + 20, paddingHorizontal: 24 }}>
+          {header}
+        </View>
+      ) : null}
+
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {children}
+      </ScrollView>
+
+      {footer ? (
+        <View style={[styles.footer, { paddingBottom: bottom + 20 }]}>
+          {footer}
+        </View>
+      ) : null}
     </View>
   )
 }
@@ -25,13 +51,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: semantic.bgPage,
+  },
+  illustrationZone: {
+    position: 'relative',
+  },
+  headerOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
     paddingHorizontal: 24,
   },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   footer: {
+    paddingHorizontal: 24,
     gap: 8,
   },
 })
