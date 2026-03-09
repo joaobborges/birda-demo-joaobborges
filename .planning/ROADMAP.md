@@ -43,12 +43,14 @@ Plans:
   3. Name and location inputs do not re-render the screen on every keystroke -- text commits only when user taps Continue
   4. Paywall headline includes the user's name or skill level from onboarding, plan toggle animates smoothly and adapts to any screen width
   5. Activating the Nature Day variant via debug panel shows 20% discount pricing with urgency copy
-**Plans:** 2/3 plans executed
+**Plans:** 5 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Foundation: OnboardingLayout component, store updates, fade animation, old screen cleanup
-- [ ] 02-02-PLAN.md — Onboarding screens: welcome, 4 feature tour, 3 quiz screens
-- [ ] 02-03-PLAN.md — Paywall redesign, post-paywall screens, borderCurve sweep
+- [x] 02-01-PLAN.md — Foundation: OnboardingLayout component, store updates, fade animation, old screen cleanup
+- [x] 02-02-PLAN.md — Onboarding screens: welcome, 4 feature tour, 3 quiz screens
+- [x] 02-03-PLAN.md — Paywall redesign, post-paywall screens, borderCurve sweep
+- [ ] 02-04-PLAN.md — Gap closure: full-bleed layout restructure, pinned footer, ghost button, translucent status bar
+- [ ] 02-05-PLAN.md — Gap closure: dynamic birding journey avatar, smooth paywall toggle animation
 
 ### Phase 3: Map and Screens
 **Goal**: The map screen is the polished home experience -- clustered markers, floating navigation UI, and native form sheet screens for profile and community
@@ -74,5 +76,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 0/2 | Not started | - |
-| 2. Onboarding and Paywall | 2/3 | In Progress|  |
+| 2. Onboarding and Paywall | 3/5 | In Progress (gap closure) |  |
 | 3. Map and Screens | 0/0 | Not started | - |
