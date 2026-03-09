@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { useRouter, useLocalSearchParams } from 'expo-router'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Animated, { FadeInDown, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import Animated, { FadeIn, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
 import { useOnboardingStore } from '@/stores/onboarding'
+import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { Button } from '@/components/ui/Button'
 import { semantic } from '@/theme/colors'
 
@@ -15,51 +15,62 @@ const FEATURES = [
 ]
 
 export default function PaywallScreen() {
-  const { replace } = useRouter()
-  const { top, bottom } = useSafeAreaInsets()
-  const { name, completeOnboarding } = useOnboardingStore()
+  const { push } = useRouter()
+  const { name } = useOnboardingStore()
   const params = useLocalSearchParams<{ variant?: string }>()
   const isNatureDay = params.variant === 'nature-day'
 
   const [plan, setPlan] = useState<'monthly' | 'annual'>('annual')
-  const togglePosition = useSharedValue(1)
 
-  const toggleStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: withSpring(togglePosition.get() * 148, { damping: 15 }) }],
+  const monthlyWidth = useSharedValue(0)
+  const annualWidth = useSharedValue(0)
+  const measured = useSharedValue(0)
+
+  const indicatorStyle = useAnimatedStyle(() => ({
+    width: withSpring(plan === 'monthly' ? monthlyWidth.get() : annualWidth.get(), { damping: 15 }),
+    transform: [{ translateX: withSpring(plan === 'monthly' ? 0 : monthlyWidth.get(), { damping: 15 }) }],
+    opacity: measured.get() >= 2 ? 1 : 0,
   }))
 
   const selectPlan = (p: 'monthly' | 'annual') => {
     setPlan(p)
-    togglePosition.set(p === 'monthly' ? 0 : 1)
   }
 
   const handleSubscribe = () => {
-    completeOnboarding()
-    replace('/(main)')
+    push('/(onboarding)/reminders')
   }
 
   const handleFree = () => {
-    completeOnboarding()
-    replace('/(main)')
+    push('/(onboarding)/reminders')
   }
 
   const monthlyPrice = isNatureDay ? '$3.99' : '$4.99'
   const annualPrice = isNatureDay ? '$31.99' : '$39.99'
 
   return (
-    <View style={[styles.container, { paddingTop: top + 20, paddingBottom: bottom + 20 }]}>
-      {isNatureDay ? (
-        <Animated.View entering={FadeInDown.duration(400)} style={styles.banner}>
-          <Text style={styles.bannerEmoji}>🌿</Text>
-          <Text style={styles.bannerText}>Nature Day — 20% off today only</Text>
-        </Animated.View>
-      ) : null}
+    <OnboardingLayout>
+      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.scrollContent}>
+        {/* Hero image placeholder */}
+        <View
+          style={[
+            styles.hero,
+            { backgroundColor: isNatureDay ? semantic.accent : semantic.bgTinted },
+          ]}
+        />
 
-      <Animated.View entering={FadeInDown.delay(200).duration(400)} style={styles.content}>
+        {/* Nature Day promotional banner */}
+        {isNatureDay ? (
+          <View style={styles.banner}>
+            <Text style={styles.bannerText}>🌿 Nature Day — 20% off today only</Text>
+          </View>
+        ) : null}
+
+        {/* Personalized headline */}
         <Text style={styles.title}>
-          {name ? `${name}, unlock` : 'Unlock'} the full experience
+          {name ? `${name}, unlock the full experience` : 'Unlock the full experience'}
         </Text>
 
+        {/* Feature list */}
         <View style={styles.features}>
           {FEATURES.map((feature) => (
             <View key={feature} style={styles.featureRow}>
@@ -69,9 +80,17 @@ export default function PaywallScreen() {
           ))}
         </View>
 
+        {/* Adaptive-width toggle */}
         <View style={styles.toggle}>
-          <Animated.View style={[styles.toggleIndicator, toggleStyle]} />
-          <Pressable style={styles.toggleOption} onPress={() => selectPlan('monthly')}>
+          <Animated.View style={[styles.toggleIndicator, indicatorStyle]} />
+          <Pressable
+            style={styles.toggleOption}
+            onPress={() => selectPlan('monthly')}
+            onLayout={(e) => {
+              monthlyWidth.set(e.nativeEvent.layout.width)
+              measured.set(measured.get() + 1)
+            }}
+          >
             <Text style={[styles.toggleLabel, plan === 'monthly' ? styles.toggleLabelActive : null]}>
               Monthly
             </Text>
@@ -79,7 +98,14 @@ export default function PaywallScreen() {
               {monthlyPrice}/mo
             </Text>
           </Pressable>
-          <Pressable style={styles.toggleOption} onPress={() => selectPlan('annual')}>
+          <Pressable
+            style={styles.toggleOption}
+            onPress={() => selectPlan('annual')}
+            onLayout={(e) => {
+              annualWidth.set(e.nativeEvent.layout.width)
+              measured.set(measured.get() + 1)
+            }}
+          >
             <Text style={[styles.toggleLabel, plan === 'annual' ? styles.toggleLabelActive : null]}>
               Annual
             </Text>
@@ -89,53 +115,49 @@ export default function PaywallScreen() {
             {plan === 'annual' ? <Text style={styles.valueBadge}>Best value</Text> : null}
           </Pressable>
         </View>
-      </Animated.View>
 
-      <View style={styles.actions}>
-        <Button
-          title={isNatureDay ? 'Claim My Discount' : 'Start Free Trial'}
-          onPress={handleSubscribe}
-        />
-        <Button
-          title="Continue with free plan"
-          variant="link"
-          onPress={handleFree}
-        />
-      </View>
-    </View>
+        {/* Action buttons */}
+        <View style={styles.actions}>
+          <Button
+            title={isNatureDay ? 'Claim My Discount' : 'Start Free Trial'}
+            onPress={handleSubscribe}
+          />
+          <Button
+            title="Continue with free plan"
+            variant="link"
+            onPress={handleFree}
+          />
+        </View>
+      </Animated.View>
+    </OnboardingLayout>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: semantic.bgPage,
-    paddingHorizontal: 24,
-    justifyContent: 'space-between',
+  scrollContent: {
+    gap: 24,
   },
-  banner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    backgroundColor: semantic.statusSuccessBg,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 12,
+  hero: {
+    height: 220,
+    marginHorizontal: -24,
+    marginTop: -20,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
     borderCurve: 'continuous',
   },
-  bannerEmoji: {
-    fontSize: 20,
+  banner: {
+    backgroundColor: semantic.statusSuccessBg,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderCurve: 'continuous',
+    alignSelf: 'center',
+    marginTop: -20,
   },
   bannerText: {
     fontSize: 15,
     fontWeight: '600',
     color: semantic.textPrimary,
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    gap: 32,
   },
   title: {
     fontSize: 30,
@@ -163,6 +185,7 @@ const styles = StyleSheet.create({
   },
   toggle: {
     flexDirection: 'row',
+    alignSelf: 'center',
     backgroundColor: semantic.bgSurface,
     borderRadius: 16,
     borderCurve: 'continuous',
@@ -173,7 +196,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 4,
     left: 4,
-    width: 148,
     height: '100%',
     backgroundColor: semantic.bgPage,
     borderRadius: 12,
@@ -181,9 +203,9 @@ const styles = StyleSheet.create({
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
   },
   toggleOption: {
-    flex: 1,
     alignItems: 'center',
     paddingVertical: 14,
+    paddingHorizontal: 20,
     gap: 2,
     zIndex: 1,
   },
@@ -211,6 +233,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 6,
+    borderCurve: 'continuous',
     overflow: 'hidden',
     marginTop: 4,
   },
