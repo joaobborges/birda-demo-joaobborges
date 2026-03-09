@@ -1,12 +1,15 @@
-import { useState, memo } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MapView, { Marker, Region } from 'react-native-maps'
-import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated'
-import { Image } from 'expo-image'
+import Animated, { FadeIn } from 'react-native-reanimated'
+import Supercluster from 'supercluster'
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { birds, Bird } from '@/data/birds'
 import { semantic } from '@/theme/colors'
+import { BirdMarker } from '@/components/map/BirdMarker'
+import { BirdInfoCard } from '@/components/map/BirdInfoCard'
 
 const LISBON_REGION: Region = {
   latitude: 38.7223,
@@ -15,54 +18,25 @@ const LISBON_REGION: Region = {
   longitudeDelta: 0.04,
 }
 
-function getVisibleBirds(region: Region): Bird[] {
-  const zoom = Math.log2(360 / region.longitudeDelta)
-  return birds.filter((bird) => {
-    if (bird.rarity === 'common') return true
-    if (bird.rarity === 'uncommon') return zoom >= 13
-    if (bird.rarity === 'rare') return zoom >= 15
-    return false
-  })
-}
+const geoPoints: Supercluster.PointFeature<Bird>[] = birds.map((bird) => ({
+  type: 'Feature' as const,
+  geometry: {
+    type: 'Point' as const,
+    coordinates: [bird.longitude, bird.latitude],
+  },
+  properties: bird,
+}))
 
-const BirdMarker = memo(function BirdMarker({
-  bird,
-  onPress,
-}: {
-  bird: Bird
-  onPress: (bird: Bird) => void
-}) {
-  return (
-    <Marker
-      coordinate={{ latitude: bird.latitude, longitude: bird.longitude }}
-      onPress={() => onPress(bird)}
-      title={bird.name}
-    />
-  )
-})
-
-function BirdInfoCard({ bird, onClose }: { bird: Bird; onClose: () => void }) {
-  return (
-    <Animated.View entering={SlideInDown.duration(300)} style={styles.infoCard}>
-      <Pressable style={styles.infoCardClose} onPress={onClose}>
-        <Text style={styles.closeText}>✕</Text>
-      </Pressable>
-      <Image
-        source={{ uri: bird.image }}
-        style={styles.birdImage}
-        contentFit="cover"
-        transition={200}
-      />
-      <View style={styles.infoCardContent}>
-        <Text style={styles.birdName}>{bird.name}</Text>
-        <Text style={styles.birdSpecies}>{bird.species}</Text>
-        <Text style={styles.birdDescription}>{bird.description}</Text>
-        <View style={[styles.rarityBadge, styles[`rarity_${bird.rarity}`]]}>
-          <Text style={styles.rarityText}>{bird.rarity}</Text>
-        </View>
-      </View>
-    </Animated.View>
-  )
+function getClustersForRegion(
+  index: Supercluster<Bird, Supercluster.AnyProps>,
+  region: Region,
+) {
+  const west = region.longitude - region.longitudeDelta / 2
+  const south = region.latitude - region.latitudeDelta / 2
+  const east = region.longitude + region.longitudeDelta / 2
+  const north = region.latitude + region.latitudeDelta / 2
+  const zoom = Math.round(Math.log2(360 / region.longitudeDelta))
+  return index.getClusters([west, south, east, north], zoom)
 }
 
 export function ErrorBoundary({ error, retry }: { error: Error; retry: () => void }) {
@@ -79,36 +53,99 @@ export function ErrorBoundary({ error, retry }: { error: Error; retry: () => voi
 export default function MapScreen() {
   const { push } = useRouter()
   const { top, bottom } = useSafeAreaInsets()
-  const [region, setRegion] = useState(LISBON_REGION)
+  const mapRef = useRef<MapView>(null)
   const [selectedBird, setSelectedBird] = useState<Bird | null>(null)
 
-  const visibleBirds = getVisibleBirds(region)
+  const clusterIndex = useMemo(() => {
+    const index = new Supercluster<Bird, Supercluster.AnyProps>({
+      radius: 60,
+      maxZoom: 16,
+      minZoom: 0,
+      minPoints: 2,
+    })
+    index.load(geoPoints)
+    return index
+  }, [])
+
+  const [clusters, setClusters] = useState(() =>
+    getClustersForRegion(clusterIndex, LISBON_REGION),
+  )
+
+  function handleRegionChange(region: Region) {
+    setClusters(getClustersForRegion(clusterIndex, region))
+  }
+
+  function handleClusterPress(
+    clusterId: number,
+    latitude: number,
+    longitude: number,
+  ) {
+    const expansionZoom = clusterIndex.getClusterExpansionZoom(clusterId)
+    const latitudeDelta = 360 / Math.pow(2, expansionZoom + 1)
+    const longitudeDelta = 360 / Math.pow(2, expansionZoom + 1)
+    mapRef.current?.animateToRegion(
+      { latitude, longitude, latitudeDelta, longitudeDelta },
+      350,
+    )
+  }
 
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         style={styles.map}
         initialRegion={LISBON_REGION}
-        onRegionChangeComplete={setRegion}
+        onRegionChangeComplete={handleRegionChange}
+        mapType="mutedStandard"
+        showsPointsOfInterests={false}
+        showsBuildings={false}
         showsUserLocation
         showsCompass={false}
       >
-        {visibleBirds.map((bird) => (
-          <BirdMarker key={bird.id} bird={bird} onPress={setSelectedBird} />
-        ))}
+        {clusters.map((feature) => {
+          const [lng, lat] = feature.geometry.coordinates
+          if ('cluster' in feature.properties && feature.properties.cluster) {
+            const clusterProps = feature.properties as Supercluster.ClusterProperties
+            return (
+              <Marker
+                key={`cluster-${clusterProps.cluster_id}`}
+                coordinate={{ latitude: lat, longitude: lng }}
+                tracksViewChanges={false}
+                anchor={{ x: 0.5, y: 0.5 }}
+                onPress={() =>
+                  handleClusterPress(clusterProps.cluster_id, lat, lng)
+                }
+              >
+                <View style={styles.clusterMarker}>
+                  <Text style={styles.clusterText}>
+                    {clusterProps.point_count}
+                  </Text>
+                </View>
+              </Marker>
+            )
+          }
+          const bird = feature.properties as Bird
+          return (
+            <BirdMarker
+              key={`bird-${bird.id}`}
+              bird={bird}
+              onPress={setSelectedBird}
+            />
+          )
+        })}
       </MapView>
 
       {/* Floating top bar */}
       <Animated.View entering={FadeIn.delay(300)} style={[styles.topBar, { top: top + 12 }]}>
         <Pressable style={styles.iconButton} onPress={() => push('/profile')}>
-          <Text style={styles.iconText}>👤</Text>
+          <Ionicons name="person-circle-outline" size={24} color={semantic.textPrimary} />
         </Pressable>
         <View style={styles.topBarRight}>
           <Pressable style={styles.iconButton} onPress={() => push('/community')}>
-            <Text style={styles.iconText}>👥</Text>
+            <Ionicons name="people-outline" size={22} color={semantic.textPrimary} />
           </Pressable>
           <View style={styles.iconButton}>
-            <Text style={styles.iconText}>🔔</Text>
+            <Ionicons name="notifications-outline" size={22} color={semantic.textPrimary} />
             <View style={styles.notificationBadge} />
           </View>
         </View>
@@ -117,10 +154,16 @@ export default function MapScreen() {
       {/* Floating bottom bar */}
       <Animated.View entering={FadeIn.delay(400)} style={[styles.bottomBar, { bottom: bottom + 20 }]}>
         <Pressable style={styles.bottomButton}>
-          <Text style={styles.bottomButtonText}>📷 Capture</Text>
+          <View style={styles.bottomButtonContent}>
+            <Ionicons name="camera-outline" size={18} color={semantic.textInput} />
+            <Text style={styles.bottomButtonText}>Capture</Text>
+          </View>
         </Pressable>
         <Pressable style={styles.bottomButton}>
-          <Text style={styles.bottomButtonText}>📖 Logbook</Text>
+          <View style={styles.bottomButtonContent}>
+            <Ionicons name="book-outline" size={18} color={semantic.textInput} />
+            <Text style={styles.bottomButtonText}>Logbook</Text>
+          </View>
         </Pressable>
       </Animated.View>
 
@@ -160,9 +203,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
   },
-  iconText: {
-    fontSize: 20,
-  },
   notificationBadge: {
     position: 'absolute',
     top: 8,
@@ -189,86 +229,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
   },
+  bottomButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   bottomButtonText: {
     fontSize: 15,
     fontWeight: '600',
     color: semantic.textInput,
   },
-  infoCard: {
-    position: 'absolute',
-    bottom: 100,
-    left: 16,
-    right: 16,
-    backgroundColor: semantic.bgPage,
-    borderRadius: 20,
+  clusterMarker: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     borderCurve: 'continuous',
-    overflow: 'hidden',
-    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15)',
-  },
-  infoCardClose: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    borderCurve: 'continuous',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: semantic.markerCluster,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1,
   },
-  closeText: {
+  clusterText: {
     color: semantic.textInverse,
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  birdImage: {
-    width: '100%',
-    height: 160,
-  },
-  infoCardContent: {
-    padding: 16,
-    gap: 4,
-  },
-  birdName: {
-    fontSize: 20,
+    fontSize: 13,
     fontWeight: '700',
-    color: semantic.textPrimary,
-  },
-  birdSpecies: {
-    fontSize: 14,
-    color: semantic.textSecondary,
-    fontStyle: 'italic',
-  },
-  birdDescription: {
-    fontSize: 14,
-    color: semantic.textBody,
-    lineHeight: 20,
-    marginTop: 4,
-  },
-  rarityBadge: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 8,
-    borderCurve: 'continuous',
-    marginTop: 8,
-  },
-  rarity_common: {
-    backgroundColor: semantic.rarityCommonBg,
-  },
-  rarity_uncommon: {
-    backgroundColor: semantic.rarityUncommonBg,
-  },
-  rarity_rare: {
-    backgroundColor: semantic.rarityRareBg,
-  },
-  rarityText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: semantic.textBody,
-    textTransform: 'capitalize',
   },
   errorContainer: {
     flex: 1,
