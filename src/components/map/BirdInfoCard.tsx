@@ -1,8 +1,16 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, ViewStyle } from 'react-native'
 import Animated, { SlideInDown } from 'react-native-reanimated'
 import { Image } from 'expo-image'
 import { Bird } from '@/data/birds'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { typography, fontWeights } from '@/theme/typography'
+
+const rarityStyles: Record<Bird['rarity'], ViewStyle> = {
+  common: { backgroundColor: semantic.rarityCommonBg },
+  uncommon: { backgroundColor: semantic.rarityUncommonBg },
+  rare: { backgroundColor: semantic.rarityRareBg },
+}
 
 interface BirdInfoCardProps {
   bird: Bird
@@ -25,7 +33,7 @@ export function BirdInfoCard({ bird, onClose }: BirdInfoCardProps) {
         <Text style={styles.birdName}>{bird.name}</Text>
         <Text style={styles.birdSpecies}>{bird.species}</Text>
         <Text style={styles.birdDescription}>{bird.description}</Text>
-        <View style={[styles.rarityBadge, styles[`rarity_${bird.rarity}` as keyof typeof styles]]}>
+        <View style={[styles.rarityBadge, rarityStyles[bird.rarity]]}>
           <Text style={styles.rarityText}>{bird.rarity}</Text>
         </View>
       </View>
@@ -37,8 +45,8 @@ const styles = StyleSheet.create({
   infoCard: {
     position: 'absolute',
     bottom: 100,
-    left: 16,
-    right: 16,
+    left: spacing['4'],
+    right: spacing['4'],
     backgroundColor: semantic.bgPage,
     borderRadius: 20,
     borderCurve: 'continuous',
@@ -47,11 +55,11 @@ const styles = StyleSheet.create({
   },
   infoCardClose: {
     position: 'absolute',
-    top: 12,
-    right: 12,
+    top: spacing['3'],
+    right: spacing['3'],
     width: 28,
     height: 28,
-    borderRadius: 14,
+    borderRadius: 14, // no exact token
     borderCurve: 'continuous',
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
@@ -59,54 +67,45 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   closeText: {
+    ...typography.caption,
+    fontFamily: fontWeights.semiBold,
     color: semantic.textInverse,
-    fontSize: 14,
-    fontWeight: '600',
   },
   birdImage: {
     width: '100%',
     height: 160,
   },
   infoCardContent: {
-    padding: 16,
-    gap: 4,
+    padding: spacing['4'],
+    gap: spacing['1'],
   },
   birdName: {
-    fontSize: 20,
-    fontWeight: '700',
+    ...typography.bodyLarge,
+    fontFamily: fontWeights.bold,
     color: semantic.textPrimary,
   },
   birdSpecies: {
-    fontSize: 14,
+    ...typography.caption,
     color: semantic.textSecondary,
     fontStyle: 'italic',
   },
   birdDescription: {
-    fontSize: 14,
+    ...typography.caption,
     color: semantic.textBody,
     lineHeight: 20,
-    marginTop: 4,
+    marginTop: spacing['1'],
   },
   rarityBadge: {
     alignSelf: 'flex-start',
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 8,
+    paddingHorizontal: 10, // no exact token
+    paddingVertical: 3, // no exact token
+    borderRadius: spacing['2'],
     borderCurve: 'continuous',
-    marginTop: 8,
-  },
-  rarity_common: {
-    backgroundColor: semantic.rarityCommonBg,
-  },
-  rarity_uncommon: {
-    backgroundColor: semantic.rarityUncommonBg,
-  },
-  rarity_rare: {
-    backgroundColor: semantic.rarityRareBg,
+    marginTop: spacing['2'],
   },
   rarityText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontFamily: fontWeights.semiBold,
+    fontSize: 12, // no exact token
     color: semantic.textBody,
     textTransform: 'capitalize',
   },

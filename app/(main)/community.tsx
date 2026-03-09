@@ -3,6 +3,8 @@ import { Image } from 'expo-image'
 import { LegendList } from '@legendapp/list'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { typography, fontWeights } from '@/theme/typography'
 
 interface Sighting {
   id: string
@@ -75,10 +77,10 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.bgPage,
   },
   list: {
-    paddingHorizontal: 24,
-    paddingTop: 12,
-    gap: 16,
-    paddingBottom: 24,
+    paddingHorizontal: spacing['6'],
+    paddingTop: spacing['3'],
+    gap: spacing['4'],
+    paddingBottom: spacing['6'],
   },
   item: {
     backgroundColor: semantic.bgPage,
@@ -92,63 +94,68 @@ const styles = StyleSheet.create({
     height: 200,
   },
   itemContent: {
-    padding: 14,
+    padding: 14, // no exact token
   },
   nameRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
   },
   birdName: {
-    fontSize: 16,
-    fontWeight: '700',
+    ...typography.bodySmall,
+    fontFamily: fontWeights.bold,
     color: semantic.textPrimary,
   },
   species: {
-    fontSize: 13,
+    fontFamily: fontWeights.regular,
+    fontSize: 13, // no exact token
     color: semantic.textSecondary,
     fontStyle: 'italic',
   },
   description: {
-    fontSize: 14,
+    ...typography.caption,
     color: semantic.textBody,
-    marginTop: 6,
+    marginTop: 6, // no exact token
   },
   locationRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    marginTop: 6,
+    gap: spacing['1'],
+    marginTop: 6, // no exact token
   },
   locationText: {
-    fontSize: 13,
+    fontFamily: fontWeights.regular,
+    fontSize: 13, // no exact token
     color: semantic.textMuted,
   },
   bottomRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: spacing['2'],
   },
   userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: spacing['1'],
   },
   metaText: {
-    fontSize: 13,
+    fontFamily: fontWeights.regular,
+    fontSize: 13, // no exact token
     color: semantic.textBody,
   },
   metaDot: {
-    fontSize: 13,
+    fontFamily: fontWeights.regular,
+    fontSize: 13, // no exact token
     color: semantic.textMuted,
   },
   likeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: spacing['1'],
   },
   likeCount: {
-    fontSize: 12,
+    fontFamily: fontWeights.regular,
+    fontSize: 12, // no exact token
     color: semantic.textMuted,
   },
 })

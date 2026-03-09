@@ -8,6 +8,8 @@ import Supercluster from 'supercluster'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { birds, Bird } from '@/data/birds'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { typography, fontWeights } from '@/theme/typography'
 import { BirdMarker } from '@/components/map/BirdMarker'
 import { BirdInfoCard } from '@/components/map/BirdInfoCard'
 
@@ -136,7 +138,7 @@ export default function MapScreen() {
       </MapView>
 
       {/* Floating top bar */}
-      <Animated.View entering={FadeIn.delay(300)} style={[styles.topBar, { top: top + 12 }]}>
+      <Animated.View entering={FadeIn.delay(300)} style={[styles.topBar, { top: top + spacing['3'] }]}>
         <Pressable style={styles.iconButton} onPress={() => push('/profile')}>
           <Ionicons name="person-circle" size={24} color={semantic.textPrimary} />
         </Pressable>
@@ -152,7 +154,7 @@ export default function MapScreen() {
       </Animated.View>
 
       {/* Floating bottom bar */}
-      <Animated.View entering={FadeIn.delay(400)} style={[styles.bottomBar, { bottom: bottom + 20 }]}>
+      <Animated.View entering={FadeIn.delay(400)} style={[styles.bottomBar, { bottom: bottom + spacing['5'] }]}>
         <Pressable style={styles.bottomButton}>
           <View style={styles.bottomButtonContent}>
             <Ionicons name="camera" size={18} color={semantic.textInput} />
@@ -184,14 +186,14 @@ const styles = StyleSheet.create({
   },
   topBar: {
     position: 'absolute',
-    left: 16,
-    right: 16,
+    left: spacing['4'],
+    right: spacing['4'],
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   topBarRight: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 10, // no exact token
   },
   iconButton: {
     width: 44,
@@ -205,25 +207,25 @@ const styles = StyleSheet.create({
   },
   notificationBadge: {
     position: 'absolute',
-    top: 8,
-    right: 8,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    top: spacing['2'],
+    right: spacing['2'],
+    width: spacing['2'],
+    height: spacing['2'],
+    borderRadius: spacing['1'],
     borderCurve: 'continuous',
     backgroundColor: semantic.statusError,
   },
   bottomBar: {
     position: 'absolute',
-    left: 16,
-    right: 16,
+    left: spacing['4'],
+    right: spacing['4'],
     flexDirection: 'row',
-    gap: 12,
+    gap: spacing['3'],
   },
   bottomButton: {
     flex: 1,
     backgroundColor: semantic.bgPage,
-    paddingVertical: 14,
+    paddingVertical: 14, // no exact token
     borderRadius: 16,
     borderCurve: 'continuous',
     alignItems: 'center',
@@ -232,11 +234,11 @@ const styles = StyleSheet.create({
   bottomButtonContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 6, // no exact token
   },
   bottomButtonText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontFamily: fontWeights.semiBold,
+    fontSize: 15, // no exact token
     color: semantic.textInput,
   },
   clusterMarker: {
@@ -249,31 +251,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   clusterText: {
+    fontFamily: fontWeights.bold,
+    fontSize: 13, // no exact token
     color: semantic.textInverse,
-    fontSize: 13,
-    fontWeight: '700',
   },
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 16,
+    gap: spacing['4'],
     backgroundColor: semantic.bgPage,
   },
   errorText: {
-    fontSize: 16,
+    ...typography.bodySmall,
     color: semantic.textSecondary,
   },
   retryButton: {
     backgroundColor: semantic.actionPrimary,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 12,
+    paddingHorizontal: spacing['6'],
+    paddingVertical: spacing['3'],
+    borderRadius: 12, // no exact token
     borderCurve: 'continuous',
   },
   retryText: {
+    fontFamily: fontWeights.semiBold,
+    fontSize: 15, // no exact token
     color: semantic.textInverse,
-    fontSize: 15,
-    fontWeight: '600',
   },
 })

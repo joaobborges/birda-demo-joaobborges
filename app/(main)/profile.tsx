@@ -2,12 +2,14 @@ import { View, Text, StyleSheet } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { typography, fontWeights } from '@/theme/typography'
 
 const ACHIEVEMENTS = [
-  { icon: 'sunny-outline' as const, label: 'Early Bird', bg: '#FEF3C7' },
-  { icon: 'eye-outline' as const, label: 'Sharp Eye', bg: '#DBEAFE' },
-  { icon: 'camera-outline' as const, label: 'Photographer', bg: '#FCE7F3' },
-  { icon: 'compass-outline' as const, label: 'Explorer', bg: '#D4EDDA' },
+  { icon: 'sunny-outline' as const, label: 'Early Bird', bg: semantic.rarityUncommonBg },
+  { icon: 'eye-outline' as const, label: 'Sharp Eye', bg: semantic.rarityCommonBg },
+  { icon: 'camera-outline' as const, label: 'Photographer', bg: semantic.rarityRareBg },
+  { icon: 'compass-outline' as const, label: 'Explorer', bg: semantic.statusSuccessBg },
 ]
 
 export default function ProfileScreen() {
@@ -65,12 +67,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: semantic.bgPage,
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing['6'],
   },
   header: {
     alignItems: 'center',
-    gap: 12,
-    paddingVertical: 24,
+    gap: spacing['3'],
+    paddingVertical: spacing['6'],
   },
   avatar: {
     width: 80,
@@ -82,20 +84,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   name: {
-    fontSize: 24,
-    fontWeight: '700',
+    ...typography.h3,
     color: semantic.textPrimary,
   },
   skillBadge: {
     backgroundColor: semantic.statusSuccessBg,
-    paddingHorizontal: 14,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: 14, // no exact token
+    paddingVertical: spacing['1'],
+    borderRadius: 12, // no exact token
     borderCurve: 'continuous',
   },
   badgeText: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontFamily: fontWeights.semiBold,
+    fontSize: 13, // no exact token
     color: semantic.textPrimary,
   },
   stats: {
@@ -103,21 +104,21 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.bgPage,
     borderRadius: 16,
     borderCurve: 'continuous',
-    padding: 20,
+    padding: spacing['5'],
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
   },
   stat: {
     flex: 1,
     alignItems: 'center',
-    gap: 4,
+    gap: spacing['1'],
   },
   statNumber: {
-    fontSize: 24,
-    fontWeight: '700',
+    ...typography.h3,
     color: semantic.textPrimary,
   },
   statLabel: {
-    fontSize: 13,
+    fontFamily: fontWeights.regular,
+    fontSize: 13, // no exact token
     color: semantic.textSecondary,
   },
   statDivider: {
@@ -125,22 +126,22 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.borderDefault,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    ...typography.navItem,
     color: semantic.textPrimary,
-    marginTop: 28,
-    marginBottom: 14,
+    textTransform: 'none',
+    marginTop: 28, // no exact token
+    marginBottom: 14, // no exact token
   },
   achievements: {
     flexDirection: 'row',
-    gap: 12,
+    gap: spacing['3'],
   },
   achievement: {
     flex: 1,
     alignItems: 'center',
-    gap: 8,
+    gap: spacing['2'],
     backgroundColor: semantic.bgPage,
-    padding: 16,
+    padding: spacing['4'],
     borderRadius: 16,
     borderCurve: 'continuous',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
@@ -154,8 +155,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   achievementLabel: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontFamily: fontWeights.semiBold,
+    fontSize: 12, // no exact token
     color: semantic.textBody,
   },
 })
