@@ -1,81 +1,79 @@
 import { useRef } from 'react'
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Animated, { FadeInDown } from 'react-native-reanimated'
-import { useOnboardingStore } from '@/stores/onboarding'
-import { Button } from '@/components/ui/Button'
+import Animated, { FadeIn } from 'react-native-reanimated'
+import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { ProgressDots } from '@/components/onboarding/ProgressDots'
+import { Button } from '@/components/ui/Button'
+import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic } from '@/theme/colors'
 
 export default function NameScreen() {
   const { push } = useRouter()
-  const { top, bottom } = useSafeAreaInsets()
   const nameRef = useRef('')
 
   const handleContinue = () => {
     useOnboardingStore.getState().setName(nameRef.current)
-    push('/(onboarding)/location')
+    push('/(onboarding)/birding-journey')
   }
 
   return (
-    <View style={[styles.container, { paddingTop: top + 20, paddingBottom: bottom + 20 }]}>
-      <ProgressDots total={7} current={1} />
-
-      <Animated.View entering={FadeInDown.duration(400)} style={styles.content}>
-        <Text style={styles.title}>What should we call you?</Text>
+    <OnboardingLayout
+      header={<ProgressDots total={3} current={0} />}
+      footer={
+        <>
+          <Button title="Continue" onPress={handleContinue} />
+          <Button
+            title="Skip"
+            variant="link"
+            onPress={() => push('/(onboarding)/birding-journey')}
+          />
+        </>
+      }
+    >
+      <Animated.View entering={FadeIn.delay(100).duration(300)}>
+        <View style={styles.avatarPlaceholder} />
+        <Text style={styles.heading}>What should we call you?</Text>
         <TextInput
           style={styles.input}
           placeholder="Your name"
           placeholderTextColor={semantic.textMuted}
-          defaultValue={nameRef.current}
+          defaultValue={useOnboardingStore.getState().name}
           onChangeText={(text) => {
             nameRef.current = text
           }}
-          autoFocus
           autoCapitalize="words"
           returnKeyType="done"
         />
       </Animated.View>
-
-      <View style={styles.actions}>
-        <Button title="Continue" onPress={handleContinue} />
-        <Button
-          title="Skip"
-          variant="link"
-          onPress={() => push('/(onboarding)/location')}
-        />
-      </View>
-    </View>
+    </OnboardingLayout>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: semantic.bgPage,
-    paddingHorizontal: 24,
-    justifyContent: 'space-between',
+  avatarPlaceholder: {
+    height: 120,
+    width: 120,
+    backgroundColor: semantic.bgTinted,
+    borderRadius: 60,
+    borderCurve: 'continuous',
+    alignSelf: 'center',
+    marginBottom: 24,
   },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    gap: 24,
-  },
-  title: {
-    fontSize: 28,
+  heading: {
+    fontSize: 24,
     fontWeight: '700',
     color: semantic.textPrimary,
-    letterSpacing: -0.5,
+    textAlign: 'center',
   },
   input: {
-    fontSize: 18,
-    borderBottomWidth: 2,
-    borderBottomColor: semantic.textPrimary,
-    paddingVertical: 12,
-    color: semantic.textInput,
-  },
-  actions: {
-    gap: 8,
+    backgroundColor: semantic.bgSurface,
+    borderRadius: 16,
+    borderCurve: 'continuous',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    fontSize: 16,
+    color: semantic.textPrimary,
+    marginTop: 20,
   },
 })
