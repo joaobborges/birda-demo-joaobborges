@@ -13,7 +13,7 @@ const ACHIEVEMENTS = [
 
 export default function ProfileScreen() {
   const { top } = useSafeAreaInsets()
-  const { name, skillLevel } = useOnboardingStore()
+  const { name, birdingJourney } = useOnboardingStore()
 
   return (
     <View style={[styles.container, { paddingTop: top + 20 }]}>
@@ -24,10 +24,10 @@ export default function ProfileScreen() {
           contentFit="cover"
         />
         <Text style={styles.name}>{name || 'Birder'}</Text>
-        {skillLevel ? (
+        {birdingJourney ? (
           <View style={styles.skillBadge}>
             <Text style={styles.badgeText}>
-              {skillLevel.charAt(0).toUpperCase() + skillLevel.slice(1)}
+              {birdingJourney.charAt(0).toUpperCase() + birdingJourney.slice(1)}
             </Text>
           </View>
         ) : null}
