@@ -30,7 +30,9 @@ export function OnboardingLayout({ illustration, header, children, footer }: Onb
         <View style={{ paddingTop: top + spacing['5'], paddingHorizontal: spacing['6'] }}>
           {header}
         </View>
-      ) : null}
+      ) : (
+        <View style={{ paddingTop: top + spacing['5'] }} />
+      )}
 
       <ScrollView
         style={styles.scroll}
@@ -68,6 +70,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
+    justifyContent: 'center',
     paddingHorizontal: spacing['6'],
   },
   footer: {
