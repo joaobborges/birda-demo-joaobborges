@@ -33,13 +33,13 @@ Requirements for the interview demo prototype. Each maps to roadmap phases.
 
 ### Paywall
 
-- [ ] **PAYW-01**: Plan toggle animates with withSpring and adapts to content width (no hardcoded dimensions)
-- [ ] **PAYW-02**: Paywall headline references user's name or skill level from onboarding store
-- [ ] **PAYW-03**: Nature Day discount variant is accessible via debug panel with 20% off pricing and urgency copy
+- [x] **PAYW-01**: Plan toggle animates with withSpring and adapts to content width (no hardcoded dimensions)
+- [x] **PAYW-02**: Paywall headline references user's name or skill level from onboarding store
+- [x] **PAYW-03**: Nature Day discount variant is accessible via debug panel with 20% off pricing and urgency copy
 
 ### Styling
 
-- [ ] **STYL-01**: All rounded corners use borderCurve: 'continuous' for smooth iOS corners throughout the app
+- [x] **STYL-01**: All rounded corners use borderCurve: 'continuous' for smooth iOS corners throughout the app
 
 ## v2 Requirements
 
@@ -95,10 +95,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ONBR-01 | Phase 2 | Complete |
 | ONBR-02 | Phase 2 | Complete |
 | ONBR-03 | Phase 2 | Complete |
-| PAYW-01 | Phase 2 | Pending |
-| PAYW-02 | Phase 2 | Pending |
-| PAYW-03 | Phase 2 | Pending |
-| STYL-01 | Phase 2 | Pending |
+| PAYW-01 | Phase 2 | Complete |
+| PAYW-02 | Phase 2 | Complete |
+| PAYW-03 | Phase 2 | Complete |
+| STYL-01 | Phase 2 | Complete |
 | MAP-01 | Phase 3 | Pending |
 | MAP-02 | Phase 3 | Pending |
 | MAP-03 | Phase 3 | Pending |
