@@ -17,6 +17,13 @@ const LEVELS = [
 
 type LevelKey = (typeof LEVELS)[number]['key']
 
+const AVATAR_MAP: Record<LevelKey, { emoji: string; size: number; bgColor: string }> = {
+  new: { emoji: '\u{1F95A}', size: 48, bgColor: semantic.bgTinted },
+  garden: { emoji: '\u{1F426}', size: 56, bgColor: semantic.bgTinted },
+  intermediate: { emoji: '\u{1F985}', size: 72, bgColor: semantic.bgTinted },
+  expert: { emoji: '\u{1F989}', size: 88, bgColor: semantic.bgTinted },
+}
+
 export default function BirdingJourneyScreen() {
   const { push } = useRouter()
   const [selected, setSelected] = useState<LevelKey | null>(null)
@@ -38,7 +45,15 @@ export default function BirdingJourneyScreen() {
       }
     >
       <Animated.View entering={FadeIn.delay(100).duration(300)}>
-        <View style={styles.avatarPlaceholder} />
+        <Animated.View
+          key={selected ?? 'default'}
+          entering={FadeIn.duration(200)}
+          style={styles.avatarPlaceholder}
+        >
+          <Text style={[styles.avatarEmoji, { fontSize: selected ? AVATAR_MAP[selected].size : 48 }]}>
+            {selected ? AVATAR_MAP[selected].emoji : '\u{1F95A}'}
+          </Text>
+        </Animated.View>
         <Text style={styles.heading}>Your birding journey</Text>
         <Text style={styles.description}>
           What best describes your experience?
@@ -73,6 +88,11 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     alignSelf: 'center',
     marginBottom: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarEmoji: {
+    textAlign: 'center',
   },
   heading: {
     fontSize: 24,

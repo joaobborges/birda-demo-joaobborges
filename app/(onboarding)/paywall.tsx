@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { useRouter, useLocalSearchParams } from 'expo-router'
-import Animated, { FadeIn, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import Animated, { FadeIn, useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { Button } from '@/components/ui/Button'
@@ -27,8 +27,8 @@ export default function PaywallScreen() {
   const measured = useSharedValue(0)
 
   const indicatorStyle = useAnimatedStyle(() => ({
-    width: withSpring(plan === 'monthly' ? monthlyWidth.get() : annualWidth.get(), { damping: 15 }),
-    transform: [{ translateX: withSpring(plan === 'monthly' ? 0 : monthlyWidth.get(), { damping: 15 }) }],
+    width: withTiming(plan === 'monthly' ? monthlyWidth.get() : annualWidth.get(), { duration: 280, easing: Easing.out(Easing.cubic) }),
+    transform: [{ translateX: withTiming(plan === 'monthly' ? 0 : monthlyWidth.get(), { duration: 280, easing: Easing.out(Easing.cubic) }) }],
     opacity: measured.get() >= 2 ? 1 : 0,
   }))
 
