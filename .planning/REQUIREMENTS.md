@@ -22,9 +22,9 @@ Requirements for the interview demo prototype. Each maps to roadmap phases.
 
 ### Map
 
-- [ ] **MAP-01**: Bird markers cluster automatically at lower zoom levels via Supercluster
-- [ ] **MAP-02**: Map has floating UI overlay — profile icon (top-left), community + notification icons (top-right), capture + logbook buttons (bottom)
-- [ ] **MAP-03**: BirdMarker and BirdInfoCard are extracted to src/components/map/ as reusable components
+- [x] **MAP-01**: Bird markers cluster automatically at lower zoom levels via Supercluster
+- [x] **MAP-02**: Map has floating UI overlay — profile icon (top-left), community + notification icons (top-right), capture + logbook buttons (bottom)
+- [x] **MAP-03**: BirdMarker and BirdInfoCard are extracted to src/components/map/ as reusable components
 
 ### Screens
 
@@ -99,9 +99,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PAYW-02 | Phase 2 | Complete |
 | PAYW-03 | Phase 2 | Complete |
 | STYL-01 | Phase 2 | Complete |
-| MAP-01 | Phase 3 | Pending |
-| MAP-02 | Phase 3 | Pending |
-| MAP-03 | Phase 3 | Pending |
+| MAP-01 | Phase 3 | Complete |
+| MAP-02 | Phase 3 | Complete |
+| MAP-03 | Phase 3 | Complete |
 | SCRN-01 | Phase 3 | Pending |
 | SCRN-02 | Phase 3 | Pending |
 
