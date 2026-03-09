@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
+    borderCurve: 'continuous',
     backgroundColor: semantic.bgPage,
     justifyContent: 'center',
     alignItems: 'center',
@@ -169,6 +170,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
+    borderCurve: 'continuous',
     backgroundColor: semantic.statusError,
   },
   bottomBar: {
@@ -210,6 +212,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
+    borderCurve: 'continuous',
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -249,6 +252,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 8,
+    borderCurve: 'continuous',
     marginTop: 8,
   },
   rarity_common: {

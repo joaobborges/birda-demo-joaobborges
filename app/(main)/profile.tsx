@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
+    borderCurve: 'continuous',
     backgroundColor: semantic.borderDefault,
   },
   name: {
