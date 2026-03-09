@@ -35,6 +35,12 @@ export const colors = {
   rarityCommonBg: '#DBEAFE',   // Common rarity badge
   rarityUncommonBg: '#FEF3C7', // Uncommon rarity badge
   rarityRareBg: '#FCE7F3',     // Rare rarity badge
+
+  // ── Map Markers ──
+  markerCommon: '#22C55E',     // Green -- common birds
+  markerUncommon: '#F59E0B',   // Orange -- uncommon birds
+  markerRare: '#EF4444',       // Red -- rare birds
+  markerCluster: '#1F87FE',    // Birda blue -- clusters
 } as const;
 
 // ── Semantic tokens ──
@@ -72,6 +78,12 @@ export const semantic = {
   rarityCommonBg: colors.rarityCommonBg,
   rarityUncommonBg: colors.rarityUncommonBg,
   rarityRareBg: colors.rarityRareBg,
+
+  // ── Map Markers ──
+  markerCommon: colors.markerCommon,
+  markerUncommon: colors.markerUncommon,
+  markerRare: colors.markerRare,
+  markerCluster: colors.markerCluster,
 } as const;
 
 export type ColorToken = keyof typeof colors;
