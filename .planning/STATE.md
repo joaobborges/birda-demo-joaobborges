@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-03-09T11:53:45.936Z"
-last_activity: 2026-03-09 — Completed 02-03 Paywall Redesign & Post-Paywall Screens
+status: in-progress
+stopped_at: Completed 02-04-PLAN.md
+last_updated: "2026-03-09T12:19:26Z"
+last_activity: 2026-03-09 — Completed 02-04 Full-Bleed Layout & Ghost Button
 progress:
   total_phases: 3
-  completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  completed_phases: 1
+  total_plans: 7
+  completed_plans: 6
   percent: 100
 ---
 
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 
 ## Current Position
 
-Phase: 2 of 3 (Onboarding and Paywall) -- COMPLETE
-Plan: 3 of 3 in current phase
-Status: Phase 02 complete
-Last activity: 2026-03-09 — Completed 02-03 Paywall Redesign & Post-Paywall Screens
+Phase: 2 of 3 (Onboarding and Paywall)
+Plan: 4 of 5 in current phase
+Status: Executing plan 02-05
+Last activity: 2026-03-09 — Completed 02-04 Full-Bleed Layout & Ghost Button
 
-Progress: [██████████] 100%
+Progress: [█████████░] 86%
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Progress: [██████████] 100%
 | Phase 02 P01 | 1min | 2 tasks | 9 files |
 | Phase 02 P02 | 2min | 2 tasks | 8 files |
 | Phase 02 P03 | 4min | 2 tasks | 7 files |
+| Phase 02 P04 | 3min | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,8 @@ Recent decisions affecting current work:
 - [02-02] Feature tour ProgressDots total={4}, quiz ProgressDots total={3} (separate groups)
 - [Phase 02]: Used negative margin breakout for hero image to maintain OnboardingLayout usage (Option A)
 - [Phase 02]: borderCurve: continuous must accompany every borderRadius in the app (STYL-01 established)
+- [02-04] Illustration heights use Dimensions.get('window').height * percentage (not CSS-style percentage strings)
+- [02-04] Negative margin breakout pattern replaced by OnboardingLayout illustration prop slot
 
 ### Pending Todos
 
@@ -84,6 +87,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-09T11:49:45.555Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-03-09T12:19:26Z
+Stopped at: Completed 02-04-PLAN.md
 Resume file: None
