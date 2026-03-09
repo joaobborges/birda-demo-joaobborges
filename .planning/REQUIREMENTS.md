@@ -28,8 +28,8 @@ Requirements for the interview demo prototype. Each maps to roadmap phases.
 
 ### Screens
 
-- [ ] **SCRN-01**: Profile screen opens as full-screen push screen with avatar, username, skill badge, and mock achievement badges
-- [ ] **SCRN-02**: Community screen opens as full-screen push screen with LegendList feed of mock bird sightings
+- [x] **SCRN-01**: Profile screen opens as full-screen push screen with avatar, username, skill badge, and mock achievement badges
+- [x] **SCRN-02**: Community screen opens as full-screen push screen with LegendList feed of mock bird sightings
 
 ### Paywall
 
@@ -102,8 +102,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MAP-01 | Phase 3 | Complete |
 | MAP-02 | Phase 3 | Complete |
 | MAP-03 | Phase 3 | Complete |
-| SCRN-01 | Phase 3 | Pending |
-| SCRN-02 | Phase 3 | Pending |
+| SCRN-01 | Phase 3 | Complete |
+| SCRN-02 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 16 total
