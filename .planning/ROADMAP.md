@@ -2,25 +2,103 @@
 
 ## Milestones
 
-- ✅ **v1.0 MVP** — Phases 1-3 (shipped 2026-03-09)
+- ✅ **v1.0 MVP** -- Phases 1-3 (shipped 2026-03-09)
+- :construction: **v1.1 Polish & Refinement** -- Phases 4-7 (in progress)
 
 ## Phases
 
 <details>
-<summary>✅ v1.0 MVP (Phases 1-3) — SHIPPED 2026-03-09</summary>
+<summary>v1.0 MVP (Phases 1-3) -- SHIPPED 2026-03-09</summary>
 
-- [x] Phase 1: Foundation (2/2 plans) — completed 2026-03-09
-- [x] Phase 2: Onboarding and Paywall (5/5 plans) — completed 2026-03-09
-- [x] Phase 3: Map and Screens (3/3 plans) — completed 2026-03-09
+- [x] Phase 1: Foundation (2/2 plans) -- completed 2026-03-09
+- [x] Phase 2: Onboarding and Paywall (5/5 plans) -- completed 2026-03-09
+- [x] Phase 3: Map and Screens (3/3 plans) -- completed 2026-03-09
 
 See: `.planning/milestones/v1.0-ROADMAP.md` for full details.
 
 </details>
 
+### v1.1 Polish & Refinement (In Progress)
+
+**Milestone Goal:** Refine the prototype with design system enforcement, layout fixes, a redesigned paywall, and native-feeling navigation to make it feel production-ready.
+
+- [ ] **Phase 4: Design System & Onboarding Polish** - Rubik font loading, splash screen, token enforcement across all screens, and onboarding layout fixes
+- [ ] **Phase 5: Welcome Screen & Auth Drawer** - Auto-scrolling bird mosaic animation and bottom sheet auth drawer with sign-in options
+- [ ] **Phase 6: Paywall Redesign** - New single paywall with hero image, pricing, bullet points, and dismiss-to-home navigation
+- [ ] **Phase 7: Native Tabs & Map Drawer** - Native iOS tab bar, debug button repositioning, and full-width swipeable map bird detail drawer
+
+## Phase Details
+
+### Phase 4: Design System & Onboarding Polish
+**Goal**: Every screen renders with the Birda design system -- Rubik font, color tokens, spacing tokens -- and the onboarding flow has no visual bugs
+**Depends on**: Phase 3 (v1.0 complete)
+**Requirements**: FOUN-05, FOUN-06, FOUN-07, FOUN-08, FOUN-09, ONBR-04, ONBR-05, ONBR-06, ONBR-07, ONBR-08, ONBR-09, ONBR-10
+**Success Criteria** (what must be TRUE):
+  1. App launches with Birda logo splash screen that fades into the first screen with no white flash
+  2. All visible text across every screen renders in Rubik typeface (no system font fallback anywhere)
+  3. All primary CTA buttons use the design system blue (#1F87FE) with pill shape, and all spacing between elements matches theme tokens
+  4. All fixed bottom CTA containers sit at consistent 24px bottom / 16px horizontal padding across onboarding, paywall, and any future screens
+  5. Progress dots display white-at-50%-opacity (inactive) and blue (active), hold fixed position across screens, name input disables CTA until text is entered, and no content overflows on Stay in the Loop or Mailing List screens
+**Plans**: TBD
+
+Plans:
+- [ ] 04-01: TBD
+- [ ] 04-02: TBD
+
+### Phase 5: Welcome Screen & Auth Drawer
+**Goal**: Users see an eye-catching animated welcome screen and can choose how to sign in via a bottom sheet drawer
+**Depends on**: Phase 4
+**Requirements**: WELC-01, WELC-02, AUTH-01, AUTH-02, AUTH-03
+**Success Criteria** (what must be TRUE):
+  1. Welcome screen displays a continuously auto-scrolling mosaic of bird images in 3 columns at different speeds, with no scroll interaction allowed
+  2. Tapping "Login" opens a bottom drawer presenting Apple and Google sign-in options
+  3. Tapping "Create account" opens a bottom drawer presenting Apple, Google, and Email sign-in options
+  4. Selecting any auth option in either drawer dismisses the drawer and advances to the next onboarding screen
+**Plans**: TBD
+
+Plans:
+- [ ] 05-01: TBD
+- [ ] 05-02: TBD
+
+### Phase 6: Paywall Redesign
+**Goal**: The paywall presents a polished, conversion-oriented layout and dismissing it navigates directly to the home screen
+**Depends on**: Phase 5
+**Requirements**: PAYW-04, PAYW-05, PAYW-06, PAYW-07, PAYW-08, PAYW-09, PAYW-10
+**Success Criteria** (what must be TRUE):
+  1. Paywall displays a hero image at the top with a close (x) button in the top-right corner
+  2. Paywall shows "Unlock the full experience" headline, 3 feature bullet points, social proof (400+ happy birders, 4.7 stars), and pricing (large monthly rate, small annual line)
+  3. CTA reads "Redeem your FREE Week" and footer shows Terms of Use, Restore Purchase, and Privacy Policy links
+  4. Tapping the close button dismisses the paywall and lands the user on the home map screen (no onboarding screens in back stack)
+**Plans**: TBD
+
+Plans:
+- [ ] 06-01: TBD
+
+### Phase 7: Native Tabs & Map Drawer
+**Goal**: The home screen uses a native iOS tab bar and bird details appear in a full-width swipeable drawer above all content
+**Depends on**: Phase 6
+**Requirements**: NAV-01, NAV-02, NAV-03, NAV-04, NAV-05
+**Success Criteria** (what must be TRUE):
+  1. Home screen shows a native iOS tab bar with Map, Capture, and Logbook tabs (SF Symbol icons, proper active/inactive states)
+  2. Debug button is positioned at the top of the screen with styling consistent with the rest of the app
+  3. Tapping a bird marker opens a full-width drawer (touching left, right, and bottom edges) that renders above all other content including the debug button
+  4. Map drawer supports swipe-to-dismiss gesture and the map remains interactive when the drawer is collapsed
+**Plans**: TBD
+
+Plans:
+- [ ] 07-01: TBD
+- [ ] 07-02: TBD
+
 ## Progress
+
+**Execution Order:** Phase 4 -> 5 -> 6 -> 7
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 1. Foundation | v1.0 | 2/2 | Complete | 2026-03-09 |
 | 2. Onboarding and Paywall | v1.0 | 5/5 | Complete | 2026-03-09 |
 | 3. Map and Screens | v1.0 | 3/3 | Complete | 2026-03-09 |
+| 4. Design System & Onboarding Polish | v1.1 | 0/? | Not started | - |
+| 5. Welcome Screen & Auth Drawer | v1.1 | 0/? | Not started | - |
+| 6. Paywall Redesign | v1.1 | 0/? | Not started | - |
+| 7. Native Tabs & Map Drawer | v1.1 | 0/? | Not started | - |
