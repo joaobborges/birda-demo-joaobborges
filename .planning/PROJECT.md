@@ -42,7 +42,9 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 
 ### Active
 
-(None — define in next milestone)
+<!-- v1.1 Polish & Refinement — defined 2026-03-09 -->
+
+(See REQUIREMENTS.md for full scoped list with REQ-IDs)
 
 ### Out of Scope
 
@@ -58,6 +60,22 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 - Dark mode — doubles design surface, single theme is better
 - Bird identification (ML/AI) — separate project scope
 - Internationalization — English only, strings are extractable
+
+## Current Milestone: v1.1 Polish & Refinement
+
+**Goal:** Refine the prototype with design system enforcement, layout fixes, a redesigned paywall, and native-feeling navigation to make it feel production-ready.
+
+**Target features:**
+- Splash screen with logo asset
+- Design system enforcement (Rubik font, color tokens on CTAs, spacing tokens)
+- Welcome screen: locked layout + auto-scrolling mosaic animation
+- Auth bottom drawer (Login/Create with Apple, Google, Email options)
+- Onboarding layout fixes (dots styling, spacing consistency, overflow bugs)
+- Redesigned single paywall (hero image, pricing, bullet points, dismiss to home)
+- Fixed bottom CTA padding standardized (24px bottom, 16px horizontal)
+- Native iOS tab bar for Capture/Logbook on home screen
+- Debug button repositioned to top of screen
+- Full-width swipeable map drawer rendered above all content
 
 ## Context
 
@@ -99,4 +117,4 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 | Emoji placeholders for avatar visuals | No real bird assets available — demonstrates dynamic behavior pattern | ⚠️ Revisit |
 
 ---
-*Last updated: 2026-03-09 after v1.0 milestone*
+*Last updated: 2026-03-09 after v1.1 milestone started*
