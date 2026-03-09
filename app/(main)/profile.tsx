@@ -1,28 +1,24 @@
 import { View, Text, StyleSheet } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Image } from 'expo-image'
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic } from '@/theme/colors'
 
 const ACHIEVEMENTS = [
-  { emoji: '🌅', label: 'Early Bird' },
-  { emoji: '🔭', label: 'Sharp Eye' },
-  { emoji: '📸', label: 'Photographer' },
-  { emoji: '🗺️', label: 'Explorer' },
+  { icon: 'sunny-outline' as const, label: 'Early Bird', bg: '#FEF3C7' },
+  { icon: 'eye-outline' as const, label: 'Sharp Eye', bg: '#DBEAFE' },
+  { icon: 'camera-outline' as const, label: 'Photographer', bg: '#FCE7F3' },
+  { icon: 'compass-outline' as const, label: 'Explorer', bg: '#D4EDDA' },
 ]
 
 export default function ProfileScreen() {
-  const { top } = useSafeAreaInsets()
   const { name, birdingJourney } = useOnboardingStore()
 
   return (
-    <View style={[styles.container, { paddingTop: top + 20 }]}>
+    <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          source={{ uri: 'https://api.dicebear.com/7.x/avataaars/png?seed=birda' }}
-          style={styles.avatar}
-          contentFit="cover"
-        />
+        <View style={styles.avatar}>
+          <Ionicons name="person" size={40} color={semantic.actionPrimary} />
+        </View>
         <Text style={styles.name}>{name || 'Birder'}</Text>
         {birdingJourney ? (
           <View style={styles.skillBadge}>
@@ -54,7 +50,9 @@ export default function ProfileScreen() {
       <View style={styles.achievements}>
         {ACHIEVEMENTS.map((a) => (
           <View key={a.label} style={styles.achievement}>
-            <Text style={styles.achievementEmoji}>{a.emoji}</Text>
+            <View style={[styles.achievementIcon, { backgroundColor: a.bg }]}>
+              <Ionicons name={a.icon} size={24} color={semantic.textPrimary} />
+            </View>
             <Text style={styles.achievementLabel}>{a.label}</Text>
           </View>
         ))}
@@ -79,7 +77,9 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     borderCurve: 'continuous',
-    backgroundColor: semantic.borderDefault,
+    backgroundColor: semantic.actionPrimaryBg,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   name: {
     fontSize: 24,
@@ -145,8 +145,13 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
   },
-  achievementEmoji: {
-    fontSize: 28,
+  achievementIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderCurve: 'continuous',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   achievementLabel: {
     fontSize: 12,
