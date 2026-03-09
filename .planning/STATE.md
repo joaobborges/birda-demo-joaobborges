@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Polish & Refinement
 status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-03-09T17:12:36.440Z"
-last_activity: 2026-03-09 — Roadmap created for v1.1 milestone
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-03-09T17:16:02.819Z"
+last_activity: 2026-03-09 — Completed 04-01 Font & Splash Foundation
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
-  percent: 33
+  completed_plans: 2
+  percent: 67
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 ## Current Position
 
 Phase: 4 of 7 (Design System & Onboarding Polish) — first phase of v1.1
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Executing
-Last activity: 2026-03-09 — Completed 04-01 Font & Splash Foundation
+Last activity: 2026-03-09 — Completed 04-02 Core Component Fixes
 
-Progress: [███░░░░░░░] 33%
+Progress: [███████░░░] 67%
 
 ## Performance Metrics
 
@@ -44,6 +44,7 @@ Progress: [███░░░░░░░] 33%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 04-01 | 2 | 2min | 1min |
+| 04-02 | 2 | 3min | 1.5min |
 
 ## Accumulated Context
 
@@ -52,6 +53,8 @@ Progress: [███░░░░░░░] 33%
 Decisions are logged in PROJECT.md Key Decisions table (13 decisions, all Good except emoji avatars Revisit).
 
 Recent decisions affecting current work:
+- 04-02: Button text uses fontWeights.semiBold (not buttonLabel token) for 15px CTA labels
+- 04-02: name.tsx switched from useRef to useState for controlled input enabling disabled prop
 - 04-01: Font weights encoded in family name (Rubik_400Regular) instead of fontWeight property
 - v1.1: Foundation first — font loading + splash require EAS rebuild, batch together
 - v1.1: @gorhom/bottom-sheet v5.2.8 over alternatives — confirmed Reanimated 4 peer dep support
@@ -68,6 +71,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-09T17:12:01Z
-Stopped at: Completed 04-01-PLAN.md
-Resume file: .planning/phases/04-design-system-onboarding-polish/04-02-PLAN.md
+Last session: 2026-03-09T17:16:00Z
+Stopped at: Completed 04-02-PLAN.md
+Resume file: .planning/phases/04-design-system-onboarding-polish/04-03-PLAN.md

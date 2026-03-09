@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
+import { typography, fontWeights } from '@/theme/typography'
 
 export default function WelcomeScreen() {
   const { push } = useRouter()
@@ -65,29 +66,28 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.bgTinted,
   },
   content: {
-    paddingTop: 24,
+    paddingTop: spacing['6'],
   },
   heading: {
-    fontSize: 30,
-    fontWeight: '700',
+    ...typography.h2,
     color: semantic.textPrimary,
   },
   description: {
-    fontSize: 16,
+    ...typography.bodySmall,
     color: semantic.textSecondary,
-    marginTop: 8,
+    marginTop: spacing['2'],
   },
   checkboxRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 24,
+    marginTop: spacing['6'],
     marginBottom: spacing['4'],
-    gap: 12,
+    gap: spacing['3'],
   },
   checkbox: {
-    width: 20,
-    height: 20,
-    borderRadius: 6,
+    width: spacing['5'],
+    height: spacing['5'],
+    borderRadius: 6, // no exact token
     borderCurve: 'continuous',
     justifyContent: 'center',
     alignItems: 'center',
@@ -100,12 +100,12 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.actionPrimary,
   },
   checkmark: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700',
+    color: semantic.textInverse,
+    fontFamily: fontWeights.bold,
+    fontSize: 12, // no exact token
   },
   checkboxLabel: {
-    fontSize: 14,
+    ...typography.caption,
     color: semantic.textSecondary,
     flex: 1,
   },

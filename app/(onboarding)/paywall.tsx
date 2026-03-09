@@ -6,6 +6,8 @@ import { useOnboardingStore } from '@/stores/onboarding'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { Button } from '@/components/ui/Button'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { typography, fontWeights } from '@/theme/typography'
 
 const FEATURES = [
   'Unlimited bird identifications',
@@ -139,47 +141,44 @@ const styles = StyleSheet.create({
     height: 220,
   },
   scrollContent: {
-    paddingTop: 24,
-    gap: 24,
+    paddingTop: spacing['6'],
+    gap: spacing['6'],
   },
   footerButtons: {
-    gap: 8,
+    gap: spacing['2'],
   },
   banner: {
     backgroundColor: semantic.statusSuccessBg,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 12,
+    paddingVertical: spacing['2'],
+    paddingHorizontal: spacing['4'],
+    borderRadius: 12, // no exact token
     borderCurve: 'continuous',
     alignSelf: 'center',
   },
   bannerText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontFamily: fontWeights.semiBold,
+    fontSize: 15, // no exact token
     color: semantic.textPrimary,
   },
   title: {
-    fontSize: 30,
-    fontWeight: '700',
+    ...typography.h2,
     color: semantic.textPrimary,
     letterSpacing: -0.5,
-    lineHeight: 38,
   },
   features: {
-    gap: 14,
+    gap: 14, // no exact token
   },
   featureRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: spacing['3'],
   },
   checkmark: {
-    fontSize: 18,
+    ...typography.navItem,
     color: semantic.actionPrimary,
-    fontWeight: '700',
   },
   featureText: {
-    fontSize: 16,
+    ...typography.bodySmall,
     color: semantic.textBody,
   },
   toggle: {
@@ -188,52 +187,52 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.bgSurface,
     borderRadius: 16,
     borderCurve: 'continuous',
-    padding: 4,
+    padding: spacing['1'],
     position: 'relative',
   },
   toggleIndicator: {
     position: 'absolute',
-    top: 4,
-    left: 4,
+    top: spacing['1'],
+    left: spacing['1'],
     height: '100%',
     backgroundColor: semantic.bgPage,
-    borderRadius: 12,
+    borderRadius: 12, // no exact token
     borderCurve: 'continuous',
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
   },
   toggleOption: {
     alignItems: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    gap: 2,
+    paddingVertical: 14, // no exact token
+    paddingHorizontal: spacing['5'],
+    gap: 2, // no exact token
     zIndex: 1,
   },
   toggleLabel: {
-    fontSize: 14,
-    fontWeight: '600',
+    ...typography.caption,
+    fontFamily: fontWeights.semiBold,
     color: semantic.textMuted,
   },
   toggleLabelActive: {
     color: semantic.textInput,
   },
   togglePrice: {
-    fontSize: 16,
-    fontWeight: '700',
+    ...typography.bodySmall,
+    fontFamily: fontWeights.bold,
     color: semantic.textMuted,
   },
   togglePriceActive: {
     color: semantic.textPrimary,
   },
   valueBadge: {
-    fontSize: 11,
-    fontWeight: '600',
+    fontFamily: fontWeights.semiBold,
+    fontSize: 11, // no exact token
     color: semantic.actionSecondaryText,
     backgroundColor: semantic.actionPrimary,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 6,
+    paddingHorizontal: spacing['2'],
+    paddingVertical: 2, // no exact token
+    borderRadius: 6, // no exact token
     borderCurve: 'continuous',
     overflow: 'hidden',
-    marginTop: 4,
+    marginTop: spacing['1'],
   },
 })

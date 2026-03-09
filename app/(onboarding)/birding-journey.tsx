@@ -7,6 +7,8 @@ import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { typography, fontWeights } from '@/theme/typography'
 
 const LEVELS = [
   { key: 'new', label: 'New', description: "I'm new to birding" },
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     borderCurve: 'continuous',
     alignSelf: 'center',
-    marginBottom: 24,
+    marginBottom: spacing['6'],
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -95,30 +97,29 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   heading: {
-    fontSize: 24,
-    fontWeight: '700',
+    ...typography.h3,
     color: semantic.textPrimary,
     textAlign: 'center',
   },
   description: {
-    fontSize: 16,
+    ...typography.bodySmall,
     color: semantic.textSecondary,
     textAlign: 'center',
-    marginTop: 8,
+    marginTop: spacing['2'],
   },
   options: {
-    gap: 12,
-    marginTop: 24,
+    gap: spacing['3'],
+    marginTop: spacing['6'],
   },
   chip: {
     flexDirection: 'row',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
+    paddingVertical: spacing['4'],
+    paddingHorizontal: spacing['5'],
     borderRadius: 16,
     borderCurve: 'continuous',
     borderWidth: 1.5,
     alignItems: 'center',
-    gap: 8,
+    gap: spacing['2'],
   },
   chipDefault: {
     borderColor: semantic.borderDefault,
@@ -129,12 +130,12 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.actionPrimaryBg,
   },
   chipLabel: {
-    fontSize: 16,
-    fontWeight: '600',
+    ...typography.bodySmall,
+    fontFamily: fontWeights.semiBold,
     color: semantic.textPrimary,
   },
   chipDescription: {
-    fontSize: 14,
+    ...typography.caption,
     color: semantic.textSecondary,
     flex: 1,
   },

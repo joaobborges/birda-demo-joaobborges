@@ -6,6 +6,8 @@ import { useOnboardingStore } from '@/stores/onboarding'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { Button } from '@/components/ui/Button'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { typography } from '@/theme/typography'
 
 export default function MailingListScreen() {
   const { replace } = useRouter()
@@ -54,19 +56,19 @@ export default function MailingListScreen() {
 const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
-    gap: 8,
+    gap: spacing['2'],
+    flexShrink: 1,
   },
   heading: {
-    fontSize: 24,
-    fontWeight: '700',
+    ...typography.h3,
     color: semantic.textPrimary,
     textAlign: 'center',
   },
   description: {
-    fontSize: 16,
+    ...typography.bodySmall,
     color: semantic.textSecondary,
     textAlign: 'center',
-    marginTop: 8,
+    marginTop: spacing['2'],
   },
   imagePlaceholder: {
     height: 200,
@@ -75,17 +77,18 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderCurve: 'continuous',
     alignSelf: 'center',
-    marginVertical: 40,
+    marginVertical: spacing['6'],
+    flexShrink: 1,
   },
   toggleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 16,
+    paddingVertical: spacing['4'],
     width: '100%',
   },
   toggleLabel: {
-    fontSize: 16,
+    ...typography.bodySmall,
     color: semantic.textPrimary,
   },
 })

@@ -5,6 +5,8 @@ import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { typography } from '@/theme/typography'
 
 export default function CommunityScreen() {
   const { push } = useRouter()
@@ -38,18 +40,17 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.bgTinted,
   },
   content: {
-    paddingTop: 24,
+    paddingTop: spacing['6'],
   },
   heading: {
-    fontSize: 28,
-    fontWeight: '700',
+    ...typography.h2,
     color: semantic.textPrimary,
     textAlign: 'center',
   },
   description: {
-    fontSize: 16,
+    ...typography.bodySmall,
     color: semantic.textSecondary,
     textAlign: 'center',
-    marginTop: 12,
+    marginTop: spacing['3'],
   },
 })

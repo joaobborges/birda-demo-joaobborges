@@ -7,6 +7,8 @@ import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { typography, fontWeights } from '@/theme/typography'
 
 const GOALS = [
   'Spend more time outside',
@@ -70,21 +72,20 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.bgTinted,
   },
   content: {
-    paddingTop: 24,
+    paddingTop: spacing['6'],
   },
   heading: {
-    fontSize: 24,
-    fontWeight: '700',
+    ...typography.h3,
     color: semantic.textPrimary,
     textAlign: 'center',
   },
   options: {
-    gap: 12,
-    marginTop: 24,
+    gap: spacing['3'],
+    marginTop: spacing['6'],
   },
   chip: {
-    paddingVertical: 16,
-    paddingHorizontal: 20,
+    paddingVertical: spacing['4'],
+    paddingHorizontal: spacing['5'],
     borderRadius: 16,
     borderCurve: 'continuous',
     borderWidth: 1.5,
@@ -99,8 +100,8 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.actionPrimaryBg,
   },
   chipLabel: {
-    fontSize: 16,
-    fontWeight: '600',
+    ...typography.bodySmall,
+    fontFamily: fontWeights.semiBold,
     color: semantic.textPrimary,
   },
 })
