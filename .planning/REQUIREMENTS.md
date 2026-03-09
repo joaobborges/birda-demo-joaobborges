@@ -9,7 +9,7 @@ Requirements for the interview demo prototype. Each maps to roadmap phases.
 
 ### Foundation
 
-- [ ] **FOUN-01**: App uses centralized theme tokens (colors, spacing) instead of hardcoded hex values
+- [x] **FOUN-01**: App uses centralized theme tokens (colors, spacing) instead of hardcoded hex values
 - [x] **FOUN-02**: Returning users see map immediately — no flash of onboarding (Zustand hydration guard)
 - [x] **FOUN-03**: React Compiler (babel-plugin-react-compiler) is enabled and auto-memoizes components
 - [x] **FOUN-04**: ESLint enforces jsx-no-leaked-render and no-barrel-files rules
@@ -88,7 +88,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-01 | Phase 1 | Pending |
+| FOUN-01 | Phase 1 | Complete |
 | FOUN-02 | Phase 1 | Complete |
 | FOUN-03 | Phase 1 | Complete |
 | FOUN-04 | Phase 1 | Complete |
