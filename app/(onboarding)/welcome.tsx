@@ -1,62 +1,109 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated'
+import Animated, { FadeIn } from 'react-native-reanimated'
+import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { Button } from '@/components/ui/Button'
-import { semantic, colors } from '@/theme/colors'
-
-const birdLogo = require('@/assets/bird-logo.png')
+import { useOnboardingStore } from '@/stores/onboarding'
+import { semantic } from '@/theme/colors'
 
 export default function WelcomeScreen() {
   const { push } = useRouter()
-  const { top, bottom } = useSafeAreaInsets()
+  const termsAccepted = useOnboardingStore((s) => s.termsAccepted)
+  const setTermsAccepted = useOnboardingStore((s) => s.setTermsAccepted)
+
+  const handleNavigate = () => {
+    if (termsAccepted) {
+      push('/(onboarding)/ai-bird-id')
+    }
+  }
 
   return (
-    <View style={[styles.container, { paddingTop: top + 60, paddingBottom: bottom + 20 }]}>
-      <Animated.View entering={FadeIn.duration(600)} style={styles.logoContainer}>
-        <Image source={birdLogo} style={styles.logo} />
-        <Text style={styles.title}>Birda</Text>
-        <Text style={styles.tagline}>Your bird watching companion</Text>
-      </Animated.View>
+    <OnboardingLayout
+      footer={
+        <View style={{ opacity: termsAccepted ? 1 : 0.5 }}>
+          <Button title="Create Account" onPress={handleNavigate} />
+          <Button title="Log in" variant="link" onPress={handleNavigate} />
+        </View>
+      }
+    >
+      <View style={styles.heroPlaceholder} />
 
-      <Animated.View entering={FadeInDown.delay(400).duration(500)} style={styles.actions}>
-        <Button title="Get Started" onPress={() => push('/(onboarding)/name')} />
+      <Animated.View entering={FadeIn.delay(100).duration(300)}>
+        <Text style={styles.heading}>Welcome to Birda</Text>
+        <Text style={styles.description}>
+          Discover, identify, and log birds around you
+        </Text>
+
+        <Pressable
+          style={styles.checkboxRow}
+          onPress={() => setTermsAccepted(!termsAccepted)}
+        >
+          <View
+            style={[
+              styles.checkbox,
+              termsAccepted ? styles.checkboxChecked : styles.checkboxUnchecked,
+            ]}
+          >
+            {termsAccepted ? (
+              <Text style={styles.checkmark}>{'✓'}</Text>
+            ) : null}
+          </View>
+          <Text style={styles.checkboxLabel}>
+            I agree to the Terms of Service and Privacy Policy
+          </Text>
+        </Pressable>
       </Animated.View>
-    </View>
+    </OnboardingLayout>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  heroPlaceholder: {
     flex: 1,
-    backgroundColor: semantic.bgPage,
-    justifyContent: 'space-between',
-    paddingHorizontal: 24,
+    backgroundColor: semantic.bgTinted,
+    borderRadius: 24,
+    borderCurve: 'continuous',
+    marginBottom: 32,
   },
-  logoContainer: {
-    flex: 1,
+  heading: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: semantic.textPrimary,
+  },
+  description: {
+    fontSize: 16,
+    color: semantic.textSecondary,
+    marginTop: 8,
+  },
+  checkboxRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 24,
+    gap: 12,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderRadius: 6,
+    borderCurve: 'continuous',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 12,
   },
-  logo: {
-    width: 72,
-    height: 72,
-    marginBottom: 8,
+  checkboxUnchecked: {
+    borderWidth: 1.5,
+    borderColor: semantic.borderDefault,
   },
-  title: {
-    fontSize: 42,
+  checkboxChecked: {
+    backgroundColor: semantic.actionPrimary,
+  },
+  checkmark: {
+    color: '#FFFFFF',
+    fontSize: 12,
     fontWeight: '700',
-    color: colors.neutral950,
-    letterSpacing: -1,
   },
-  tagline: {
-    fontSize: 18,
-    color: semantic.textStrong,
-    opacity: 0.4,
-    fontWeight: '400',
-  },
-  actions: {
-    gap: 12,
+  checkboxLabel: {
+    fontSize: 14,
+    color: semantic.textSecondary,
+    flex: 1,
   },
 })
