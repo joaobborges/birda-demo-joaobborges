@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Polish & Refinement
-status: planning
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-09T16:51:24.329Z"
+status: executing
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-09T17:12:36.440Z"
 last_activity: 2026-03-09 — Roadmap created for v1.1 milestone
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_plans: 3
+  completed_plans: 1
+  percent: 33
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 ## Current Position
 
 Phase: 4 of 7 (Design System & Onboarding Polish) — first phase of v1.1
-Plan: —
-Status: Ready to plan
-Last activity: 2026-03-09 — Roadmap created for v1.1 milestone
+Plan: 2 of 3
+Status: Executing
+Last activity: 2026-03-09 — Completed 04-01 Font & Splash Foundation
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [███░░░░░░░] 33%
 
 ## Performance Metrics
 
@@ -43,7 +43,7 @@ Progress: [░░░░░░░░░░] 0%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 04-01 | 2 | 2min | 1min |
 
 ## Accumulated Context
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 Decisions are logged in PROJECT.md Key Decisions table (13 decisions, all Good except emoji avatars Revisit).
 
 Recent decisions affecting current work:
+- 04-01: Font weights encoded in family name (Rubik_400Regular) instead of fontWeight property
 - v1.1: Foundation first — font loading + splash require EAS rebuild, batch together
 - v1.1: @gorhom/bottom-sheet v5.2.8 over alternatives — confirmed Reanimated 4 peer dep support
 - v1.1: NativeTabs (alpha) last — highest risk, fallback to restyled floating bar available
@@ -62,11 +63,11 @@ None.
 
 ### Blockers/Concerns
 
-- Rubik font was never loaded despite typography tokens referencing it — critical gap for Phase 4
+- ~~Rubik font was never loaded despite typography tokens referencing it~~ RESOLVED in 04-01
 - NativeTabs is alpha (`unstable-native-tabs`) — needs fallback plan if runtime issues arise
 
 ## Session Continuity
 
-Last session: 2026-03-09T16:51:24.322Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-design-system-onboarding-polish/04-CONTEXT.md
+Last session: 2026-03-09T17:12:01Z
+Stopped at: Completed 04-01-PLAN.md
+Resume file: .planning/phases/04-design-system-onboarding-polish/04-02-PLAN.md

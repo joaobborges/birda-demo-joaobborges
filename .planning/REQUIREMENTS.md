@@ -9,11 +9,11 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 
 ### Foundation
 
-- [ ] **FOUN-05**: App displays splash screen with Birda logo on launch
-- [ ] **FOUN-06**: All text renders in Rubik typeface (font loaded at build time)
+- [x] **FOUN-05**: App displays splash screen with Birda logo on launch
+- [x] **FOUN-06**: All text renders in Rubik typeface (font loaded at build time)
 - [ ] **FOUN-07**: All primary CTA buttons use design system color tokens
 - [ ] **FOUN-08**: All screens use spacing tokens from theme for consistent gaps
-- [ ] **FOUN-09**: All fixed bottom CTA containers use 24px bottom / 16px horizontal padding
+- [x] **FOUN-09**: All fixed bottom CTA containers use 24px bottom / 16px horizontal padding
 
 ### Welcome Screen
 
@@ -78,11 +78,11 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-05 | Phase 4 | Pending |
-| FOUN-06 | Phase 4 | Pending |
+| FOUN-05 | Phase 4 | Complete |
+| FOUN-06 | Phase 4 | Complete |
 | FOUN-07 | Phase 4 | Pending |
 | FOUN-08 | Phase 4 | Pending |
-| FOUN-09 | Phase 4 | Pending |
+| FOUN-09 | Phase 4 | Complete |
 | WELC-01 | Phase 5 | Pending |
 | WELC-02 | Phase 5 | Pending |
 | AUTH-01 | Phase 5 | Pending |
