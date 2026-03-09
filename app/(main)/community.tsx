@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Image } from 'expo-image'
 import { LegendList } from '@legendapp/list'
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { semantic } from '@/theme/colors'
 
 interface Sighting {
@@ -12,15 +12,16 @@ interface Sighting {
   location: string
   timestamp: string
   image: string
+  likes: number
 }
 
 const SIGHTINGS: Sighting[] = [
-  { id: '1', birdName: 'European Robin', species: 'Erithacus rubecula', username: 'Maria S.', location: 'Parque das Nações', timestamp: '2 hours ago', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Erithacus_rubecula_with_cocked_head.jpg/320px-Erithacus_rubecula_with_cocked_head.jpg' },
-  { id: '2', birdName: 'Common Kingfisher', species: 'Alcedo atthis', username: 'Pedro L.', location: 'Monsanto Forest', timestamp: '4 hours ago', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Alcedo_atthis_-_Flickr_-_Lip_Kee.jpg/320px-Alcedo_atthis_-_Flickr_-_Lip_Kee.jpg' },
-  { id: '3', birdName: 'White Stork', species: 'Ciconia ciconia', username: 'Ana R.', location: 'Belém Tower', timestamp: '5 hours ago', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/White_Stork-Mindaugas_Urbonas-1.jpg/320px-White_Stork-Mindaugas_Urbonas-1.jpg' },
-  { id: '4', birdName: 'Hoopoe', species: 'Upupa epops', username: 'Tiago M.', location: 'Sintra National Park', timestamp: 'Yesterday', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Upupa_epops_1.jpg/320px-Upupa_epops_1.jpg' },
-  { id: '5', birdName: 'Flamingo', species: 'Phoenicopterus roseus', username: 'Sofia C.', location: 'Tagus Estuary', timestamp: 'Yesterday', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Greater_flamingo_%28Phoenicopterus_roseus%29.jpg/320px-Greater_flamingo_%28Phoenicopterus_roseus%29.jpg' },
-  { id: '6', birdName: 'Bee-eater', species: 'Merops apiaster', username: 'João B.', location: 'Alentejo', timestamp: '2 days ago', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Merops_apiaster.jpg/320px-Merops_apiaster.jpg' },
+  { id: '1', birdName: 'European Robin', species: 'Erithacus rubecula', username: 'Maria S.', location: 'Parque das Nações', timestamp: '2 hours ago', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Erithacus_rubecula_with_cocked_head.jpg/320px-Erithacus_rubecula_with_cocked_head.jpg', likes: 24 },
+  { id: '2', birdName: 'Common Kingfisher', species: 'Alcedo atthis', username: 'Pedro L.', location: 'Monsanto Forest', timestamp: '4 hours ago', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Alcedo_atthis_-_Flickr_-_Lip_Kee.jpg/320px-Alcedo_atthis_-_Flickr_-_Lip_Kee.jpg', likes: 18 },
+  { id: '3', birdName: 'White Stork', species: 'Ciconia ciconia', username: 'Ana R.', location: 'Belém Tower', timestamp: '5 hours ago', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/White_Stork-Mindaugas_Urbonas-1.jpg/320px-White_Stork-Mindaugas_Urbonas-1.jpg', likes: 31 },
+  { id: '4', birdName: 'Hoopoe', species: 'Upupa epops', username: 'Tiago M.', location: 'Sintra National Park', timestamp: 'Yesterday', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Upupa_epops_1.jpg/320px-Upupa_epops_1.jpg', likes: 12 },
+  { id: '5', birdName: 'Flamingo', species: 'Phoenicopterus roseus', username: 'Sofia C.', location: 'Tagus Estuary', timestamp: 'Yesterday', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Greater_flamingo_%28Phoenicopterus_roseus%29.jpg/320px-Greater_flamingo_%28Phoenicopterus_roseus%29.jpg', likes: 45 },
+  { id: '6', birdName: 'Bee-eater', species: 'Merops apiaster', username: 'João B.', location: 'Alentejo', timestamp: '2 days ago', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Merops_apiaster.jpg/320px-Merops_apiaster.jpg', likes: 8 },
 ]
 
 function SightingItem({ item }: { item: Sighting }) {
@@ -36,17 +37,18 @@ function SightingItem({ item }: { item: Sighting }) {
           <Text style={styles.metaText}>{item.location}</Text>
         </View>
         <Text style={styles.timestamp}>{item.timestamp}</Text>
+        <View style={styles.likeRow}>
+          <Ionicons name="heart-outline" size={14} color={semantic.textMuted} />
+          <Text style={styles.likeCount}>{item.likes}</Text>
+        </View>
       </View>
     </View>
   )
 }
 
 export default function CommunityScreen() {
-  const { top } = useSafeAreaInsets()
-
   return (
-    <View style={[styles.container, { paddingTop: top + 20 }]}>
-      <Text style={styles.title}>Community Sightings</Text>
+    <View style={styles.container}>
       <LegendList
         data={SIGHTINGS}
         renderItem={({ item }) => <SightingItem item={item} />}
@@ -63,15 +65,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: semantic.bgPage,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: semantic.textPrimary,
-    paddingHorizontal: 24,
-    marginBottom: 16,
-  },
   list: {
     paddingHorizontal: 24,
+    paddingTop: 12,
     gap: 12,
     paddingBottom: 24,
   },
@@ -120,5 +116,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: semantic.textMuted,
     marginTop: 2,
+  },
+  likeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 4,
+  },
+  likeCount: {
+    fontSize: 12,
+    color: semantic.textMuted,
   },
 })
