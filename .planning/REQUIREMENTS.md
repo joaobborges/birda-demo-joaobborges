@@ -17,7 +17,7 @@ Requirements for the interview demo prototype. Each maps to roadmap phases.
 ### Onboarding
 
 - [ ] **ONBR-01**: Each onboarding screen has animated content transitions (FadeIn, spring effects on buttons)
-- [ ] **ONBR-02**: Onboarding screens share a reusable layout component (no duplicated styles across 7 screens)
+- [x] **ONBR-02**: Onboarding screens share a reusable layout component (no duplicated styles across 7 screens)
 - [ ] **ONBR-03**: Name and location inputs use uncontrolled TextInput pattern (ref-based, commit on Continue)
 
 ### Map
@@ -93,7 +93,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUN-03 | Phase 1 | Complete |
 | FOUN-04 | Phase 1 | Complete |
 | ONBR-01 | Phase 2 | Pending |
-| ONBR-02 | Phase 2 | Pending |
+| ONBR-02 | Phase 2 | Complete |
 | ONBR-03 | Phase 2 | Pending |
 | PAYW-01 | Phase 2 | Pending |
 | PAYW-02 | Phase 2 | Pending |
