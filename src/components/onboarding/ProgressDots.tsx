@@ -1,5 +1,6 @@
 import { View, StyleSheet } from 'react-native'
 import { semantic } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
 
 interface ProgressDotsProps {
   total: number
@@ -22,9 +23,10 @@ export function ProgressDots({ total, current }: ProgressDotsProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    gap: 8,
+    gap: spacing['2'],
     justifyContent: 'center',
-    paddingVertical: 16,
+    alignSelf: 'center',
+    paddingVertical: spacing['4'],
   },
   dot: {
     width: 8,
@@ -37,6 +39,6 @@ const styles = StyleSheet.create({
     width: 24,
   },
   inactive: {
-    backgroundColor: semantic.borderDefault,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
   },
 })

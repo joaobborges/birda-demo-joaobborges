@@ -2,6 +2,8 @@ import { type ReactNode } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { semantic } from '@/theme/colors'
+import { containers } from '@/theme/components'
+import { spacing } from '@/theme/spacing'
 
 interface OnboardingLayoutProps {
   illustration?: ReactNode
@@ -19,13 +21,13 @@ export function OnboardingLayout({ illustration, header, children, footer }: Onb
         <View style={styles.illustrationZone}>
           {illustration}
           {header ? (
-            <View style={[styles.headerOverlay, { top: top + 12 }]}>
+            <View style={[styles.headerOverlay, { top: top + spacing['3'] }]}>
               {header}
             </View>
           ) : null}
         </View>
       ) : header ? (
-        <View style={{ paddingTop: top + 20, paddingHorizontal: 24 }}>
+        <View style={{ paddingTop: top + spacing['5'], paddingHorizontal: spacing['6'] }}>
           {header}
         </View>
       ) : null}
@@ -39,7 +41,7 @@ export function OnboardingLayout({ illustration, header, children, footer }: Onb
       </ScrollView>
 
       {footer ? (
-        <View style={[styles.footer, { paddingBottom: bottom + 20 }]}>
+        <View style={[styles.footer, { paddingBottom: bottom + containers.fixedBottomCTA.paddingBottom }]}>
           {footer}
         </View>
       ) : null}
@@ -66,10 +68,10 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing['6'],
   },
   footer: {
-    paddingHorizontal: 24,
-    gap: 8,
+    paddingHorizontal: containers.fixedBottomCTA.paddingHorizontal,
+    gap: containers.fixedBottomCTA.gap,
   },
 })

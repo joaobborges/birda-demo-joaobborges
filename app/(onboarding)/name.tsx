@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useState } from 'react'
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
@@ -7,13 +7,16 @@ import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic } from '@/theme/colors'
+import { typography, fontWeights } from '@/theme/typography'
+import { spacing } from '@/theme/spacing'
+import { borderRadius } from '@/theme/components'
 
 export default function NameScreen() {
   const { push } = useRouter()
-  const nameRef = useRef('')
+  const [nameValue, setNameValue] = useState(useOnboardingStore.getState().name)
 
   const handleContinue = () => {
-    useOnboardingStore.getState().setName(nameRef.current)
+    useOnboardingStore.getState().setName(nameValue.trim())
     push('/(onboarding)/birding-journey')
   }
 
@@ -21,14 +24,11 @@ export default function NameScreen() {
     <OnboardingLayout
       header={<ProgressDots total={3} current={0} />}
       footer={
-        <>
-          <Button title="Continue" onPress={handleContinue} />
-          <Button
-            title="Skip"
-            variant="link"
-            onPress={() => push('/(onboarding)/birding-journey')}
-          />
-        </>
+        <Button
+          title="Continue"
+          onPress={handleContinue}
+          disabled={!nameValue.trim()}
+        />
       }
     >
       <Animated.View entering={FadeIn.delay(100).duration(300)}>
@@ -38,10 +38,8 @@ export default function NameScreen() {
           style={styles.input}
           placeholder="Your name"
           placeholderTextColor={semantic.textMuted}
-          defaultValue={useOnboardingStore.getState().name}
-          onChangeText={(text) => {
-            nameRef.current = text
-          }}
+          value={nameValue}
+          onChangeText={setNameValue}
           autoCapitalize="words"
           returnKeyType="done"
         />
@@ -58,22 +56,23 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     borderCurve: 'continuous',
     alignSelf: 'center',
-    marginBottom: 24,
+    marginBottom: spacing['10'],
   },
   heading: {
+    ...typography.subheading,
+    fontFamily: fontWeights.bold,
     fontSize: 24,
-    fontWeight: '700',
     color: semantic.textPrimary,
     textAlign: 'center',
   },
   input: {
+    ...typography.bodySmall,
     backgroundColor: semantic.bgSurface,
-    borderRadius: 16,
+    borderRadius: borderRadius.xl,
     borderCurve: 'continuous',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    fontSize: 16,
+    paddingHorizontal: spacing['5'],
+    paddingVertical: spacing['4'],
     color: semantic.textPrimary,
-    marginTop: 20,
+    marginTop: spacing['5'],
   },
 })
