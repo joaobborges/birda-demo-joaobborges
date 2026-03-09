@@ -43,5 +43,18 @@ export const buttons = {
   },
 } as const;
 
+/**
+ * Container layout styles
+ */
+export const containers = {
+  /** Fixed bottom CTA bar -- spacing['6'] bottom, spacing['4'] horizontal, spacing['2'] gap */
+  fixedBottomCTA: {
+    paddingBottom: 24,
+    paddingHorizontal: 16,
+    gap: 8,
+  },
+} as const;
+
 export type BorderRadiusToken = keyof typeof borderRadius;
 export type ButtonVariant = keyof typeof buttons;
+export type ContainerVariant = keyof typeof containers;

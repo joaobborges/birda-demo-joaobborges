@@ -23,7 +23,10 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (isHydrated) {
-      SplashScreen.hideAsync()
+      const timer = setTimeout(() => {
+        SplashScreen.hideAsync()
+      }, 500)
+      return () => clearTimeout(timer)
     }
   }, [isHydrated])
 
