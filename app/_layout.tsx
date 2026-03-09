@@ -3,6 +3,7 @@ import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import * as SplashScreen from 'expo-splash-screen'
+import { useFonts, Rubik_300Light, Rubik_400Regular, Rubik_500Medium, Rubik_600SemiBold, Rubik_700Bold } from '@expo-google-fonts/rubik'
 import { useOnboardingStore } from '@/stores/onboarding'
 
 SplashScreen.preventAutoHideAsync()
@@ -10,6 +11,14 @@ SplashScreen.preventAutoHideAsync()
 const DevPanel = __DEV__ ? require('@/components/dev/DevPanel').default : null
 
 export default function RootLayout() {
+  const [fontsLoaded, fontError] = useFonts({
+    Rubik_300Light,
+    Rubik_400Regular,
+    Rubik_500Medium,
+    Rubik_600SemiBold,
+    Rubik_700Bold,
+  })
+
   const [isHydrated, setIsHydrated] = useState(
     useOnboardingStore.persist.hasHydrated()
   )
@@ -22,15 +31,15 @@ export default function RootLayout() {
   }, [])
 
   useEffect(() => {
-    if (isHydrated) {
+    if (isHydrated && (fontsLoaded || fontError)) {
       const timer = setTimeout(() => {
         SplashScreen.hideAsync()
       }, 500)
       return () => clearTimeout(timer)
     }
-  }, [isHydrated])
+  }, [isHydrated, fontsLoaded, fontError])
 
-  if (!isHydrated) {
+  if (!isHydrated || (!fontsLoaded && !fontError)) {
     return null
   }
 

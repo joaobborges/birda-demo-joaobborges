@@ -8,11 +8,6 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "scheme": "birda",
-    "splash": {
-      "image": "./src/assets/bird-logo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.joaobborges.birda"
@@ -44,7 +39,11 @@
           ]
         }
       ],
-      "expo-splash-screen"
+      ["expo-splash-screen", {
+        "image": "./src/assets/bird-logo.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff"
+      }]
     ]
   }
 }
