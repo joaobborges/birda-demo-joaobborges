@@ -88,28 +88,28 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-01 | — | Pending |
-| FOUN-02 | — | Pending |
-| FOUN-03 | — | Pending |
-| FOUN-04 | — | Pending |
-| ONBR-01 | — | Pending |
-| ONBR-02 | — | Pending |
-| ONBR-03 | — | Pending |
-| MAP-01 | — | Pending |
-| MAP-02 | — | Pending |
-| MAP-03 | — | Pending |
-| SCRN-01 | — | Pending |
-| SCRN-02 | — | Pending |
-| PAYW-01 | — | Pending |
-| PAYW-02 | — | Pending |
-| PAYW-03 | — | Pending |
-| STYL-01 | — | Pending |
+| FOUN-01 | Phase 1 | Pending |
+| FOUN-02 | Phase 1 | Pending |
+| FOUN-03 | Phase 1 | Pending |
+| FOUN-04 | Phase 1 | Pending |
+| ONBR-01 | Phase 2 | Pending |
+| ONBR-02 | Phase 2 | Pending |
+| ONBR-03 | Phase 2 | Pending |
+| PAYW-01 | Phase 2 | Pending |
+| PAYW-02 | Phase 2 | Pending |
+| PAYW-03 | Phase 2 | Pending |
+| STYL-01 | Phase 2 | Pending |
+| MAP-01 | Phase 3 | Pending |
+| MAP-02 | Phase 3 | Pending |
+| MAP-03 | Phase 3 | Pending |
+| SCRN-01 | Phase 3 | Pending |
+| SCRN-02 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 16 total
-- Mapped to phases: 0
-- Unmapped: 16 ⚠️
+- Mapped to phases: 16
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-09*
-*Last updated: 2026-03-09 after initial definition*
+*Last updated: 2026-03-09 after roadmap creation*
