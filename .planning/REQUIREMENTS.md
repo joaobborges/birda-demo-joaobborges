@@ -22,14 +22,14 @@ Requirements for the interview demo prototype. Each maps to roadmap phases.
 
 ### Map
 
-- [ ] **MAP-01**: Bird markers cluster automatically at lower zoom levels via react-native-map-clustering
+- [ ] **MAP-01**: Bird markers cluster automatically at lower zoom levels via Supercluster
 - [ ] **MAP-02**: Map has floating UI overlay — profile icon (top-left), community + notification icons (top-right), capture + logbook buttons (bottom)
 - [ ] **MAP-03**: BirdMarker and BirdInfoCard are extracted to src/components/map/ as reusable components
 
 ### Screens
 
-- [ ] **SCRN-01**: Profile screen opens as native form sheet with avatar, username, skill badge, and mock achievement badges
-- [ ] **SCRN-02**: Community screen opens as native form sheet with LegendList feed of mock bird sightings
+- [ ] **SCRN-01**: Profile screen opens as full-screen push screen with avatar, username, skill badge, and mock achievement badges
+- [ ] **SCRN-02**: Community screen opens as full-screen push screen with LegendList feed of mock bird sightings
 
 ### Paywall
 

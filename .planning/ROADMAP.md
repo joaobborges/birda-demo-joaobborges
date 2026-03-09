@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundation** - Theme tokens, hydration guard, React Compiler, and ESLint rules
 - [ ] **Phase 2: Onboarding and Paywall** - Polished onboarding wizard flow and paywall with variant support
-- [ ] **Phase 3: Map and Screens** - Marker clustering, floating UI overlay, and form sheet screens
+- [ ] **Phase 3: Map and Screens** - Marker clustering, floating UI overlay, and push screens
 
 ## Phase Details
 
@@ -53,15 +53,15 @@ Plans:
 - [ ] 02-05-PLAN.md — Gap closure: dynamic birding journey avatar, smooth paywall toggle animation
 
 ### Phase 3: Map and Screens
-**Goal**: The map screen is the polished home experience -- clustered markers, floating navigation UI, and native form sheet screens for profile and community
+**Goal**: The map screen is the polished home experience -- clustered markers, floating navigation UI, and full-screen push screens for profile and community
 **Depends on**: Phase 2 (onboarding completes before map is reached)
 **Requirements**: MAP-01, MAP-02, MAP-03, SCRN-01, SCRN-02
 **Success Criteria** (what must be TRUE):
   1. Bird markers visibly cluster at lower zoom levels and expand into individual markers as the user zooms in
   2. Map has floating UI overlay with profile icon (top-left), community and notification icons (top-right), and capture and logbook buttons (bottom)
   3. BirdMarker and BirdInfoCard are standalone components in src/components/map/ and are not defined inline in the map screen
-  4. Tapping the profile icon opens a native form sheet with avatar, username, skill badge, and mock achievement badges
-  5. Tapping the community icon opens a native form sheet with a scrollable feed of mock bird sightings
+  4. Tapping the profile icon opens a full-screen push screen with avatar, username, skill badge, and mock achievement badges
+  5. Tapping the community icon opens a full-screen push screen with a scrollable feed of mock bird sightings
 **Plans:** 2 plans
 
 Plans:
