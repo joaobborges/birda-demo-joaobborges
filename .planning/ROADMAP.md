@@ -62,11 +62,11 @@ Plans:
   3. BirdMarker and BirdInfoCard are standalone components in src/components/map/ and are not defined inline in the map screen
   4. Tapping the profile icon opens a native form sheet with avatar, username, skill badge, and mock achievement badges
   5. Tapping the community icon opens a native form sheet with a scrollable feed of mock bird sightings
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md — Map clustering, custom markers, Ionicons floating UI, component extraction, layout update
+- [ ] 03-02-PLAN.md — Profile and Community screen polish with Ionicons and like counts
 
 ## Progress
 
@@ -77,4 +77,4 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1. Foundation | 0/2 | Not started | - |
 | 2. Onboarding and Paywall | 3/5 | In Progress (gap closure) |  |
-| 3. Map and Screens | 0/0 | Not started | - |
+| 3. Map and Screens | 0/2 | Not started | - |
