@@ -1,18 +1,21 @@
 {
   "expo": {
-    "name": "birda-temp",
-    "slug": "birda-temp",
+    "name": "Birda",
+    "slug": "birda",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "scheme": "birda",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.joaobborges.birda"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,10 +24,16 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "package": "com.joaobborges.birda"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "experiments": {
+      "reactCompiler": true
+    },
+    "plugins": [
+      "expo-router",
+      "expo-image",
+      "expo-font",
+      "expo-splash-screen"
+    ]
   }
 }
