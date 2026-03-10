@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 15-image-wiring
 source: 15-01-SUMMARY.md, 15-02-SUMMARY.md
 started: 2026-03-10T19:00:00Z
@@ -66,21 +66,44 @@ skipped: 1
   reason: "User reported: some images have the bird's face out of the composition — needs repositioning so the face of all birds is more towards the center of the container"
   severity: minor
   test: 1
-  artifacts: []
-  missing: []
+  root_cause: "Portrait-oriented bird photos (head in top 15-30% of frame) are center-cropped by contentFit='cover' in landscape containers, cutting off bird heads. All 5 image components lack contentPosition override."
+  artifacts:
+    - path: "src/components/welcome/BirdMosaic.tsx"
+      issue: "contentFit='cover' without contentPosition"
+    - path: "src/components/map/BirdInfoCard.tsx"
+      issue: "contentFit='cover' without contentPosition"
+    - path: "src/components/map/BirdDrawerContent.tsx"
+      issue: "contentFit='cover' without contentPosition"
+    - path: "app/bird-detail.tsx"
+      issue: "contentFit='cover' without contentPosition"
+    - path: "app/(main)/community.tsx"
+      issue: "contentFit='cover' without contentPosition"
+  missing:
+    - "Add contentPosition='top' to all 5 bird image components"
+  debug_session: ".planning/debug/bird-image-cropping.md"
 
 - truth: "Tapping a bird pin on the map opens the BirdInfoCard"
   status: failed
   reason: "User reported: pin is not tappable at all — regression from when the tappable area radius was increased in a previous change, which broke pin tapping entirely"
   severity: major
   test: 2
-  artifacts: []
-  missing: []
+  root_cause: "Commit 5e48bc4 wrapped each bird marker in a 44x44 transparent hitArea View. react-native-maps converts Marker children to native annotation bitmaps — the oversized transparent annotations overlap each other, and iOS MKMapView hit-testing fails on transparent pixels and overlapping annotations."
+  artifacts:
+    - path: "src/components/map/BirdMarker.tsx"
+      issue: "44x44 hitArea wrapper causing overlapping native annotations with transparent pixels"
+  missing:
+    - "Remove 44x44 hitArea wrapper View and use Marker's native hitSlop or keep markers at original 14-18px size"
+  debug_session: ".planning/debug/map-pins-not-tappable.md"
 
 - truth: "Name screen title uses same heading style as other onboarding screens"
   status: failed
   reason: "User reported: title uses bold font that doesn't match heading style of other onboarding screens"
   severity: cosmetic
   test: 6
-  artifacts: []
-  missing: []
+  root_cause: "name.tsx uses typography.subheading + manual overrides (fontFamily: Rubik_700Bold, fontSize: 24) resulting in bold 24px text, while other onboarding screens use typography.h2/h3 (Rubik_400Regular, 26-30px)"
+  artifacts:
+    - path: "app/(onboarding)/name.tsx"
+      issue: "Lines 69-71: uses typography.subheading with bold override instead of typography.h2/h3"
+  missing:
+    - "Replace heading style with typography.h3 (or h2) to match other onboarding screens"
+  debug_session: ".planning/debug/name-screen-font-weight.md"
