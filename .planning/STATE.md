@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Polish & Refinement
 status: verifying
-stopped_at: Completed 08-03 (profile achievements vertical list)
-last_updated: "2026-03-10T15:39:59.349Z"
+stopped_at: Completed 08-02-PLAN.md
+last_updated: "2026-03-10T15:40:10.314Z"
 last_activity: 2026-03-10 — Completed 06-01 Task 1 (paywall rewrite)
 progress:
   total_phases: 5
@@ -55,6 +55,7 @@ Progress: [██████████] In progress
 | Phase 07-native-tabs-map-drawer P03 | 8 | 2 tasks | 3 files |
 | Phase 07-native-tabs-map-drawer P03 | 8 | 3 tasks | 6 files |
 | Phase 08-auth-fix-ui-polish P03 | 1 | 1 tasks | 1 files |
+| Phase 08-auth-fix-ui-polish P02 | 1 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,9 @@ Recent decisions affecting current work:
 - [Phase 07-native-tabs-map-drawer]: 07-03: Dev panel trigger changed triple-tap -> double-tap — triple tap too unreliable in testing
 - [Phase 08-auth-fix-ui-polish]: 08-03: achievementRowLocked uses opacity 0.4 — clearly dimmed but readable
 - [Phase 08-auth-fix-ui-polish]: 08-03: achievementLabel fontSize 12->14 — row layout has more horizontal space than column cards
+- [Phase 08-auth-fix-ui-polish]: 08-02: absoluteFillObject on BottomSheetBackdrop style prop extends backdrop to full parent view (GestureHandlerRootView)
+- [Phase 08-auth-fix-ui-polish]: 08-02: paddingTop: spacing[6] replaces justifyContent center in OnboardingLayout — propagates top-alignment to all onboarding screens
+- [Phase 08-auth-fix-ui-polish]: 08-02: KeyboardAvoidingView wraps OnboardingLayout (not inside it) so it can control full flex layout
 
 ### Pending Todos
 
@@ -109,6 +113,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-10T15:39:50.516Z
-Stopped at: Completed 08-03 (profile achievements vertical list)
+Last session: 2026-03-10T15:40:10.312Z
+Stopped at: Completed 08-02-PLAN.md
 Resume file: None

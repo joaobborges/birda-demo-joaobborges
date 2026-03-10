@@ -22,7 +22,7 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 
 ### Authentication
 
-- [ ] **AUTH-01**: Login button opens bottom drawer with Apple and Google sign-in options
+- [x] **AUTH-01**: Login button opens bottom drawer with Apple and Google sign-in options
 - [x] **AUTH-02**: Create account button opens bottom drawer with Apple, Google, and Email options
 - [x] **AUTH-03**: Selecting any auth option proceeds to next onboarding screen
 
@@ -85,7 +85,7 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 | FOUN-09 | Phase 4 | Complete |
 | WELC-01 | Phase 5 | Complete |
 | WELC-02 | Phase 5 | Complete |
-| AUTH-01 | Phase 8 | Pending |
+| AUTH-01 | Phase 8 | Complete |
 | AUTH-02 | Phase 5 | Complete |
 | AUTH-03 | Phase 5 | Complete |
 | ONBR-04 | Phase 4 | Complete |
