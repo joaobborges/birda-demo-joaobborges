@@ -1,19 +1,22 @@
-import { useState } from 'react'
 import { View, Text, Modal, Pressable, ScrollView, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic } from '@/theme/colors'
 
-export default function DevPanel() {
-  const [visible, setVisible] = useState(false)
+interface DevPanelProps {
+  visible: boolean
+  onClose: () => void
+}
+
+export default function DevPanel({ visible, onClose }: DevPanelProps) {
   const { replace } = useRouter()
 
   const actions = [
     {
       label: 'Trigger Nature Day Paywall',
       onPress: () => {
-        setVisible(false)
+        onClose()
         replace({ pathname: '/(onboarding)/paywall', params: { variant: 'nature-day' } })
       },
     },
@@ -21,14 +24,14 @@ export default function DevPanel() {
       label: 'Reset Onboarding',
       onPress: () => {
         useOnboardingStore.getState().reset()
-        setVisible(false)
+        onClose()
         replace('/(onboarding)/welcome')
       },
     },
     {
       label: 'Go to Map',
       onPress: () => {
-        setVisible(false)
+        onClose()
         replace('/(main)')
       },
     },
@@ -49,58 +52,36 @@ export default function DevPanel() {
   ]
 
   return (
-    <>
-      <Pressable style={styles.trigger} onPress={() => setVisible(true)}>
-        <Text style={styles.triggerText}>🛠</Text>
-      </Pressable>
-
-      <Modal
-        visible={visible}
-        presentationStyle="formSheet"
-        animationType="slide"
-        onRequestClose={() => setVisible(false)}
-      >
-        <View style={styles.panel}>
-          <View style={styles.panelHeader}>
-            <Text style={styles.panelTitle}>Dev Panel</Text>
-            <Pressable onPress={() => setVisible(false)}>
-              <Text style={styles.closeButton}>Done</Text>
-            </Pressable>
-          </View>
-          <ScrollView style={styles.panelContent}>
-            {actions.map((action) => (
-              <Pressable
-                key={action.label}
-                style={styles.action}
-                onPress={action.onPress}
-              >
-                <Text style={styles.actionText}>{action.label}</Text>
-              </Pressable>
-            ))}
-          </ScrollView>
+    <Modal
+      visible={visible}
+      presentationStyle="formSheet"
+      animationType="slide"
+      onRequestClose={onClose}
+    >
+      <View style={styles.panel}>
+        <View style={styles.panelHeader}>
+          <Text style={styles.panelTitle}>Dev Panel</Text>
+          <Pressable onPress={onClose}>
+            <Text style={styles.closeButton}>Done</Text>
+          </Pressable>
         </View>
-      </Modal>
-    </>
+        <ScrollView style={styles.panelContent}>
+          {actions.map((action) => (
+            <Pressable
+              key={action.label}
+              style={styles.action}
+              onPress={action.onPress}
+            >
+              <Text style={styles.actionText}>{action.label}</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </View>
+    </Modal>
   )
 }
 
 const styles = StyleSheet.create({
-  trigger: {
-    position: 'absolute',
-    bottom: 120,
-    right: 16,
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    borderCurve: 'continuous',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 9999,
-  },
-  triggerText: {
-    fontSize: 20,
-  },
   panel: {
     flex: 1,
     backgroundColor: semantic.bgPage,
