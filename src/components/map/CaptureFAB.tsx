@@ -3,10 +3,9 @@ import { View, Text, Pressable, StyleSheet } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withSpring,
+  withTiming,
   interpolate,
   Extrapolation,
-  SharedValue,
 } from 'react-native-reanimated'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { semantic } from '@/theme/colors'
@@ -24,48 +23,9 @@ const MENU_ITEMS: MenuItemConfig[] = [
   { icon: 'camera', label: 'Camera' },
 ]
 
-const ITEM_SIZE = 44
 const FAB_SIZE = 56
-const ITEM_SPACING = 12
-const ITEM_STEP = ITEM_SIZE + ITEM_SPACING
-
-function MenuItem({
-  config,
-  index,
-  progress,
-  onPress,
-}: {
-  config: MenuItemConfig
-  index: number
-  progress: SharedValue<number>
-  onPress: () => void
-}) {
-  const finalY = -((index + 1) * ITEM_STEP + (FAB_SIZE - ITEM_SIZE) / 2)
-
-  const animStyle = useAnimatedStyle(() => {
-    const translateY = interpolate(
-      progress.value,
-      [0, 1],
-      [0, finalY],
-      Extrapolation.CLAMP,
-    )
-    const scale = interpolate(progress.value, [0, 1], [0, 1], Extrapolation.CLAMP)
-    const opacity = interpolate(progress.value, [0, 0.5, 1], [0, 0, 1], Extrapolation.CLAMP)
-    return {
-      transform: [{ translateY }, { scale }],
-      opacity,
-    }
-  })
-
-  return (
-    <Animated.View style={[styles.menuItemContainer, animStyle]}>
-      <Text style={styles.menuItemLabel}>{config.label}</Text>
-      <Pressable style={styles.menuItemCircle} onPress={onPress}>
-        <Ionicons name={config.icon} size={20} color={semantic.actionPrimary} />
-      </Pressable>
-    </Animated.View>
-  )
-}
+const ITEM_SPACING = 16
+const FADE_DURATION = 200
 
 export function CaptureFAB(): React.ReactElement {
   const [isOpen, setIsOpen] = useState(false)
@@ -74,17 +34,16 @@ export function CaptureFAB(): React.ReactElement {
   function toggleMenu() {
     const next = isOpen ? 0 : 1
     setIsOpen(!isOpen)
-    progress.value = withSpring(next, { damping: 15, stiffness: 200 })
+    progress.value = withTiming(next, { duration: FADE_DURATION })
   }
 
   function closeMenu() {
     setIsOpen(false)
-    progress.value = withSpring(0, { damping: 15, stiffness: 200 })
+    progress.value = withTiming(0, { duration: FADE_DURATION })
   }
 
   const overlayStyle = useAnimatedStyle(() => ({
     opacity: interpolate(progress.value, [0, 1], [0, 1], Extrapolation.CLAMP),
-    pointerEvents: progress.value > 0 ? 'auto' : 'none',
   }))
 
   const iconRotateStyle = useAnimatedStyle(() => {
@@ -94,27 +53,35 @@ export function CaptureFAB(): React.ReactElement {
     }
   })
 
+  const menuStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(progress.value, [0, 1], [0, 1], Extrapolation.CLAMP),
+  }))
+
   return (
     <>
-      {/* Overlay behind menu items but above map */}
-      <Animated.View style={[StyleSheet.absoluteFillObject, styles.overlay, overlayStyle]} pointerEvents={isOpen ? 'auto' : 'none'}>
+      {/* Overlay */}
+      <Animated.View
+        style={[StyleSheet.absoluteFillObject, styles.overlay, overlayStyle]}
+        pointerEvents={isOpen ? 'auto' : 'none'}
+      >
         <Pressable style={StyleSheet.absoluteFillObject} onPress={closeMenu} />
       </Animated.View>
 
-      {/* FAB and menu items container */}
-      <View style={styles.fabContainer} pointerEvents="box-none">
-        {/* Menu items */}
-        {MENU_ITEMS.map((item, index) => (
-          <MenuItem
-            key={item.icon}
-            config={item}
-            index={index}
-            progress={progress}
-            onPress={closeMenu}
-          />
-        ))}
+      {/* FAB + menu column */}
+      <View style={styles.fabColumn} pointerEvents="box-none">
+        {/* Menu items — fade in/out */}
+        <Animated.View style={[styles.menuItems, menuStyle]} pointerEvents={isOpen ? 'auto' : 'none'}>
+          {MENU_ITEMS.map((item) => (
+            <View key={item.icon} style={styles.menuRow}>
+              <Text style={styles.menuLabel}>{item.label}</Text>
+              <Pressable style={styles.menuCircle} onPress={closeMenu}>
+                <Ionicons name={item.icon} size={24} color={semantic.actionPrimary} />
+              </Pressable>
+            </View>
+          ))}
+        </Animated.View>
 
-        {/* Main FAB button */}
+        {/* Main FAB */}
         <Pressable style={styles.fab} onPress={toggleMenu}>
           <Animated.View style={iconRotateStyle}>
             <Ionicons name="add" size={28} color={semantic.textInverse} />
@@ -130,7 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     zIndex: 10,
   },
-  fabContainer: {
+  fabColumn: {
     position: 'absolute',
     bottom: 24,
     right: 16,
@@ -147,33 +114,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
   },
-  menuItemContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
+  menuItems: {
+    gap: ITEM_SPACING,
+    marginBottom: ITEM_SPACING,
+    alignItems: 'flex-end',
+  },
+  menuRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing['2'],
+    gap: spacing['3'],
   },
-  menuItemCircle: {
-    width: ITEM_SIZE,
-    height: ITEM_SIZE,
-    borderRadius: ITEM_SIZE / 2,
+  menuLabel: {
+    ...typography.caption,
+    color: semantic.textPrimary,
+    backgroundColor: semantic.bgPage,
+    paddingHorizontal: spacing['3'],
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderCurve: 'continuous',
+    overflow: 'hidden',
+    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
+  },
+  menuCircle: {
+    width: FAB_SIZE,
+    height: FAB_SIZE,
+    borderRadius: FAB_SIZE / 2,
     borderCurve: 'continuous',
     backgroundColor: semantic.bgPage,
     justifyContent: 'center',
     alignItems: 'center',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
-  },
-  menuItemLabel: {
-    ...typography.caption,
-    color: semantic.textPrimary,
-    backgroundColor: semantic.bgPage,
-    paddingHorizontal: spacing['2'],
-    paddingVertical: spacing['1'],
-    borderRadius: 6,
-    borderCurve: 'continuous',
-    overflow: 'hidden',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
   },
 })
