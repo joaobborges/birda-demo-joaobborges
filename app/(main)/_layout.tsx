@@ -1,33 +1,53 @@
-import { NativeTabs } from 'expo-router/unstable-native-tabs'
+import { Tabs } from 'expo-router'
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { colors } from '@/theme/colors'
 
 export default function MainLayout() {
   return (
-    <NativeTabs
-      iconColor={{
-        default: colors.neutral400,
-        selected: colors.neutral700,
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: colors.neutral700,
+        tabBarInactiveTintColor: colors.neutral400,
       }}
     >
-      <NativeTabs.Trigger name="index">
-        <NativeTabs.Trigger.Icon sf="map.fill" />
-        <NativeTabs.Trigger.Label>Map</NativeTabs.Trigger.Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="community">
-        <NativeTabs.Trigger.Icon sf="person.2.fill" />
-        <NativeTabs.Trigger.Label>Community</NativeTabs.Trigger.Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="capture">
-        <NativeTabs.Trigger.Icon sf="camera.fill" />
-        <NativeTabs.Trigger.Label>Capture</NativeTabs.Trigger.Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="logbook">
-        <NativeTabs.Trigger.Icon sf="book.fill" />
-        <NativeTabs.Trigger.Label>Logbook</NativeTabs.Trigger.Label>
-      </NativeTabs.Trigger>
-    </NativeTabs>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Map',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="map" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="community"
+        options={{
+          headerShown: true,
+          title: 'Community',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="people" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="capture"
+        options={{
+          title: 'Capture',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="camera" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="logbook"
+        options={{
+          title: 'Logbook',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="book" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tabs>
   )
 }
