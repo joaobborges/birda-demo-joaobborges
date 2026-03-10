@@ -60,6 +60,7 @@ export default function WelcomeScreen() {
   const handleSheetChange = useCallback(
     (index: number) => {
       if (index === -1) {
+        setBackdropVisible(false)
         setDrawerMode(null)
         if (shouldNavigate.current) {
           shouldNavigate.current = false
