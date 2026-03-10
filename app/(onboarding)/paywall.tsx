@@ -44,6 +44,13 @@ export default function PaywallScreen() {
             </View>
           )}
         </Pressable>
+
+        {/* Nature Day banner */}
+        <View style={styles.natureDayBanner}>
+          <Text style={styles.natureDayText}>
+            Nature Day Special — <Text style={styles.natureDayBold}>10% off</Text>
+          </Text>
+        </View>
       </View>
 
       {/* Zone 2 — Body */}
@@ -64,22 +71,29 @@ export default function PaywallScreen() {
         {/* Social proof placeholders */}
         <View style={styles.socialRow}>
           {/* Replace with Image when asset provided — maintain 140x72 dimensions */}
-          <View style={styles.socialBox} />
+          <View style={styles.socialBox}>
+            <Text style={styles.socialText}>400+ happy birders</Text>
+          </View>
           {/* Replace with Image when asset provided — maintain 140x72 dimensions */}
-          <View style={styles.socialBox} />
+          <View style={styles.socialBox}>
+            <Text style={styles.socialText}>4.7 stars</Text>
+          </View>
         </View>
 
         {/* Unlock pill */}
         <View style={styles.unlockPill}>
-          <Ionicons name="lock-open-outline" size={14} color={semantic.textSecondary} />
+          <Ionicons name="ribbon" size={14} color={semantic.textSecondary} />
           <Text style={styles.unlockPillText}>Unlock all features</Text>
+          <View style={styles.discountBadge}>
+            <Text style={styles.discountBadgeText}>10% off</Text>
+          </View>
         </View>
 
         {/* Pricing block */}
         <View style={styles.pricingBlock}>
           {/* 32px — non-standard size per project convention (no exact token) */}
-          <Text style={styles.priceMain}>€3,33 /month</Text>
-          <Text style={styles.priceAnnual}>€39,99 billed annually after trial</Text>
+          <Text style={styles.priceMain}>€3,00 /month</Text>
+          <Text style={styles.priceAnnual}>€35,99 billed annually after trial</Text>
         </View>
 
         {/* Trust line */}
@@ -149,6 +163,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  natureDayBanner: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 10,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+  },
+  natureDayText: {
+    fontFamily: fontWeights.regular,
+    fontSize: 14,
+    color: '#FFFFFF',
+  },
+  natureDayBold: {
+    fontFamily: fontWeights.bold,
+  },
+
   // ── Zone 2: Body ──
   body: {
     flex: 1,
@@ -186,6 +221,15 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.bgTinted,
     borderRadius: 12, // no exact token
     borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  socialText: {
+    fontFamily: fontWeights.semiBold,
+    fontSize: 13, // no exact token
+    color: semantic.textSecondary,
+    textAlign: 'center',
+    padding: spacing['3'],
   },
   unlockPill: {
     flexDirection: 'row',
@@ -202,6 +246,18 @@ const styles = StyleSheet.create({
     fontFamily: fontWeights.semiBold,
     fontSize: 13, // no exact token
     color: semantic.textSecondary,
+  },
+  discountBadge: {
+    backgroundColor: colors.markerCommon,
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    borderRadius: 999,
+    borderCurve: 'continuous',
+  },
+  discountBadgeText: {
+    fontFamily: fontWeights.bold,
+    fontSize: 11,
+    color: '#FFFFFF',
   },
   pricingBlock: {
     alignItems: 'center',
