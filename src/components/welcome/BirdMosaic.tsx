@@ -13,7 +13,8 @@ import { birds } from '@/data/birds'
 import { semantic } from '@/theme/colors'
 
 const TILE_HEIGHTS = [140, 180, 160, 200, 150, 170, 190, 145, 175, 165]
-const GAP = 4
+const GAP = 16
+const HORIZONTAL_PADDING = 16
 
 const leftBirds = birds.slice(0, 7)
 const centerBirds = birds.slice(7, 14)
@@ -26,9 +27,9 @@ interface ColumnConfig {
 }
 
 const COLUMNS: ColumnConfig[] = [
-  { birds: leftBirds, direction: 'up', duration: 25000 },
-  { birds: centerBirds, direction: 'down', duration: 30000 },
-  { birds: rightBirds, direction: 'up', duration: 22000 },
+  { birds: leftBirds, direction: 'up', duration: 120000 },
+  { birds: centerBirds, direction: 'down', duration: 140000 },
+  { birds: rightBirds, direction: 'up', duration: 110000 },
 ]
 
 function getTileHeight(index: number): number {
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     gap: GAP,
+    paddingHorizontal: HORIZONTAL_PADDING,
     overflow: 'hidden',
   },
   column: {

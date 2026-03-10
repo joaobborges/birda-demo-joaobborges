@@ -12,7 +12,7 @@ import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
 
 const { height: screenHeight } = Dimensions.get('window')
-const MOSAIC_HEIGHT = screenHeight * 0.55
+const MOSAIC_HEIGHT = screenHeight * 0.45
 
 export default function WelcomeScreen() {
   const router = useRouter()
@@ -55,26 +55,14 @@ export default function WelcomeScreen() {
     <View style={styles.root}>
       <BirdMosaic height={MOSAIC_HEIGHT} />
 
-      <View style={[styles.contentCard, { paddingBottom: insets.bottom + spacing['4'] }]}>
+      <View style={styles.textSection}>
         <Text style={styles.heading}>Welcome to Birda</Text>
         <Text style={styles.description}>
           Discover, identify, and log birds around you
         </Text>
+      </View>
 
-        <View style={[styles.buttons, { opacity: termsAccepted ? 1 : 0.5 }]}>
-          <Button
-            title="Create Account"
-            onPress={handleCreateAccount}
-            disabled={!termsAccepted}
-          />
-          <Button
-            title="Log in"
-            variant="ghost"
-            onPress={handleLogin}
-            disabled={!termsAccepted}
-          />
-        </View>
-
+      <View style={[styles.bottomSection, { bottom: insets.bottom > 0 ? insets.bottom : spacing['4'] }]}>
         <Pressable
           style={styles.checkboxRow}
           onPress={() => setTermsAccepted(!termsAccepted)}
@@ -93,6 +81,20 @@ export default function WelcomeScreen() {
             I agree to the Terms of Service and Privacy Policy
           </Text>
         </Pressable>
+
+        <View style={[styles.buttons, { opacity: termsAccepted ? 1 : 0.5 }]}>
+          <Button
+            title="Create Account"
+            onPress={handleCreateAccount}
+            disabled={!termsAccepted}
+          />
+          <Button
+            title="Log in"
+            variant="ghost"
+            onPress={handleLogin}
+            disabled={!termsAccepted}
+          />
+        </View>
       </View>
 
       <AuthDrawer
@@ -110,28 +112,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: semantic.bgPage,
   },
-  contentCard: {
-    flex: 1,
-    paddingHorizontal: spacing['6'],
-    paddingTop: spacing['5'],
+  textSection: {
+    paddingHorizontal: spacing['4'],
+    paddingTop: spacing['6'],
+    alignItems: 'center',
   },
   heading: {
     ...typography.h2,
     color: semantic.textPrimary,
+    textAlign: 'center',
   },
   description: {
     ...typography.bodySmall,
     color: semantic.textSecondary,
     marginTop: spacing['2'],
+    textAlign: 'center',
+  },
+  bottomSection: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    paddingHorizontal: spacing['4'],
   },
   buttons: {
-    marginTop: spacing['5'],
     gap: spacing['1'],
   },
   checkboxRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: spacing['6'],
     marginBottom: spacing['4'],
     gap: spacing['3'],
   },
