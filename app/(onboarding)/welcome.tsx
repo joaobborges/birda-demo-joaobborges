@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback } from 'react'
-import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Dimensions, Animated } from 'react-native'
 import { useRouter } from 'expo-router'
+import { LinearGradient } from 'expo-linear-gradient'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import BottomSheet from '@gorhom/bottom-sheet'
 import { BirdMosaic } from '@/components/welcome/BirdMosaic'
@@ -12,7 +13,10 @@ import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
 
 const { height: screenHeight } = Dimensions.get('window')
-const MOSAIC_HEIGHT = screenHeight * 0.45
+const MOSAIC_HEIGHT_RATIO = 0.45
+const MOSAIC_FADE_HEIGHT_RATIO = 0.3
+const MOSAIC_HEIGHT = screenHeight * MOSAIC_HEIGHT_RATIO
+const MOSAIC_FADE_HEIGHT = MOSAIC_HEIGHT * MOSAIC_FADE_HEIGHT_RATIO
 
 export default function WelcomeScreen() {
   const router = useRouter()
@@ -23,6 +27,7 @@ export default function WelcomeScreen() {
   const [drawerMode, setDrawerMode] = useState<'login' | 'signup' | null>(null)
   const sheetRef = useRef<BottomSheet>(null)
   const shouldNavigate = useRef(false)
+  const backdropOpacity = useRef(new Animated.Value(0)).current
 
   const handleCreateAccount = () => {
     if (!termsAccepted) return
@@ -43,17 +48,39 @@ export default function WelcomeScreen() {
 
   const handleSheetChange = useCallback(
     (index: number) => {
-      if (index === -1 && shouldNavigate.current) {
-        shouldNavigate.current = false
-        router.push('/(onboarding)/ai-bird-id')
+      Animated.timing(backdropOpacity, {
+        toValue: index >= 0 ? 1 : 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start()
+
+      if (index === -1) {
+        setDrawerMode(null)
+        if (shouldNavigate.current) {
+          shouldNavigate.current = false
+          router.push('/(onboarding)/ai-bird-id')
+        }
       }
     },
-    [router]
+    [router, backdropOpacity]
   )
 
   return (
     <View style={styles.root}>
-      <BirdMosaic height={MOSAIC_HEIGHT} />
+      <View style={styles.mosaicContainer}>
+        <BirdMosaic height={MOSAIC_HEIGHT} />
+        <View
+          pointerEvents="none"
+          style={[styles.mosaicFadeOverlay, { height: MOSAIC_FADE_HEIGHT }]}
+        >
+          <LinearGradient
+            colors={['rgba(255,255,255,0)', '#FFFFFF']}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}
+            style={styles.mosaicFade}
+          />
+        </View>
+      </View>
 
       <View style={styles.textSection}>
         <Text style={styles.heading}>Welcome to Birda</Text>
@@ -97,6 +124,16 @@ export default function WelcomeScreen() {
         </View>
       </View>
 
+      <Animated.View
+        style={[styles.backdrop, { opacity: backdropOpacity }]}
+        pointerEvents={drawerMode ? 'auto' : 'none'}
+      >
+        <Pressable
+          style={StyleSheet.absoluteFillObject}
+          onPress={() => sheetRef.current?.close()}
+        />
+      </Animated.View>
+
       <AuthDrawer
         sheetRef={sheetRef}
         mode={drawerMode}
@@ -111,6 +148,20 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: semantic.bgPage,
+  },
+  mosaicContainer: {
+    position: 'relative',
+    height: MOSAIC_HEIGHT,
+  },
+  mosaicFadeOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+  },
+  mosaicFade: {
+    flex: 1,
   },
   textSection: {
     paddingHorizontal: spacing['4'],
@@ -167,5 +218,10 @@ const styles = StyleSheet.create({
     ...typography.caption,
     color: semantic.textSecondary,
     flex: 1,
+  },
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 5,
   },
 })

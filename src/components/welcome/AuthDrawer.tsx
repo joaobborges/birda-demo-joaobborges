@@ -1,8 +1,5 @@
-import { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
   BottomSheetView,
 } from '@gorhom/bottom-sheet'
 
@@ -19,19 +16,6 @@ interface AuthDrawerProps {
 }
 
 export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange }: AuthDrawerProps) {
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        style={[props.style, StyleSheet.absoluteFillObject]}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        opacity={0.5}
-      />
-    ),
-    []
-  )
-
   const title = mode === 'login' ? 'Log in' : 'Create Account'
 
   return (
@@ -40,7 +24,6 @@ export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange }: AuthDra
       index={-1}
       enableDynamicSizing={true}
       enablePanDownToClose={true}
-      backdropComponent={renderBackdrop}
       backgroundStyle={styles.sheetBackground}
       handleIndicatorStyle={styles.handleIndicator}
       containerStyle={[StyleSheet.absoluteFillObject, { zIndex: 10 }]}
