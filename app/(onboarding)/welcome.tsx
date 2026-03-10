@@ -3,6 +3,12 @@ import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
 import { useRouter } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  interpolate,
+  Extrapolation,
+} from 'react-native-reanimated'
 import BottomSheet from '@gorhom/bottom-sheet'
 import { BirdMosaic } from '@/components/welcome/BirdMosaic'
 import { AuthDrawer } from '@/components/welcome/AuthDrawer'
@@ -27,19 +33,17 @@ export default function WelcomeScreen() {
   const [drawerMode, setDrawerMode] = useState<'login' | 'signup' | null>(null)
   const sheetRef = useRef<BottomSheet>(null)
   const shouldNavigate = useRef(false)
-  const [backdropVisible, setBackdropVisible] = useState(false)
+  const animatedIndex = useSharedValue(-1)
 
   const handleCreateAccount = () => {
     if (!termsAccepted) return
     setDrawerMode('signup')
-    setBackdropVisible(true)
     sheetRef.current?.expand()
   }
 
   const handleLogin = () => {
     if (!termsAccepted) return
     setDrawerMode('login')
-    setBackdropVisible(true)
     sheetRef.current?.expand()
   }
 
@@ -48,19 +52,9 @@ export default function WelcomeScreen() {
     sheetRef.current?.close()
   }, [])
 
-  const handleSheetAnimate = useCallback(
-    (_from: number, to: number) => {
-      if (to === -1) {
-        setBackdropVisible(false)
-      }
-    },
-    []
-  )
-
   const handleSheetChange = useCallback(
     (index: number) => {
       if (index === -1) {
-        setBackdropVisible(false)
         setDrawerMode(null)
         if (shouldNavigate.current) {
           shouldNavigate.current = false
@@ -70,6 +64,22 @@ export default function WelcomeScreen() {
     },
     [router]
   )
+
+  // Backdrop opacity driven directly by the sheet's animated index.
+  // animatedIndex goes from -1 (closed) to 0 (open).
+  // We snap to full opacity as soon as it rises above -1.
+  const backdropStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      animatedIndex.value,
+      [-1, -0.5],
+      [0, 1],
+      Extrapolation.CLAMP,
+    )
+    return {
+      opacity,
+      pointerEvents: animatedIndex.value > -0.9 ? 'auto' : 'none',
+    }
+  })
 
   return (
     <View style={styles.root}>
@@ -130,22 +140,19 @@ export default function WelcomeScreen() {
         </View>
       </View>
 
-      {backdropVisible && (
+      <Animated.View style={[styles.backdrop, backdropStyle]}>
         <Pressable
-          style={styles.backdrop}
-          onPress={() => {
-            setBackdropVisible(false)
-            sheetRef.current?.close()
-          }}
+          style={StyleSheet.absoluteFillObject}
+          onPress={() => sheetRef.current?.close()}
         />
-      )}
+      </Animated.View>
 
       <AuthDrawer
         sheetRef={sheetRef}
+        animatedIndex={animatedIndex}
         mode={drawerMode}
         onSelectOption={handleSelectOption}
         onChange={handleSheetChange}
-        onAnimate={handleSheetAnimate}
       />
     </View>
   )

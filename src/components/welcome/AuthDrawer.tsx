@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import BottomSheet, {
   BottomSheetView,
 } from '@gorhom/bottom-sheet'
+import { SharedValue } from 'react-native-reanimated'
 
 import { semantic } from '@/theme/colors'
 import { typography } from '@/theme/typography'
@@ -10,13 +11,13 @@ import { AuthOptionButton } from '@/components/welcome/AuthOptionButton'
 
 interface AuthDrawerProps {
   sheetRef: React.RefObject<BottomSheet | null>
+  animatedIndex: SharedValue<number>
   mode: 'login' | 'signup' | null
   onSelectOption: () => void
   onChange?: (index: number) => void
-  onAnimate?: (fromIndex: number, toIndex: number) => void
 }
 
-export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange, onAnimate }: AuthDrawerProps) {
+export function AuthDrawer({ sheetRef, animatedIndex, mode, onSelectOption, onChange }: AuthDrawerProps) {
   const title = mode === 'login' ? 'Log in' : 'Create Account'
 
   return (
@@ -28,8 +29,8 @@ export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange, onAnimate
       backgroundStyle={styles.sheetBackground}
       handleIndicatorStyle={styles.handleIndicator}
       containerStyle={[StyleSheet.absoluteFillObject, { zIndex: 10 }]}
+      animatedIndex={animatedIndex}
       onChange={onChange}
-      onAnimate={onAnimate}
     >
       <BottomSheetView style={styles.content}>
         <Text style={styles.title}>{title}</Text>
