@@ -17,12 +17,12 @@ Requirements for UI Polish & Image Wiring milestone. Each maps to roadmap phases
 ### Image Wiring
 
 - [x] **IMG-01**: Welcome screen mosaic cells wired to named bird image assets
-- [ ] **IMG-02**: Onboarding screens wired to hero/cover image assets at top of each screen
-- [ ] **IMG-03**: Onboarding name screen wired to avatar image asset
+- [x] **IMG-02**: Onboarding screens wired to hero/cover image assets at top of each screen
+- [x] **IMG-03**: Onboarding name screen wired to avatar image asset
 - [x] **IMG-04**: Map bird markers wired to species thumbnail image assets
 - [x] **IMG-05**: Bird detail drawer wired to species thumbnail image
 - [x] **IMG-06**: Bird detail screen wired to species hero image asset
-- [ ] **IMG-07**: Complete image manifest delivered (filenames, dimensions, locations)
+- [x] **IMG-07**: Complete image manifest delivered (filenames, dimensions, locations)
 
 ## Future Requirements
 
@@ -48,12 +48,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UFIX-03 | Phase 14 | Complete |
 | UFIX-04 | Phase 14 | Complete |
 | IMG-01 | Phase 15 | Complete |
-| IMG-02 | Phase 15 | Pending |
-| IMG-03 | Phase 15 | Pending |
+| IMG-02 | Phase 15 | Complete |
+| IMG-03 | Phase 15 | Complete |
 | IMG-04 | Phase 15 | Complete |
 | IMG-05 | Phase 15 | Complete |
 | IMG-06 | Phase 15 | Complete |
-| IMG-07 | Phase 15 | Pending |
+| IMG-07 | Phase 15 | Complete |
 
 **Coverage:**
 - v1.2 requirements: 11 total

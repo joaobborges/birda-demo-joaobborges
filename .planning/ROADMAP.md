@@ -37,7 +37,7 @@ See: `.planning/milestones/v1.1-ROADMAP.md` for full details.
 **Milestone Goal:** Fix remaining UI issues and wire all placeholder elements to named image assets so real photos can be dropped in.
 
 - [x] **Phase 14: UI Fixes** - Fix auth backdrop, stepper dot colors, and replace Capture tab with floating action button (completed 2026-03-10)
-- [ ] **Phase 15: Image Wiring** - Wire all placeholder surfaces to named image assets and deliver image manifest
+- [x] **Phase 15: Image Wiring** - Wire all placeholder surfaces to named image assets and deliver image manifest (completed 2026-03-10)
 
 ## Phase Details
 
@@ -65,7 +65,7 @@ Plans:
   3. The onboarding name screen displays the user avatar image loaded from a named local asset
   4. Map bird markers and bird detail drawer display the species thumbnail image loaded from a named local asset
   5. Bird detail screen displays the species hero image loaded from a named local asset, and an image manifest file exists listing every asset filename, dimensions, and location
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [ ] 15-01-PLAN.md — Download bird images and wire all bird-image-consuming components
 - [ ] 15-02-PLAN.md — Wire onboarding/paywall placeholders and create image manifest
@@ -83,4 +83,4 @@ Plans:
 | 7. Native Tabs & Map Drawer | v1.1 | 3/3 | Complete | 2026-03-10 |
 | 8. Auth Fix & UI Polish | v1.1 | 3/3 | Complete | 2026-03-10 |
 | 14. UI Fixes | v1.2 | 2/2 | Complete | 2026-03-10 |
-| 15. Image Wiring | 1/2 | In Progress|  | - |
+| 15. Image Wiring | 2/2 | Complete   | 2026-03-10 | - |
