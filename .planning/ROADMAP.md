@@ -23,7 +23,7 @@ See: `.planning/milestones/v1.0-ROADMAP.md` for full details.
 **Milestone Goal:** Refine the prototype with design system enforcement, layout fixes, a redesigned paywall, and native-feeling navigation to make it feel production-ready.
 
 - [ ] **Phase 4: Design System & Onboarding Polish** - Rubik font loading, splash screen, token enforcement across all screens, and onboarding layout fixes
-- [ ] **Phase 5: Welcome Screen & Auth Drawer** - Auto-scrolling bird mosaic animation and bottom sheet auth drawer with sign-in options
+- [x] **Phase 5: Welcome Screen & Auth Drawer** - Auto-scrolling bird mosaic animation and bottom sheet auth drawer with sign-in options (completed 2026-03-10)
 - [ ] **Phase 6: Paywall Redesign** - New single paywall with hero image, pricing, bullet points, and dismiss-to-home navigation
 - [ ] **Phase 7: Native Tabs & Map Drawer** - Native iOS tab bar, debug button repositioning, and full-width swipeable map bird detail drawer
 
@@ -56,7 +56,7 @@ Plans:
   2. Tapping "Login" opens a bottom drawer presenting Apple and Google sign-in options
   3. Tapping "Create account" opens a bottom drawer presenting Apple, Google, and Email sign-in options
   4. Selecting any auth option in either drawer dismisses the drawer and advances to the next onboarding screen
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 05-01-PLAN.md -- Install @gorhom/bottom-sheet, create BirdMosaic, AuthDrawer, and AuthOptionButton components
@@ -101,6 +101,6 @@ Plans:
 | 2. Onboarding and Paywall | v1.0 | 5/5 | Complete | 2026-03-09 |
 | 3. Map and Screens | v1.0 | 3/3 | Complete | 2026-03-09 |
 | 4. Design System & Onboarding Polish | v1.1 | 3/4 | Executing | - |
-| 5. Welcome Screen & Auth Drawer | v1.1 | 0/2 | Not started | - |
+| 5. Welcome Screen & Auth Drawer | 2/2 | Complete   | 2026-03-10 | - |
 | 6. Paywall Redesign | v1.1 | 0/? | Not started | - |
 | 7. Native Tabs & Map Drawer | v1.1 | 0/? | Not started | - |
