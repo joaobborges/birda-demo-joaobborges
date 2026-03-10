@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: 'center',
+    paddingTop: spacing['6'],
     paddingHorizontal: spacing['6'],
   },
   footer: {

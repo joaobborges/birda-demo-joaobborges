@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
@@ -21,30 +21,35 @@ export default function NameScreen() {
   }
 
   return (
-    <OnboardingLayout
-      header={<ProgressDots total={3} current={0} />}
-      footer={
-        <Button
-          title="Continue"
-          onPress={handleContinue}
-          disabled={!nameValue.trim()}
-        />
-      }
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
     >
-      <Animated.View entering={FadeIn.delay(100).duration(300)}>
-        <View style={styles.avatarPlaceholder} />
-        <Text style={styles.heading}>What should we call you?</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Your name"
-          placeholderTextColor={semantic.textMuted}
-          value={nameValue}
-          onChangeText={setNameValue}
-          autoCapitalize="words"
-          returnKeyType="done"
-        />
-      </Animated.View>
-    </OnboardingLayout>
+      <OnboardingLayout
+        header={<ProgressDots total={3} current={0} />}
+        footer={
+          <Button
+            title="Continue"
+            onPress={handleContinue}
+            disabled={!nameValue.trim()}
+          />
+        }
+      >
+        <Animated.View entering={FadeIn.delay(100).duration(300)}>
+          <View style={styles.avatarPlaceholder} />
+          <Text style={styles.heading}>What should we call you?</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Your name"
+            placeholderTextColor={semantic.textMuted}
+            value={nameValue}
+            onChangeText={setNameValue}
+            autoCapitalize="words"
+            returnKeyType="done"
+          />
+        </Animated.View>
+      </OnboardingLayout>
+    </KeyboardAvoidingView>
   )
 }
 
