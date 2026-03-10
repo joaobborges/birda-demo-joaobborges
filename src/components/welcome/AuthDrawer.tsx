@@ -23,6 +23,7 @@ export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange }: AuthDra
     (props: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop
         {...props}
+        style={[props.style, StyleSheet.absoluteFillObject]}
         disappearsOnIndex={-1}
         appearsOnIndex={0}
         opacity={0.5}
@@ -49,9 +50,11 @@ export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange }: AuthDra
         <View style={styles.buttons}>
           <AuthOptionButton icon="apple" onPress={onSelectOption} />
           <AuthOptionButton icon="google" onPress={onSelectOption} />
-          {mode === 'signup' ? (
-            <AuthOptionButton icon="email" onPress={onSelectOption} />
-          ) : null}
+          <AuthOptionButton
+            icon="email"
+            onPress={onSelectOption}
+            label={mode === 'login' ? 'Log in with Email' : 'Continue with Email'}
+          />
         </View>
       </BottomSheetView>
     </BottomSheet>
