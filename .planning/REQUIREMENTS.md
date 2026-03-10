@@ -48,7 +48,7 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 
 ### Home & Navigation
 
-- [ ] **NAV-01**: Home screen uses native iOS tab bar for Capture and Logbook
+- [x] **NAV-01**: Home screen uses native iOS tab bar for Capture and Logbook
 - [ ] **NAV-02**: Debug button is positioned at top of screen with app-consistent styling
 - [ ] **NAV-03**: Map bird info drawer is full-width (left, right, bottom edges)
 - [ ] **NAV-04**: Map drawer renders above all other content (including debug)
@@ -102,7 +102,7 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 | PAYW-08 | Phase 6 | Complete |
 | PAYW-09 | Phase 6 | Complete |
 | PAYW-10 | Phase 6 | Complete |
-| NAV-01 | Phase 7 | Pending |
+| NAV-01 | Phase 7 | Complete |
 | NAV-02 | Phase 7 | Pending |
 | NAV-03 | Phase 7 | Pending |
 | NAV-04 | Phase 7 | Pending |
