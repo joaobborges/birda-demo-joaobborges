@@ -18,12 +18,12 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 ### Welcome Screen
 
 - [ ] **WELC-01**: Welcome screen content is locked (no scrolling)
-- [ ] **WELC-02**: Welcome screen displays auto-scrolling mosaic with bird images in 3 columns moving at different speeds
+- [x] **WELC-02**: Welcome screen displays auto-scrolling mosaic with bird images in 3 columns moving at different speeds
 
 ### Authentication
 
-- [ ] **AUTH-01**: Login button opens bottom drawer with Apple and Google sign-in options
-- [ ] **AUTH-02**: Create account button opens bottom drawer with Apple, Google, and Email options
+- [x] **AUTH-01**: Login button opens bottom drawer with Apple and Google sign-in options
+- [x] **AUTH-02**: Create account button opens bottom drawer with Apple, Google, and Email options
 - [ ] **AUTH-03**: Selecting any auth option proceeds to next onboarding screen
 
 ### Onboarding
@@ -84,9 +84,9 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 | FOUN-08 | Phase 4 | Complete |
 | FOUN-09 | Phase 4 | Complete |
 | WELC-01 | Phase 5 | Pending |
-| WELC-02 | Phase 5 | Pending |
-| AUTH-01 | Phase 5 | Pending |
-| AUTH-02 | Phase 5 | Pending |
+| WELC-02 | Phase 5 | Complete |
+| AUTH-01 | Phase 5 | Complete |
+| AUTH-02 | Phase 5 | Complete |
 | AUTH-03 | Phase 5 | Pending |
 | ONBR-04 | Phase 4 | Complete |
 | ONBR-05 | Phase 4 | Complete |
