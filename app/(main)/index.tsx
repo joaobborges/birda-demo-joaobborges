@@ -11,7 +11,6 @@ import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
 import { BirdMarker } from '@/components/map/BirdMarker'
-import { BirdInfoCard } from '@/components/map/BirdInfoCard'
 
 const LISBON_REGION: Region = {
   latitude: 38.7223,
@@ -54,7 +53,7 @@ export function ErrorBoundary({ error, retry }: { error: Error; retry: () => voi
 
 export default function MapScreen() {
   const { push } = useRouter()
-  const { top, bottom } = useSafeAreaInsets()
+  const { top } = useSafeAreaInsets()
   const mapRef = useRef<MapView>(null)
   const [selectedBird, setSelectedBird] = useState<Bird | null>(null)
 
@@ -137,42 +136,16 @@ export default function MapScreen() {
         })}
       </MapView>
 
-      {/* Floating top bar */}
+      {/* Floating top bar — Profile (left) and Notification (right) remain */}
       <Animated.View entering={FadeIn.delay(300)} style={[styles.topBar, { top: top + spacing['3'] }]}>
         <Pressable style={styles.iconButton} onPress={() => push('/profile')}>
           <Ionicons name="person-circle" size={24} color={semantic.textPrimary} />
         </Pressable>
-        <View style={styles.topBarRight}>
-          <Pressable style={styles.iconButton} onPress={() => push('/community')}>
-            <Ionicons name="people" size={22} color={semantic.textPrimary} />
-          </Pressable>
-          <View style={styles.iconButton}>
-            <Ionicons name="notifications" size={22} color={semantic.textPrimary} />
-            <View style={styles.notificationBadge} />
-          </View>
+        <View style={styles.iconButton}>
+          <Ionicons name="notifications" size={22} color={semantic.textPrimary} />
+          <View style={styles.notificationBadge} />
         </View>
       </Animated.View>
-
-      {/* Floating bottom bar */}
-      <Animated.View entering={FadeIn.delay(400)} style={[styles.bottomBar, { bottom: bottom + spacing['2'] }]}>
-        <Pressable style={styles.bottomButton}>
-          <View style={styles.bottomButtonContent}>
-            <Ionicons name="camera" size={18} color={semantic.textInput} />
-            <Text style={styles.bottomButtonText}>Capture</Text>
-          </View>
-        </Pressable>
-        <Pressable style={styles.bottomButton}>
-          <View style={styles.bottomButtonContent}>
-            <Ionicons name="book" size={18} color={semantic.textInput} />
-            <Text style={styles.bottomButtonText}>Logbook</Text>
-          </View>
-        </Pressable>
-      </Animated.View>
-
-      {/* Bird info card */}
-      {selectedBird ? (
-        <BirdInfoCard bird={selectedBird} onClose={() => setSelectedBird(null)} />
-      ) : null}
     </View>
   )
 }
@@ -190,10 +163,6 @@ const styles = StyleSheet.create({
     right: spacing['4'],
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  topBarRight: {
-    flexDirection: 'row',
-    gap: 10, // no exact token
   },
   iconButton: {
     width: 44,
@@ -214,32 +183,6 @@ const styles = StyleSheet.create({
     borderRadius: spacing['1'],
     borderCurve: 'continuous',
     backgroundColor: semantic.statusError,
-  },
-  bottomBar: {
-    position: 'absolute',
-    left: spacing['4'],
-    right: spacing['4'],
-    flexDirection: 'row',
-    gap: spacing['3'],
-  },
-  bottomButton: {
-    flex: 1,
-    backgroundColor: semantic.bgPage,
-    paddingVertical: 14, // no exact token
-    borderRadius: 16,
-    borderCurve: 'continuous',
-    alignItems: 'center',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
-  },
-  bottomButtonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6, // no exact token
-  },
-  bottomButtonText: {
-    fontFamily: fontWeights.semiBold,
-    fontSize: 15, // no exact token
-    color: semantic.textInput,
   },
   clusterMarker: {
     width: 36,
