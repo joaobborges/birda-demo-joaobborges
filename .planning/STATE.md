@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: UI Polish & Image Wiring
 status: planning
-stopped_at: Completed 14-ui-fixes-14-02-PLAN.md
-last_updated: "2026-03-10T17:33:23.335Z"
+stopped_at: Phase 15 context gathered
+last_updated: "2026-03-10T17:45:55.864Z"
 last_activity: 2026-03-10 — Roadmap created for v1.2
 progress:
   total_phases: 2
@@ -60,6 +60,6 @@ None active.
 
 ## Session Continuity
 
-Last session: 2026-03-10T17:09:37.055Z
-Stopped at: Completed 14-ui-fixes-14-02-PLAN.md
-Resume file: None
+Last session: 2026-03-10T17:45:55.862Z
+Stopped at: Phase 15 context gathered
+Resume file: .planning/phases/15-image-wiring/15-CONTEXT.md
