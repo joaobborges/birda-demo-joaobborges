@@ -32,15 +32,6 @@ export default function MainLayout() {
         }}
       />
       <Tabs.Screen
-        name="capture"
-        options={{
-          title: 'Capture',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="camera" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="logbook"
         options={{
           title: 'Logbook',
