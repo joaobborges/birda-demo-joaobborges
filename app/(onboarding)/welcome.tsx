@@ -48,10 +48,18 @@ export default function WelcomeScreen() {
     sheetRef.current?.close()
   }, [])
 
+  const handleSheetAnimate = useCallback(
+    (_from: number, to: number) => {
+      if (to === -1) {
+        setBackdropVisible(false)
+      }
+    },
+    []
+  )
+
   const handleSheetChange = useCallback(
     (index: number) => {
       if (index === -1) {
-        setBackdropVisible(false)
         setDrawerMode(null)
         if (shouldNavigate.current) {
           shouldNavigate.current = false
@@ -136,6 +144,7 @@ export default function WelcomeScreen() {
         mode={drawerMode}
         onSelectOption={handleSelectOption}
         onChange={handleSheetChange}
+        onAnimate={handleSheetAnimate}
       />
     </View>
   )

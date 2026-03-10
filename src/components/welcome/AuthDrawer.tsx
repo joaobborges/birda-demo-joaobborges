@@ -13,9 +13,10 @@ interface AuthDrawerProps {
   mode: 'login' | 'signup' | null
   onSelectOption: () => void
   onChange?: (index: number) => void
+  onAnimate?: (fromIndex: number, toIndex: number) => void
 }
 
-export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange }: AuthDrawerProps) {
+export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange, onAnimate }: AuthDrawerProps) {
   const title = mode === 'login' ? 'Log in' : 'Create Account'
 
   return (
@@ -28,6 +29,7 @@ export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange }: AuthDra
       handleIndicatorStyle={styles.handleIndicator}
       containerStyle={[StyleSheet.absoluteFillObject, { zIndex: 10 }]}
       onChange={onChange}
+      onAnimate={onAnimate}
     >
       <BottomSheetView style={styles.content}>
         <Text style={styles.title}>{title}</Text>
