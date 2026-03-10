@@ -71,7 +71,7 @@ export default function PaywallScreen() {
 
         {/* Unlock pill */}
         <View style={styles.unlockPill}>
-          <Ionicons name="lock-open-outline" size={14} color={semantic.actionPrimary} />
+          <Ionicons name="lock-open-outline" size={14} color={semantic.textSecondary} />
           <Text style={styles.unlockPillText}>Unlock all features</Text>
         </View>
 
@@ -90,7 +90,7 @@ export default function PaywallScreen() {
       </View>
 
       {/* Zone 3 — Footer */}
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 24 }]}>
+      <View style={[styles.footer, { paddingBottom: insets.bottom + 8 }]}>
         {/* CTA — custom Pressable (not Button.tsx) for mixed-weight text */}
         <Pressable
           onPress={handleDismiss}
@@ -152,20 +152,19 @@ const styles = StyleSheet.create({
   // ── Zone 2: Body ──
   body: {
     flex: 1,
-    paddingHorizontal: spacing['6'],
+    paddingHorizontal: spacing['4'],
     paddingTop: spacing['5'],
     justifyContent: 'space-evenly',
   },
   headline: {
     ...typography.h2,
     color: semantic.textPrimary,
-    textAlign: 'center',
+    textAlign: 'left',
     letterSpacing: -0.5,
   },
   featuresContainer: {
     gap: 14, // no exact token
     alignItems: 'flex-start',
-    alignSelf: 'center',
   },
   featureRow: {
     flexDirection: 'row',
@@ -178,12 +177,11 @@ const styles = StyleSheet.create({
   },
   socialRow: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     gap: 16, // no exact token
   },
   socialBox: {
-    width: 140,
+    flex: 1,
     height: 72,
     backgroundColor: semantic.bgTinted,
     borderRadius: 12, // no exact token
@@ -194,7 +192,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6, // no exact token
     alignSelf: 'center',
-    backgroundColor: semantic.actionPrimaryBg,
+    backgroundColor: semantic.bgSurface,
     paddingVertical: 6, // no exact token
     paddingHorizontal: 14, // no exact token
     borderRadius: 999,
@@ -203,7 +201,7 @@ const styles = StyleSheet.create({
   unlockPillText: {
     fontFamily: fontWeights.semiBold,
     fontSize: 13, // no exact token
-    color: semantic.actionPrimary,
+    color: semantic.textSecondary,
   },
   pricingBlock: {
     alignItems: 'center',

@@ -47,9 +47,9 @@ export const buttons = {
  * Container layout styles
  */
 export const containers = {
-  /** Fixed bottom CTA bar -- spacing['6'] bottom, spacing['4'] horizontal, spacing['2'] gap */
+  /** Fixed bottom CTA bar -- 8px bottom, spacing['4'] horizontal, spacing['2'] gap */
   fixedBottomCTA: {
-    paddingBottom: 24,
+    paddingBottom: 8,
     paddingHorizontal: 16,
     gap: 8,
   },

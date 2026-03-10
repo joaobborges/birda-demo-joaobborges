@@ -154,7 +154,7 @@ export default function MapScreen() {
       </Animated.View>
 
       {/* Floating bottom bar */}
-      <Animated.View entering={FadeIn.delay(400)} style={[styles.bottomBar, { bottom: bottom + spacing['5'] }]}>
+      <Animated.View entering={FadeIn.delay(400)} style={[styles.bottomBar, { bottom: bottom + spacing['2'] }]}>
         <Pressable style={styles.bottomButton}>
           <View style={styles.bottomButtonContent}>
             <Ionicons name="camera" size={18} color={semantic.textInput} />
