@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
+import { View } from 'react-native'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { GestureHandlerRootView, GestureDetector, Gesture } from 'react-native-gesture-handler'
 import * as SplashScreen from 'expo-splash-screen'
 import { useFonts, Rubik_300Light, Rubik_400Regular, Rubik_500Medium, Rubik_600SemiBold, Rubik_700Bold } from '@expo-google-fonts/rubik'
 import { useOnboardingStore } from '@/stores/onboarding'
@@ -23,6 +24,8 @@ export default function RootLayout() {
     useOnboardingStore.persist.hasHydrated()
   )
 
+  const [devPanelVisible, setDevPanelVisible] = useState(false)
+
   useEffect(() => {
     const unsubscribe = useOnboardingStore.persist.onFinishHydration(() => {
       setIsHydrated(true)
@@ -39,6 +42,12 @@ export default function RootLayout() {
     }
   }, [isHydrated, fontsLoaded, fontError])
 
+  const tripleTap = Gesture.Tap()
+    .numberOfTaps(3)
+    .maxDuration(500)
+    .runOnJS(true)
+    .onEnd(() => setDevPanelVisible(true))
+
   if (!isHydrated || (!fontsLoaded && !fontError)) {
     return null
   }
@@ -46,8 +55,17 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar style="dark" />
-      <Stack screenOptions={{ headerShown: false }} />
-      {DevPanel ? <DevPanel /> : null}
+      <GestureDetector gesture={tripleTap}>
+        <View style={{ flex: 1 }}>
+          <Stack screenOptions={{ headerShown: false }} />
+        </View>
+      </GestureDetector>
+      {DevPanel ? (
+        <DevPanel
+          visible={devPanelVisible}
+          onClose={() => setDevPanelVisible(false)}
+        />
+      ) : null}
     </GestureHandlerRootView>
   )
 }
