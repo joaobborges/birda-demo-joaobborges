@@ -13,6 +13,7 @@ import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
 import { BirdMarker } from '@/components/map/BirdMarker'
 import { BirdDrawerContent } from '@/components/map/BirdDrawerContent'
+import { CaptureFAB } from '@/components/map/CaptureFAB'
 
 const LISBON_REGION: Region = {
   latitude: 38.7223,
@@ -165,6 +166,8 @@ export default function MapScreen() {
           <View style={styles.notificationBadge} />
         </View>
       </Animated.View>
+
+      <CaptureFAB />
 
       {/* Bottom sheet modal — renders via Portal above tab bar */}
       <BottomSheetModal
