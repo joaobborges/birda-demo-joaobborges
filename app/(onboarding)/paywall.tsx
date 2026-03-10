@@ -1,238 +1,265 @@
-import { useState } from 'react'
-import { View, Text, Pressable, StyleSheet } from 'react-native'
-import { useRouter, useLocalSearchParams } from 'expo-router'
-import Animated, { FadeIn, useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated'
+import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useRouter } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
 import { useOnboardingStore } from '@/stores/onboarding'
-import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
-import { Button } from '@/components/ui/Button'
-import { semantic } from '@/theme/colors'
-import { spacing } from '@/theme/spacing'
+import { semantic, colors } from '@/theme/colors'
 import { typography, fontWeights } from '@/theme/typography'
+import { spacing } from '@/theme/spacing'
+import { buttons } from '@/theme/components'
+
+const HERO_HEIGHT = Dimensions.get('window').height * 0.35
 
 const FEATURES = [
-  'Unlimited bird identifications',
-  'Offline maps & field guides',
+  'Offline maps and field guides',
   'Rare bird alerts in your area',
-  'Community sighting reports',
+  'AI sighting reports',
 ]
 
 export default function PaywallScreen() {
-  const { push } = useRouter()
-  const { name } = useOnboardingStore()
-  const params = useLocalSearchParams<{ variant?: string }>()
-  const isNatureDay = params.variant === 'nature-day'
+  const insets = useSafeAreaInsets()
+  const router = useRouter()
+  const completeOnboarding = useOnboardingStore((s) => s.completeOnboarding)
 
-  const [plan, setPlan] = useState<'monthly' | 'annual'>('annual')
-
-  const monthlyWidth = useSharedValue(0)
-  const annualWidth = useSharedValue(0)
-  const measured = useSharedValue(0)
-
-  const indicatorStyle = useAnimatedStyle(() => ({
-    width: withTiming(plan === 'monthly' ? monthlyWidth.get() : annualWidth.get(), { duration: 280, easing: Easing.out(Easing.cubic) }),
-    transform: [{ translateX: withTiming(plan === 'monthly' ? 0 : monthlyWidth.get(), { duration: 280, easing: Easing.out(Easing.cubic) }) }],
-    opacity: measured.get() >= 2 ? 1 : 0,
-  }))
-
-  const selectPlan = (p: 'monthly' | 'annual') => {
-    setPlan(p)
+  const handleDismiss = () => {
+    completeOnboarding()
+    router.replace('/(main)')
   }
-
-  const handleSubscribe = () => {
-    push('/(onboarding)/reminders')
-  }
-
-  const handleFree = () => {
-    push('/(onboarding)/reminders')
-  }
-
-  const monthlyPrice = isNatureDay ? '$3.99' : '$4.99'
-  const annualPrice = isNatureDay ? '$31.99' : '$39.99'
 
   return (
-    <OnboardingLayout
-      illustration={
-        <View
-          style={[
-            styles.illustration,
-            { backgroundColor: isNatureDay ? semantic.accent : semantic.bgTinted },
-          ]}
-        />
-      }
-      footer={
-        <View style={styles.footerButtons}>
-          <Button
-            title={isNatureDay ? 'Claim My Discount' : 'Start Free Trial'}
-            onPress={handleSubscribe}
-          />
-          <Button
-            title="Continue with free plan"
-            variant="link"
-            onPress={handleFree}
-          />
-        </View>
-      }
-    >
-      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.scrollContent}>
-        {/* Nature Day promotional banner */}
-        {isNatureDay ? (
-          <View style={styles.banner}>
-            <Text style={styles.bannerText}>Nature Day -- 20% off today only</Text>
-          </View>
-        ) : null}
+    <View style={styles.root}>
+      {/* Zone 1 — Hero */}
+      <View style={[styles.hero, { height: HERO_HEIGHT }]}>
+        {/* Blue-tinted placeholder — replace with Image when asset provided */}
+        <View style={[StyleSheet.absoluteFillObject, styles.heroPlaceholder]} />
 
-        {/* Personalized headline */}
-        <Text style={styles.title}>
-          {name ? `${name}, unlock the full experience` : 'Unlock the full experience'}
-        </Text>
+        {/* Close button */}
+        <Pressable
+          onPress={handleDismiss}
+          style={[styles.closeButton, { top: insets.top + 12 }]}
+        >
+          {({ pressed }) => (
+            <View style={[styles.closeCircle, { opacity: pressed ? 0.7 : 1 }]}>
+              <Ionicons name="close" size={20} color="#FFFFFF" />
+            </View>
+          )}
+        </Pressable>
+      </View>
 
-        {/* Feature list */}
-        <View style={styles.features}>
+      {/* Zone 2 — Body */}
+      <View style={styles.body}>
+        {/* Headline */}
+        <Text style={styles.headline}>Unlock the full experience</Text>
+
+        {/* Feature bullets */}
+        <View style={styles.featuresContainer}>
           {FEATURES.map((feature) => (
             <View key={feature} style={styles.featureRow}>
-              <Text style={styles.checkmark}>✓</Text>
+              <Ionicons name="ribbon" size={18} color={semantic.actionPrimary} />
               <Text style={styles.featureText}>{feature}</Text>
             </View>
           ))}
         </View>
 
-        {/* Adaptive-width toggle */}
-        <View style={styles.toggle}>
-          <Animated.View style={[styles.toggleIndicator, indicatorStyle]} />
-          <Pressable
-            style={styles.toggleOption}
-            onPress={() => selectPlan('monthly')}
-            onLayout={(e) => {
-              monthlyWidth.set(e.nativeEvent.layout.width)
-              measured.set(measured.get() + 1)
-            }}
-          >
-            <Text style={[styles.toggleLabel, plan === 'monthly' ? styles.toggleLabelActive : null]}>
-              Monthly
-            </Text>
-            <Text style={[styles.togglePrice, plan === 'monthly' ? styles.togglePriceActive : null]}>
-              {monthlyPrice}/mo
-            </Text>
+        {/* Social proof placeholders */}
+        <View style={styles.socialRow}>
+          {/* Replace with Image when asset provided — maintain 140x72 dimensions */}
+          <View style={styles.socialBox} />
+          {/* Replace with Image when asset provided — maintain 140x72 dimensions */}
+          <View style={styles.socialBox} />
+        </View>
+
+        {/* Unlock pill */}
+        <View style={styles.unlockPill}>
+          <Ionicons name="lock-open-outline" size={14} color={semantic.actionPrimary} />
+          <Text style={styles.unlockPillText}>Unlock all features</Text>
+        </View>
+
+        {/* Pricing block */}
+        <View style={styles.pricingBlock}>
+          {/* 32px — non-standard size per project convention (no exact token) */}
+          <Text style={styles.priceMain}>€3,33 /month</Text>
+          <Text style={styles.priceAnnual}>€39,99 billed annually after trial</Text>
+        </View>
+
+        {/* Trust line */}
+        <View style={styles.trustLine}>
+          <Ionicons name="checkmark-circle" size={16} color={colors.markerCommon} />
+          <Text style={styles.trustText}>No payment required · Cancel anytime</Text>
+        </View>
+      </View>
+
+      {/* Zone 3 — Footer */}
+      <View style={[styles.footer, { paddingBottom: insets.bottom + 24 }]}>
+        {/* CTA — custom Pressable (not Button.tsx) for mixed-weight text */}
+        <Pressable
+          onPress={handleDismiss}
+          style={({ pressed }) => [styles.ctaButton, { opacity: pressed ? 0.85 : 1 }]}
+        >
+          <Text style={styles.ctaText}>
+            Redeem your <Text style={styles.ctaTextBold}>FREE</Text> Week
+          </Text>
+        </Pressable>
+
+        {/* Footer links */}
+        <View style={styles.footerLinks}>
+          <Pressable onPress={() => {}}>
+            <Text style={styles.footerLink}>Terms of Use</Text>
           </Pressable>
-          <Pressable
-            style={styles.toggleOption}
-            onPress={() => selectPlan('annual')}
-            onLayout={(e) => {
-              annualWidth.set(e.nativeEvent.layout.width)
-              measured.set(measured.get() + 1)
-            }}
-          >
-            <Text style={[styles.toggleLabel, plan === 'annual' ? styles.toggleLabelActive : null]}>
-              Annual
-            </Text>
-            <Text style={[styles.togglePrice, plan === 'annual' ? styles.togglePriceActive : null]}>
-              {annualPrice}/yr
-            </Text>
-            {plan === 'annual' ? <Text style={styles.valueBadge}>Best value</Text> : null}
+          <Text style={styles.footerDot}> · </Text>
+          <Pressable onPress={() => {}}>
+            <Text style={styles.footerLink}>Restore Purchase</Text>
+          </Pressable>
+          <Text style={styles.footerDot}> · </Text>
+          <Pressable onPress={() => {}}>
+            <Text style={styles.footerLink}>Privacy Policy</Text>
           </Pressable>
         </View>
-      </Animated.View>
-    </OnboardingLayout>
+      </View>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  illustration: {
-    height: 220,
+  root: {
+    flex: 1,
+    backgroundColor: semantic.bgPage,
   },
-  scrollContent: {
-    paddingTop: spacing['6'],
-    gap: spacing['6'],
+
+  // ── Zone 1: Hero ──
+  hero: {
+    position: 'relative',
+    overflow: 'hidden',
   },
-  footerButtons: {
-    gap: spacing['2'],
+  heroPlaceholder: {
+    backgroundColor: semantic.bgTinted,
   },
-  banner: {
-    backgroundColor: semantic.statusSuccessBg,
-    paddingVertical: spacing['2'],
-    paddingHorizontal: spacing['4'],
-    borderRadius: 12, // no exact token
+  closeButton: {
+    position: 'absolute',
+    right: 16,
+    zIndex: 10,
+  },
+  closeCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     borderCurve: 'continuous',
-    alignSelf: 'center',
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  bannerText: {
-    fontFamily: fontWeights.semiBold,
-    fontSize: 15, // no exact token
-    color: semantic.textPrimary,
+
+  // ── Zone 2: Body ──
+  body: {
+    flex: 1,
+    paddingHorizontal: spacing['6'],
+    paddingTop: spacing['5'],
+    justifyContent: 'space-evenly',
   },
-  title: {
+  headline: {
     ...typography.h2,
     color: semantic.textPrimary,
+    textAlign: 'center',
     letterSpacing: -0.5,
   },
-  features: {
+  featuresContainer: {
     gap: 14, // no exact token
+    alignItems: 'flex-start',
+    alignSelf: 'center',
   },
   featureRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing['3'],
   },
-  checkmark: {
-    ...typography.navItem,
-    color: semantic.actionPrimary,
-  },
   featureText: {
     ...typography.bodySmall,
     color: semantic.textBody,
   },
-  toggle: {
+  socialRow: {
     flexDirection: 'row',
-    alignSelf: 'center',
-    backgroundColor: semantic.bgSurface,
-    borderRadius: 16,
-    borderCurve: 'continuous',
-    padding: spacing['1'],
-    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16, // no exact token
   },
-  toggleIndicator: {
-    position: 'absolute',
-    top: spacing['1'],
-    left: spacing['1'],
-    height: '100%',
-    backgroundColor: semantic.bgPage,
+  socialBox: {
+    width: 140,
+    height: 72,
+    backgroundColor: semantic.bgTinted,
     borderRadius: 12, // no exact token
     borderCurve: 'continuous',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
   },
-  toggleOption: {
+  unlockPill: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 14, // no exact token
-    paddingHorizontal: spacing['5'],
-    gap: 2, // no exact token
-    zIndex: 1,
+    gap: 6, // no exact token
+    alignSelf: 'center',
+    backgroundColor: semantic.actionPrimaryBg,
+    paddingVertical: 6, // no exact token
+    paddingHorizontal: 14, // no exact token
+    borderRadius: 999,
+    borderCurve: 'continuous',
   },
-  toggleLabel: {
-    ...typography.caption,
+  unlockPillText: {
     fontFamily: fontWeights.semiBold,
-    color: semantic.textMuted,
+    fontSize: 13, // no exact token
+    color: semantic.actionPrimary,
   },
-  toggleLabelActive: {
-    color: semantic.textInput,
+  pricingBlock: {
+    alignItems: 'center',
+    gap: 4, // no exact token
   },
-  togglePrice: {
-    ...typography.bodySmall,
+  priceMain: {
     fontFamily: fontWeights.bold,
-    color: semantic.textMuted,
-  },
-  togglePriceActive: {
+    fontSize: 32, // no exact token — non-standard size per project convention
     color: semantic.textPrimary,
   },
-  valueBadge: {
+  priceAnnual: {
+    ...typography.caption,
+    color: semantic.textMuted,
+  },
+  trustLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6, // no exact token
+    alignSelf: 'center',
+  },
+  trustText: {
+    fontFamily: fontWeights.regular,
+    fontSize: 12, // no exact token
+    color: semantic.textMuted,
+  },
+
+  // ── Zone 3: Footer ──
+  footer: {
+    paddingHorizontal: spacing['4'],
+    gap: spacing['3'],
+  },
+  ctaButton: {
+    ...buttons.cta,
+    alignItems: 'center',
+  },
+  ctaText: {
     fontFamily: fontWeights.semiBold,
-    fontSize: 11, // no exact token
+    fontSize: 15, // no exact token — per project convention for CTA labels
     color: semantic.actionSecondaryText,
-    backgroundColor: semantic.actionPrimary,
-    paddingHorizontal: spacing['2'],
-    paddingVertical: 2, // no exact token
-    borderRadius: 6, // no exact token
-    borderCurve: 'continuous',
-    overflow: 'hidden',
-    marginTop: spacing['1'],
+  },
+  ctaTextBold: {
+    fontFamily: fontWeights.bold,
+  },
+  footerLinks: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  footerLink: {
+    fontFamily: fontWeights.regular,
+    fontSize: 12, // no exact token
+    color: semantic.textMuted,
+  },
+  footerDot: {
+    fontFamily: fontWeights.regular,
+    fontSize: 12, // no exact token
+    color: semantic.textMuted,
   },
 })
