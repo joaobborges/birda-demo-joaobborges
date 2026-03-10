@@ -83,4 +83,4 @@ Plans:
 | 7. Native Tabs & Map Drawer | v1.1 | 3/3 | Complete | 2026-03-10 |
 | 8. Auth Fix & UI Polish | v1.1 | 3/3 | Complete | 2026-03-10 |
 | 14. UI Fixes | v1.2 | 2/2 | Complete | 2026-03-10 |
-| 15. Image Wiring | 2/2 | Complete   | 2026-03-10 | - |
+| 15. Image Wiring | 2/2 | Complete    | 2026-03-10 | - |
