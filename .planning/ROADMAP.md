@@ -85,11 +85,12 @@ Plans:
   2. Debug button is positioned at the top of the screen with styling consistent with the rest of the app
   3. Tapping a bird marker opens a full-width drawer (touching left, right, and bottom edges) that renders above all other content including the debug button
   4. Map drawer supports swipe-to-dismiss gesture and the map remains interactive when the drawer is collapsed
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 07-01: TBD
-- [ ] 07-02: TBD
+- [ ] 07-01-PLAN.md -- Native iOS tab bar with 4 tabs, placeholder Capture/Logbook screens, map cleanup
+- [ ] 07-02-PLAN.md -- Triple-tap dev panel gesture replacing floating debug button
+- [ ] 07-03-PLAN.md -- Full-width bird drawer with BottomSheet, bird detail push screen, and visual verification
 
 ## Progress
 
@@ -103,4 +104,4 @@ Plans:
 | 4. Design System & Onboarding Polish | v1.1 | 3/4 | Executing | - |
 | 5. Welcome Screen & Auth Drawer | 2/2 | Complete   | 2026-03-10 | - |
 | 6. Paywall Redesign | 1/1 | Complete   | 2026-03-10 | - |
-| 7. Native Tabs & Map Drawer | v1.1 | 0/? | Not started | - |
+| 7. Native Tabs & Map Drawer | v1.1 | 0/3 | Planned | - |
