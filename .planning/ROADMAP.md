@@ -56,11 +56,11 @@ Plans:
   2. Tapping "Login" opens a bottom drawer presenting Apple and Google sign-in options
   3. Tapping "Create account" opens a bottom drawer presenting Apple, Google, and Email sign-in options
   4. Selecting any auth option in either drawer dismisses the drawer and advances to the next onboarding screen
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md -- Install @gorhom/bottom-sheet, create BirdMosaic, AuthDrawer, and AuthOptionButton components
+- [ ] 05-02-PLAN.md -- Rewrite welcome screen with standalone layout, mosaic, and auth drawer integration
 
 ### Phase 6: Paywall Redesign
 **Goal**: The paywall presents a polished, conversion-oriented layout and dismissing it navigates directly to the home screen
@@ -101,6 +101,6 @@ Plans:
 | 2. Onboarding and Paywall | v1.0 | 5/5 | Complete | 2026-03-09 |
 | 3. Map and Screens | v1.0 | 3/3 | Complete | 2026-03-09 |
 | 4. Design System & Onboarding Polish | v1.1 | 3/4 | Executing | - |
-| 5. Welcome Screen & Auth Drawer | v1.1 | 0/? | Not started | - |
+| 5. Welcome Screen & Auth Drawer | v1.1 | 0/2 | Not started | - |
 | 6. Paywall Redesign | v1.1 | 0/? | Not started | - |
 | 7. Native Tabs & Map Drawer | v1.1 | 0/? | Not started | - |
