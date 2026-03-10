@@ -9,9 +9,9 @@ Requirements for UI Polish & Image Wiring milestone. Each maps to roadmap phases
 
 ### UI Fixes
 
-- [ ] **UFIX-01**: Auth bottom sheet backdrop covers full welcome screen including mosaic grid
-- [ ] **UFIX-02**: Onboarding inactive progress dots use blue at 50% opacity instead of white
-- [ ] **UFIX-03**: Capture tab replaced with floating action button on Map/Explore tab
+- [x] **UFIX-01**: Auth bottom sheet backdrop covers full welcome screen including mosaic grid
+- [x] **UFIX-02**: Onboarding inactive progress dots use blue at 50% opacity instead of white
+- [x] **UFIX-03**: Capture tab replaced with floating action button on Map/Explore tab
 - [ ] **UFIX-04**: FAB press opens animated option menu (camera, microphone, etc.) — visual only
 
 ### Image Wiring
@@ -43,9 +43,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UFIX-01 | Phase 14 | Pending |
-| UFIX-02 | Phase 14 | Pending |
-| UFIX-03 | Phase 14 | Pending |
+| UFIX-01 | Phase 14 | Complete |
+| UFIX-02 | Phase 14 | Complete |
+| UFIX-03 | Phase 14 | Complete |
 | UFIX-04 | Phase 14 | Pending |
 | IMG-01 | Phase 15 | Pending |
 | IMG-02 | Phase 15 | Pending |
