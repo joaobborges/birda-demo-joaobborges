@@ -56,13 +56,22 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 
 ### Active
 
-(No active requirements — next milestone not yet defined)
+## Current Milestone: v1.2 UI Polish & Image Wiring
+
+**Goal:** Fix UI issues (auth backdrop, stepper colors, capture FAB) and wire all placeholder elements to named image assets so real photos can be dropped in.
+
+**Target features:**
+- Full-screen auth backdrop overlay on welcome mosaic
+- Onboarding stepper inactive dots → blue at 50% opacity
+- Floating capture button on Map tab with animated option menu (replaces Capture tab)
+- Complete image audit: define filenames, wire require() paths, deliver image manifest
+- Image wiring across welcome grid, onboarding heroes, avatar, map markers, bird detail drawer/screen
 
 ### Out of Scope
 
 - Expo Go support — maps require native modules, EAS dev client only
 - Real authentication or backend — prototype uses local data only
-- Capture flow — visual button only, no functionality
+- Capture flow — FAB opens animated menu, options are visual only (no camera/mic integration)
 - Logbook functionality — visual button only, no functionality
 - Push notification delivery — requires backend, APNs/FCM
 - Payment processing — paywall is visual demo only
@@ -122,4 +131,4 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 | Double-tap (not triple-tap) dev panel trigger | Triple-tap too unreliable in testing | ✓ Good |
 
 ---
-*Last updated: 2026-03-10 after v1.1 milestone*
+*Last updated: 2026-03-10 after v1.2 milestone start*

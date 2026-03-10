@@ -1,16 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: Polish & Refinement
-status: complete
-stopped_at: Milestone v1.1 archived
+milestone: v1.2
+milestone_name: UI Polish & Image Wiring
+status: active
+stopped_at: null
 last_updated: "2026-03-10"
-last_activity: 2026-03-10 — v1.1 milestone archived
+last_activity: 2026-03-10 — Milestone v1.2 started
 progress:
-  total_phases: 5
-  completed_phases: 5
-  total_plans: 13
-  completed_plans: 13
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-10)
 
 **Core value:** A polished, production-grade mobile prototype that demonstrates real-world mobile engineering craft
-**Current focus:** Planning next milestone
+**Current focus:** Defining requirements for v1.2
 
 ## Current Position
 
-Milestone v1.1 Polish & Refinement: COMPLETE (shipped 2026-03-10)
-All 5 phases (13 plans) delivered and archived.
-
-Next step: `/gsd:new-milestone` to plan next milestone
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-10 — Milestone v1.2 started
 
 ## Performance Metrics
 
@@ -38,7 +38,7 @@ Next step: `/gsd:new-milestone` to plan next milestone
 
 ### Decisions
 
-All decisions logged in PROJECT.md Key Decisions table (21 decisions total).
+All decisions logged in PROJECT.md Key Decisions table (22 decisions total).
 
 ### Pending Todos
 
@@ -46,10 +46,10 @@ None.
 
 ### Blockers/Concerns
 
-None active. NativeTabs alpha issue was resolved by fallback to standard Expo Router Tabs.
+None active.
 
 ## Session Continuity
 
 Last session: 2026-03-10
-Stopped at: Milestone v1.1 archived
+Stopped at: Defining v1.2 requirements
 Resume file: None
