@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Polish & Refinement
 status: verifying
-stopped_at: Completed 08-02-PLAN.md
-last_updated: "2026-03-10T15:40:10.314Z"
+stopped_at: Completed 08-01-PLAN.md
+last_updated: "2026-03-10T15:40:46.532Z"
 last_activity: 2026-03-10 — Completed 06-01 Task 1 (paywall rewrite)
 progress:
   total_phases: 5
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 13
-  completed_plans: 12
+  completed_plans: 13
 ---
 
 # Project State
@@ -56,6 +56,7 @@ Progress: [██████████] In progress
 | Phase 07-native-tabs-map-drawer P03 | 8 | 3 tasks | 6 files |
 | Phase 08-auth-fix-ui-polish P03 | 1 | 1 tasks | 1 files |
 | Phase 08-auth-fix-ui-polish P02 | 1 | 2 tasks | 3 files |
+| Phase 08-auth-fix-ui-polish P01 | 8 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,9 @@ Recent decisions affecting current work:
 - [Phase 08-auth-fix-ui-polish]: 08-02: absoluteFillObject on BottomSheetBackdrop style prop extends backdrop to full parent view (GestureHandlerRootView)
 - [Phase 08-auth-fix-ui-polish]: 08-02: paddingTop: spacing[6] replaces justifyContent center in OnboardingLayout — propagates top-alignment to all onboarding screens
 - [Phase 08-auth-fix-ui-polish]: 08-02: KeyboardAvoidingView wraps OnboardingLayout (not inside it) so it can control full flex layout
+- [Phase 08-auth-fix-ui-polish]: 08-01: ribbon icon for unlock pill — consistent with feature bullet icons already using ribbon
+- [Phase 08-auth-fix-ui-polish]: 08-01: 44x44 hitArea wrapper on BirdMarker — standard iOS/Android minimum tap target guideline
+- [Phase 08-auth-fix-ui-polish]: 08-01: headerBackButtonDisplayMode: minimal for profile — chevron-only back nav without title label
 
 ### Pending Todos
 
@@ -113,6 +117,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-10T15:40:10.312Z
-Stopped at: Completed 08-02-PLAN.md
+Last session: 2026-03-10T15:40:46.530Z
+Stopped at: Completed 08-01-PLAN.md
 Resume file: None

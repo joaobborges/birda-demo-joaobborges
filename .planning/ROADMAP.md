@@ -26,7 +26,7 @@ See: `.planning/milestones/v1.0-ROADMAP.md` for full details.
 - [x] **Phase 5: Welcome Screen & Auth Drawer** - Auto-scrolling bird mosaic animation and bottom sheet auth drawer with sign-in options (completed 2026-03-10)
 - [x] **Phase 6: Paywall Redesign** - New single paywall with hero image, pricing, bullet points, and dismiss-to-home navigation (completed 2026-03-10)
 - [x] **Phase 7: Native Tabs & Map Drawer** - Native iOS tab bar, debug button repositioning, and full-width swipeable map bird detail drawer (completed 2026-03-10)
-- [ ] **Phase 8: Auth Fix & UI Polish** - Auth drawer backdrop fix, paywall social proof, onboarding alignment, navigation styling, profile achievements
+- [x] **Phase 8: Auth Fix & UI Polish** - Auth drawer backdrop fix, paywall social proof, onboarding alignment, navigation styling, profile achievements (completed 2026-03-10)
 
 ## Phase Details
 
@@ -105,7 +105,7 @@ Plans:
   4. Active tab color is primary blue, header icons match inactive tab color
   5. Onboarding screens match welcome screen text positioning
   6. Profile achievements display as vertical list with locked items
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 08-01-PLAN.md -- Paywall content fixes, map marker hit area, tab/navigation styling
@@ -125,4 +125,4 @@ Plans:
 | 5. Welcome Screen & Auth Drawer | 2/2 | Complete   | 2026-03-10 | - |
 | 6. Paywall Redesign | 1/1 | Complete   | 2026-03-10 | - |
 | 7. Native Tabs & Map Drawer | 3/3 | Complete   | 2026-03-10 | - |
-| 8. Auth Fix & UI Polish | 2/3 | In Progress|  | - |
+| 8. Auth Fix & UI Polish | 3/3 | Complete   | 2026-03-10 | - |

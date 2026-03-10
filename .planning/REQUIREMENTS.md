@@ -40,7 +40,7 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 
 - [x] **PAYW-04**: Paywall displays hero image with close (x) button top-right
 - [x] **PAYW-05**: Paywall shows "Unlock the full experience" with 3 feature bullet points
-- [ ] **PAYW-06**: Paywall shows social proof (400+ happy birders, 4.7 stars)
+- [x] **PAYW-06**: Paywall shows social proof (400+ happy birders, 4.7 stars)
 - [x] **PAYW-07**: Paywall shows pricing (3,33/month large, annual line small)
 - [x] **PAYW-08**: Paywall CTA reads "Redeem your FREE Week"
 - [x] **PAYW-09**: Paywall footer shows Terms of Use / Restore Purchase / Privacy Policy
@@ -50,8 +50,8 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 
 - [x] **NAV-01**: Home screen uses native iOS tab bar for Capture and Logbook
 - [x] **NAV-02**: Debug button is positioned at top of screen with app-consistent styling
-- [ ] **NAV-03**: Map bird info drawer is full-width (left, right, bottom edges)
-- [ ] **NAV-04**: Map drawer renders above all other content (including debug)
+- [x] **NAV-03**: Map bird info drawer is full-width (left, right, bottom edges)
+- [x] **NAV-04**: Map drawer renders above all other content (including debug)
 - [x] **NAV-05**: Map drawer supports swipe-to-dismiss gesture
 
 ## Future Requirements
@@ -97,15 +97,15 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 | ONBR-10 | Phase 4 | Complete |
 | PAYW-04 | Phase 6 | Complete |
 | PAYW-05 | Phase 6 | Complete |
-| PAYW-06 | Phase 8 | Pending |
+| PAYW-06 | Phase 8 | Complete |
 | PAYW-07 | Phase 6 | Complete |
 | PAYW-08 | Phase 6 | Complete |
 | PAYW-09 | Phase 6 | Complete |
 | PAYW-10 | Phase 6 | Complete |
 | NAV-01 | Phase 7 | Complete |
 | NAV-02 | Phase 7 | Complete |
-| NAV-03 | Phase 8 | Pending |
-| NAV-04 | Phase 8 | Pending |
+| NAV-03 | Phase 8 | Complete |
+| NAV-04 | Phase 8 | Complete |
 | NAV-05 | Phase 7 | Complete |
 
 **Coverage:**
