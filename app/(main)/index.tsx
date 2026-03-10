@@ -1,4 +1,4 @@
-import { useRef, useState, useMemo } from 'react'
+import { useRef, useState, useMemo, useCallback } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -6,11 +6,13 @@ import MapView, { Marker, Region } from 'react-native-maps'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import Supercluster from 'supercluster'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import { birds, Bird } from '@/data/birds'
-import { semantic } from '@/theme/colors'
+import { semantic, colors } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
 import { BirdMarker } from '@/components/map/BirdMarker'
+import { BirdDrawerContent } from '@/components/map/BirdDrawerContent'
 
 const LISBON_REGION: Region = {
   latitude: 38.7223,
@@ -53,8 +55,10 @@ export function ErrorBoundary({ error, retry }: { error: Error; retry: () => voi
 
 export default function MapScreen() {
   const { push } = useRouter()
+  const router = useRouter()
   const { top } = useSafeAreaInsets()
   const mapRef = useRef<MapView>(null)
+  const sheetRef = useRef<BottomSheet>(null)
   const [selectedBird, setSelectedBird] = useState<Bird | null>(null)
 
   const clusterIndex = useMemo(() => {
@@ -88,6 +92,21 @@ export default function MapScreen() {
       { latitude, longitude, latitudeDelta, longitudeDelta },
       350,
     )
+  }
+
+  function handleBirdPress(bird: Bird) {
+    setSelectedBird(bird)
+    sheetRef.current?.snapToIndex(0)
+  }
+
+  const handleSheetClose = useCallback(() => {
+    setSelectedBird(null)
+  }, [])
+
+  function handleBirdImagePress() {
+    if (!selectedBird) return
+    sheetRef.current?.close()
+    router.push({ pathname: '/bird-detail', params: { birdId: selectedBird.id } })
   }
 
   return (
@@ -130,7 +149,7 @@ export default function MapScreen() {
             <BirdMarker
               key={`bird-${bird.id}`}
               bird={bird}
-              onPress={setSelectedBird}
+              onPress={handleBirdPress}
             />
           )
         })}
@@ -146,6 +165,27 @@ export default function MapScreen() {
           <View style={styles.notificationBadge} />
         </View>
       </Animated.View>
+
+      {/* Bottom sheet drawer — always mounted, renders above all content */}
+      <BottomSheet
+        ref={sheetRef}
+        index={-1}
+        snapPoints={['50%']}
+        enablePanDownToClose
+        backdropComponent={undefined}
+        onClose={handleSheetClose}
+        style={{ marginHorizontal: 0 }}
+        handleIndicatorStyle={{ backgroundColor: colors.neutral300 }}
+      >
+        <BottomSheetView style={{ flex: 1 }}>
+          {selectedBird && (
+            <BirdDrawerContent
+              bird={selectedBird}
+              onImagePress={handleBirdImagePress}
+            />
+          )}
+        </BottomSheetView>
+      </BottomSheet>
     </View>
   )
 }
@@ -195,7 +235,7 @@ const styles = StyleSheet.create({
   },
   clusterText: {
     fontFamily: fontWeights.bold,
-    fontSize: 13, // no exact token
+    fontSize: 13,
     color: semantic.textInverse,
   },
   errorContainer: {
@@ -213,12 +253,12 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.actionPrimary,
     paddingHorizontal: spacing['6'],
     paddingVertical: spacing['3'],
-    borderRadius: 12, // no exact token
+    borderRadius: 12,
     borderCurve: 'continuous',
   },
   retryText: {
     fontFamily: fontWeights.semiBold,
-    fontSize: 15, // no exact token
+    fontSize: 15,
     color: semantic.textInverse,
   },
 })
