@@ -38,13 +38,13 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 
 ### Paywall
 
-- [ ] **PAYW-04**: Paywall displays hero image with close (x) button top-right
-- [ ] **PAYW-05**: Paywall shows "Unlock the full experience" with 3 feature bullet points
-- [ ] **PAYW-06**: Paywall shows social proof (400+ happy birders, 4.7 stars)
-- [ ] **PAYW-07**: Paywall shows pricing (3,33/month large, annual line small)
-- [ ] **PAYW-08**: Paywall CTA reads "Redeem your FREE Week"
-- [ ] **PAYW-09**: Paywall footer shows Terms of Use / Restore Purchase / Privacy Policy
-- [ ] **PAYW-10**: Close button dismisses paywall and navigates to home screen
+- [x] **PAYW-04**: Paywall displays hero image with close (x) button top-right
+- [x] **PAYW-05**: Paywall shows "Unlock the full experience" with 3 feature bullet points
+- [x] **PAYW-06**: Paywall shows social proof (400+ happy birders, 4.7 stars)
+- [x] **PAYW-07**: Paywall shows pricing (3,33/month large, annual line small)
+- [x] **PAYW-08**: Paywall CTA reads "Redeem your FREE Week"
+- [x] **PAYW-09**: Paywall footer shows Terms of Use / Restore Purchase / Privacy Policy
+- [x] **PAYW-10**: Close button dismisses paywall and navigates to home screen
 
 ### Home & Navigation
 
@@ -95,13 +95,13 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 | ONBR-08 | Phase 4 | Complete |
 | ONBR-09 | Phase 4 | Complete |
 | ONBR-10 | Phase 4 | Complete |
-| PAYW-04 | Phase 6 | Pending |
-| PAYW-05 | Phase 6 | Pending |
-| PAYW-06 | Phase 6 | Pending |
-| PAYW-07 | Phase 6 | Pending |
-| PAYW-08 | Phase 6 | Pending |
-| PAYW-09 | Phase 6 | Pending |
-| PAYW-10 | Phase 6 | Pending |
+| PAYW-04 | Phase 6 | Complete |
+| PAYW-05 | Phase 6 | Complete |
+| PAYW-06 | Phase 6 | Complete |
+| PAYW-07 | Phase 6 | Complete |
+| PAYW-08 | Phase 6 | Complete |
+| PAYW-09 | Phase 6 | Complete |
+| PAYW-10 | Phase 6 | Complete |
 | NAV-01 | Phase 7 | Pending |
 | NAV-02 | Phase 7 | Pending |
 | NAV-03 | Phase 7 | Pending |

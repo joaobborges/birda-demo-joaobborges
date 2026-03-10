@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Polish & Refinement
-status: completed
-stopped_at: Phase 6 context gathered
-last_updated: "2026-03-10T12:54:04.865Z"
-last_activity: 2026-03-10 — Completed 05-02 Welcome Screen Assembly
+status: in-progress
+stopped_at: "06-01 Task 2 checkpoint:human-verify — awaiting visual verification in Expo Go"
+last_updated: "2026-03-10T13:10:22Z"
+last_activity: 2026-03-10 — Completed 06-01 Task 1 (paywall rewrite)
 progress:
   total_phases: 4
   completed_phases: 2
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 
 ## Current Position
 
-Phase: 5 of 7 (Welcome Screen & Auth Drawer) -- COMPLETE
-Plan: 2 of 2 complete
-Status: Phase 5 complete, ready for Phase 6
-Last activity: 2026-03-10 — Completed 05-02 Welcome Screen Assembly
+Phase: 6 of 7 (Paywall Redesign) -- IN PROGRESS
+Plan: 1 of 1 (Task 2 checkpoint: awaiting human-verify)
+Status: Task 1 complete (paywall rewrite committed f90801a), awaiting visual verification
+Last activity: 2026-03-10 — Completed 06-01 Task 1 (paywall rewrite)
 
-Progress: [██████████] 100%
+Progress: [██████████] In progress
 
 ## Performance Metrics
 
@@ -49,6 +49,7 @@ Progress: [██████████] 100%
 | Phase 04 P04 | 1min | 2 tasks | 3 files |
 | Phase 05 P01 | 2min | 2 tasks | 5 files |
 | Phase 05 P02 | 15min | 2 tasks | 3 files |
+| Phase 06 P01 | 2min | 1 task | 1 file |
 
 ## Accumulated Context
 
@@ -57,6 +58,10 @@ Progress: [██████████] 100%
 Decisions are logged in PROJECT.md Key Decisions table (13 decisions, all Good except emoji avatars Revisit).
 
 Recent decisions affecting current work:
+- 06-01: Standalone layout (no OnboardingLayout) for paywall — conversion screen requires full viewport control
+- 06-01: router.replace (not push) — prevents back gesture returning to paywall
+- 06-01: Custom Pressable (not Button.tsx) for CTA — mixed-weight text (semiBold + bold for FREE) via nested Text
+- 06-01: justifyContent space-evenly on body — distributes whitespace for iPhone SE compatibility
 - 05-02: Standalone layout for welcome screen (no OnboardingLayout) due to unique mosaic design
 - 05-02: Dismiss-then-navigate pattern for auth drawer (close drawer first, then router.push)
 - 05-02: Slowed mosaic animation and added 16px gaps per user feedback
@@ -83,6 +88,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-10T12:54:04.862Z
-Stopped at: Phase 6 context gathered
-Resume file: .planning/phases/06-paywall-redesign/06-CONTEXT.md
+Last session: 2026-03-10T13:10:22Z
+Stopped at: 06-01 Task 2 checkpoint:human-verify — awaiting visual verification in Expo Go
+Resume file: .planning/phases/06-paywall-redesign/06-01-SUMMARY.md
