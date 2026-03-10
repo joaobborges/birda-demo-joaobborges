@@ -43,6 +43,7 @@ export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange }: AuthDra
       backdropComponent={renderBackdrop}
       backgroundStyle={styles.sheetBackground}
       handleIndicatorStyle={styles.handleIndicator}
+      containerStyle={StyleSheet.absoluteFillObject}
       onChange={onChange}
     >
       <BottomSheetView style={styles.content}>

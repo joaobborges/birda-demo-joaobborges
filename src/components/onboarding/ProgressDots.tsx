@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     width: 24,
   },
   inactive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'rgba(31, 135, 254, 0.5)',
   },
 })
