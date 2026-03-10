@@ -1,9 +1,12 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
+import { Text } from 'react-native'
+import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
+import { ONBOARDING_IMAGES } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography } from '@/theme/typography'
@@ -13,7 +16,7 @@ export default function CommunityScreen() {
 
   return (
     <OnboardingLayout
-      illustration={<View style={styles.illustration} />}
+      illustration={<Image source={ONBOARDING_IMAGES['community']} style={styles.illustration} contentFit="cover" />}
       header={<ProgressDots total={4} current={3} />}
       footer={
         <Button

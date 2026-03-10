@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
+import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
+import { ONBOARDING_IMAGES } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
@@ -35,7 +37,7 @@ export default function GoalsScreen() {
 
   return (
     <OnboardingLayout
-      illustration={<View style={styles.illustration} />}
+      illustration={<Image source={ONBOARDING_IMAGES['goals']} style={styles.illustration} contentFit="cover" />}
       header={<ProgressDots total={3} current={2} />}
       footer={<Button title="Continue" onPress={handleContinue} />}
     >

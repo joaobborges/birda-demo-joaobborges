@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { View, Text, Switch, StyleSheet } from 'react-native'
+import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { Button } from '@/components/ui/Button'
+import { ONBOARDING_IMAGES } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography } from '@/theme/typography'
@@ -34,7 +36,7 @@ export default function MailingListScreen() {
         <Text style={styles.description}>
           Get weekly birding tips, species spotlights, and community highlights
         </Text>
-        <View style={styles.imagePlaceholder} />
+        <Image source={ONBOARDING_IMAGES['mailing-list']} style={styles.imagePlaceholder} contentFit="cover" />
         <View style={styles.toggleRow}>
           <Text style={styles.toggleLabel}>Subscribe to newsletter</Text>
           <Switch

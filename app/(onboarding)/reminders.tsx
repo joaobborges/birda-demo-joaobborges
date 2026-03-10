@@ -1,8 +1,10 @@
 import { View, Text, StyleSheet } from 'react-native'
+import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { Button } from '@/components/ui/Button'
+import { ONBOARDING_IMAGES } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography } from '@/theme/typography'
@@ -32,7 +34,7 @@ export default function RemindersScreen() {
         <Text style={styles.description}>
           Get reminders about nearby bird activity and seasonal migrations
         </Text>
-        <View style={styles.imagePlaceholder} />
+        <Image source={ONBOARDING_IMAGES['reminders']} style={styles.imagePlaceholder} contentFit="cover" />
       </Animated.View>
     </OnboardingLayout>
   )
