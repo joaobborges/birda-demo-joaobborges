@@ -18,20 +18,28 @@ export const BirdMarker = memo(function BirdMarker({ bird, onPress }: BirdMarker
       anchor={{ x: 0.5, y: 0.5 }}
       onPress={() => onPress(bird)}
     >
-      {bird.rarity === 'common' ? (
-        <View style={styles.commonMarker} />
-      ) : bird.rarity === 'uncommon' ? (
-        <View style={styles.uncommonMarker} />
-      ) : (
-        <View style={styles.rareMarker}>
-          <Ionicons name="star" size={10} color={semantic.textInverse} />
-        </View>
-      )}
+      <View style={styles.hitArea}>
+        {bird.rarity === 'common' ? (
+          <View style={styles.commonMarker} />
+        ) : bird.rarity === 'uncommon' ? (
+          <View style={styles.uncommonMarker} />
+        ) : (
+          <View style={styles.rareMarker}>
+            <Ionicons name="star" size={10} color={semantic.textInverse} />
+          </View>
+        )}
+      </View>
     </Marker>
   )
 })
 
 const styles = StyleSheet.create({
+  hitArea: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   commonMarker: {
     width: 18,
     height: 18,

@@ -1,13 +1,13 @@
 import { Tabs } from 'expo-router'
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { colors } from '@/theme/colors'
+import { colors, semantic } from '@/theme/colors'
 
 export default function MainLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.neutral700,
+        tabBarActiveTintColor: semantic.actionPrimary,
         tabBarInactiveTintColor: colors.neutral400,
       }}
     >
@@ -25,6 +25,7 @@ export default function MainLayout() {
         options={{
           headerShown: true,
           title: 'Community',
+          headerShadowVisible: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people" size={size} color={color} />
           ),

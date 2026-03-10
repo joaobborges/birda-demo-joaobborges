@@ -158,10 +158,10 @@ export default function MapScreen() {
       {/* Floating top bar — Profile (left) and Notification (right) remain */}
       <Animated.View entering={FadeIn.delay(300)} style={[styles.topBar, { top: top + spacing['3'] }]}>
         <Pressable style={styles.iconButton} onPress={() => push('/profile')}>
-          <Ionicons name="person-circle" size={24} color={semantic.textPrimary} />
+          <Ionicons name="person-circle" size={24} color={colors.neutral400} />
         </Pressable>
         <View style={styles.iconButton}>
-          <Ionicons name="notifications" size={22} color={semantic.textPrimary} />
+          <Ionicons name="notifications" size={22} color={colors.neutral400} />
           <View style={styles.notificationBadge} />
         </View>
       </Animated.View>
@@ -175,12 +175,12 @@ export default function MapScreen() {
         handleIndicatorStyle={{ backgroundColor: colors.neutral300 }}
       >
         <BottomSheetView>
-          {selectedBird && (
+          {selectedBird ? (
             <BirdDrawerContent
               bird={selectedBird}
               onImagePress={handleBirdImagePress}
             />
-          )}
+          ) : null}
         </BottomSheetView>
       </BottomSheetModal>
     </View>

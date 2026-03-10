@@ -60,7 +60,7 @@ export default function RootLayout() {
         <GestureDetector gesture={tripleTap}>
           <View style={{ flex: 1 }}>
             <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="profile" options={{ headerShown: true, title: '', headerBackTitle: '' }} />
+              <Stack.Screen name="profile" options={{ headerShown: true, title: '', headerBackTitle: '', headerShadowVisible: false, headerBackButtonDisplayMode: 'minimal' }} />
             </Stack>
           </View>
         </GestureDetector>
