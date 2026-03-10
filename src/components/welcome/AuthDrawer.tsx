@@ -12,12 +12,13 @@ import { spacing } from '@/theme/spacing'
 import { AuthOptionButton } from '@/components/welcome/AuthOptionButton'
 
 interface AuthDrawerProps {
-  sheetRef: React.RefObject<BottomSheet>
+  sheetRef: React.RefObject<BottomSheet | null>
   mode: 'login' | 'signup' | null
   onSelectOption: () => void
+  onChange?: (index: number) => void
 }
 
-export function AuthDrawer({ sheetRef, mode, onSelectOption }: AuthDrawerProps) {
+export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange }: AuthDrawerProps) {
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop
@@ -41,6 +42,7 @@ export function AuthDrawer({ sheetRef, mode, onSelectOption }: AuthDrawerProps) 
       backdropComponent={renderBackdrop}
       backgroundStyle={styles.sheetBackground}
       handleIndicatorStyle={styles.handleIndicator}
+      onChange={onChange}
     >
       <BottomSheetView style={styles.content}>
         <Text style={styles.title}>{title}</Text>
