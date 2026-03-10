@@ -1,0 +1,65 @@
+# Requirements: Birda
+
+**Defined:** 2026-03-10
+**Core Value:** A polished, production-grade mobile prototype that demonstrates real-world mobile engineering craft
+
+## v1.2 Requirements
+
+Requirements for UI Polish & Image Wiring milestone. Each maps to roadmap phases.
+
+### UI Fixes
+
+- [ ] **UFIX-01**: Auth bottom sheet backdrop covers full welcome screen including mosaic grid
+- [ ] **UFIX-02**: Onboarding inactive progress dots use blue at 50% opacity instead of white
+- [ ] **UFIX-03**: Capture tab replaced with floating action button on Map/Explore tab
+- [ ] **UFIX-04**: FAB press opens animated option menu (camera, microphone, etc.) — visual only
+
+### Image Wiring
+
+- [ ] **IMG-01**: Welcome screen mosaic cells wired to named bird image assets
+- [ ] **IMG-02**: Onboarding screens wired to hero/cover image assets at top of each screen
+- [ ] **IMG-03**: Onboarding name screen wired to avatar image asset
+- [ ] **IMG-04**: Map bird markers wired to species thumbnail image assets
+- [ ] **IMG-05**: Bird detail drawer wired to species thumbnail image
+- [ ] **IMG-06**: Bird detail screen wired to species hero image asset
+- [ ] **IMG-07**: Complete image manifest delivered (filenames, dimensions, locations)
+
+## Future Requirements
+
+None deferred — all scoped features included in v1.2.
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| Actual camera/microphone integration | FAB menu is visual interaction only |
+| AI-generated placeholder images | User provides all image assets |
+| Image optimization/caching pipeline | Prototype uses local require() |
+| Dark mode variants of images | Single theme only |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| UFIX-01 | — | Pending |
+| UFIX-02 | — | Pending |
+| UFIX-03 | — | Pending |
+| UFIX-04 | — | Pending |
+| IMG-01 | — | Pending |
+| IMG-02 | — | Pending |
+| IMG-03 | — | Pending |
+| IMG-04 | — | Pending |
+| IMG-05 | — | Pending |
+| IMG-06 | — | Pending |
+| IMG-07 | — | Pending |
+
+**Coverage:**
+- v1.2 requirements: 11 total
+- Mapped to phases: 0
+- Unmapped: 11 ⚠️
+
+---
+*Requirements defined: 2026-03-10*
+*Last updated: 2026-03-10 after initial definition*
