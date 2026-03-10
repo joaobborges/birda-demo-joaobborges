@@ -46,16 +46,64 @@
 
 ---
 
+## Milestone: v1.1 — Polish & Refinement
+
+**Shipped:** 2026-03-10
+**Phases:** 5 | **Plans:** 13 | **Timeline:** 2 days
+
+### What Was Built
+- Design system enforcement — Rubik font build-time loading, splash screen, token sweep across all screens
+- Auto-scrolling bird mosaic welcome screen with bottom-sheet auth drawer
+- Conversion-optimized standalone paywall with hero, pricing, social proof, and dismiss-to-home
+- Native tab bar (4 tabs), full-width swipeable bird detail drawer, scrollable detail screen
+- Auth drawer fix, onboarding top-alignment, keyboard avoidance, profile achievements vertical list
+
+### What Worked
+- Milestone audit before completion caught 3 real gaps (AUTH-01, ONBR-08/09) that would have shipped broken
+- Gap closure phase (Phase 8) pattern: audit → targeted plans → quick execution closed all gaps in one pass
+- NativeTabs fallback strategy: pre-planned fallback to standard Tabs activated cleanly when alpha library failed
+- @gorhom/bottom-sheet reuse: same library served auth drawer (Phase 5) and map drawer (Phase 7)
+- Standalone layout pattern for unique screens (welcome, paywall) avoided fighting OnboardingLayout constraints
+
+### What Was Inefficient
+- ROADMAP.md plan checkboxes still not auto-updated (carried over from v1.0)
+- Phase 4 shows 3/4 in progress table but all 4 plans have SUMMARY.md files (stale tracking)
+- Nyquist validation partial across 4/5 phases — skipped during fast execution
+- Some SUMMARY files missing frontmatter fields (one_liner, requirements_completed) — limits automated extraction
+
+### Patterns Established
+- Weight-specific font families: `fontWeights.regular/medium/semiBold` instead of CSS fontWeight
+- Standalone full-screen layout for conversion/unique screens (welcome, paywall)
+- Dismiss-then-navigate: close drawer/sheet before router.push to avoid animation conflicts
+- 44x44px hitArea wrapper for minimum tap targets on interactive elements
+- BottomSheetModalProvider at root layout for portal rendering above tab bar
+- Root-level screens for non-tab destinations (bird-detail, profile)
+
+### Key Lessons
+1. Milestone audit is essential before completion — found real implementation gaps despite all checkboxes being checked
+2. Alpha libraries (NativeTabs) need fallback plans — having one saved significant time when it failed
+3. Fast execution (2 days, 13 plans) is achievable when foundation and patterns are solid from previous milestone
+4. Bottom-sheet is a versatile primitive — auth drawer and map drawer are very different UX but same underlying component
+5. Post-checkpoint visual verification catches issues that static code analysis misses (NativeTabs, drawer z-order)
+
+### Cost Observations
+- Sessions: ~4-5 across 2 days
+- Notable: Average plan duration dropped significantly from v1.0 — patterns and conventions were reusable
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
 
-| Milestone | Timeline | Phases | Key Change |
-|-----------|----------|--------|------------|
-| v1.0 | 4 days | 3 | Baseline — UAT gap closure pattern established |
+| Milestone | Timeline | Phases | Plans | Key Change |
+|-----------|----------|--------|-------|------------|
+| v1.0 | 4 days | 3 | 10 | Baseline — UAT gap closure pattern established |
+| v1.1 | 2 days | 5 | 13 | Milestone audit + gap closure phase; NativeTabs fallback |
 
 ### Cumulative Quality
 
 | Milestone | Requirements | Coverage | Tech Debt Items |
 |-----------|-------------|----------|-----------------|
 | v1.0 | 16/16 | 100% | 4 (non-blocking) |
+| v1.1 | 29/29 | 100% | 4 (non-blocking) |

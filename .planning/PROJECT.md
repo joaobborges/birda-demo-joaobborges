@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Birda is a bird watching companion app prototype built for an interview demo. It features a polished 12-screen animated onboarding wizard, a personalized paywall with Nature Day discount variant, and a map home screen with Supercluster marker clustering and floating navigation UI. All data is local — no API, no backend. Built with Expo (SDK 55) + React Native + EAS Dev Client.
+Birda is a bird watching companion app prototype built for an interview demo. It features a polished onboarding flow with auto-scrolling bird mosaic welcome screen, bottom-sheet auth drawer, conversion-optimized paywall, native tab bar, and a map home screen with Supercluster clustering and full-width swipeable bird detail drawer. All data is local — no API, no backend. Built with Expo (SDK 55) + React Native + EAS Dev Client.
 
 ## Core Value
 
@@ -40,11 +40,23 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 - ✓ Profile push screen with avatar, badges, achievements — v1.0 (SCRN-01)
 - ✓ Community push screen with LegendList social feed — v1.0 (SCRN-02)
 
+- ✓ Splash screen with Birda logo on launch — v1.1 (FOUN-05)
+- ✓ All text renders in Rubik typeface with build-time font loading — v1.1 (FOUN-06)
+- ✓ All CTA buttons use design system color tokens — v1.1 (FOUN-07)
+- ✓ All screens use spacing tokens for consistent gaps — v1.1 (FOUN-08)
+- ✓ Fixed bottom CTA containers use 24px bottom / 16px horizontal padding — v1.1 (FOUN-09)
+- ✓ Welcome screen with auto-scrolling bird mosaic in 3 columns — v1.1 (WELC-01, WELC-02)
+- ✓ Auth bottom drawer with Apple, Google, Email sign-in options — v1.1 (AUTH-01, AUTH-02, AUTH-03)
+- ✓ Progress dots with correct styling and fixed position — v1.1 (ONBR-04, ONBR-05)
+- ✓ Onboarding layout fixes (avatar spacing, name CTA, overflow) — v1.1 (ONBR-06, ONBR-07, ONBR-08, ONBR-09, ONBR-10)
+- ✓ Conversion paywall with hero, bullets, social proof, pricing, dismiss-to-home — v1.1 (PAYW-04 through PAYW-10)
+- ✓ Native tab bar with Map, Capture, Logbook tabs — v1.1 (NAV-01)
+- ✓ Dev panel via double-tap gesture — v1.1 (NAV-02)
+- ✓ Full-width swipeable bird detail drawer above all content — v1.1 (NAV-03, NAV-04, NAV-05)
+
 ### Active
 
-<!-- v1.1 Polish & Refinement — defined 2026-03-09 -->
-
-(See REQUIREMENTS.md for full scoped list with REQ-IDs)
+(No active requirements — next milestone not yet defined)
 
 ### Out of Scope
 
@@ -61,32 +73,17 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 - Bird identification (ML/AI) — separate project scope
 - Internationalization — English only, strings are extractable
 
-## Current Milestone: v1.1 Polish & Refinement
-
-**Goal:** Refine the prototype with design system enforcement, layout fixes, a redesigned paywall, and native-feeling navigation to make it feel production-ready.
-
-**Target features:**
-- Splash screen with logo asset
-- Design system enforcement (Rubik font, color tokens on CTAs, spacing tokens)
-- Welcome screen: locked layout + auto-scrolling mosaic animation
-- Auth bottom drawer (Login/Create with Apple, Google, Email options)
-- Onboarding layout fixes (dots styling, spacing consistency, overflow bugs)
-- Redesigned single paywall (hero image, pricing, bullet points, dismiss to home)
-- Fixed bottom CTA padding standardized (24px bottom, 16px horizontal)
-- Native iOS tab bar for Capture/Logbook on home screen
-- Debug button repositioned to top of screen
-- Full-width swipeable map drawer rendered above all content
-
 ## Context
 
 - **Purpose:** Interview demo prototype to showcase mobile engineering craft
-- **Shipped:** v1.0 MVP on 2026-03-09 (3 phases, 10 plans, 4 days)
-- **Codebase:** 2,649 LOC TypeScript/TSX across 81 files
-- **Stack:** Expo SDK 55, React Native 0.83, Zustand, Reanimated, react-native-maps, Supercluster, Ionicons
+- **Shipped:** v1.1 Polish & Refinement on 2026-03-10 (5 phases, 13 plans, 2 days)
+- **Previous:** v1.0 MVP on 2026-03-09 (3 phases, 10 plans, 4 days)
+- **Codebase:** 3,671 LOC TypeScript/TSX
+- **Stack:** Expo SDK 55, React Native 0.83, Zustand, Reanimated, react-native-maps, Supercluster, Ionicons, @gorhom/bottom-sheet, @expo-google-fonts/rubik
 - **Design workflow:** Code-first approach, synced to Paper.design via MCP for visual refinement
 - **PRD reference:** `PRD-CLAUDE/01-PRD.md`
 - **Codebase map:** `.planning/codebase/` — 7 documents covering stack, architecture, structure, conventions, testing, integrations, concerns
-- **Tech debt:** 3 dead code items in `src/theme/` (see MILESTONES.md)
+- **Tech debt:** See MILESTONES.md for v1.0 and v1.1 tech debt items
 
 ## Constraints
 
@@ -115,6 +112,14 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 | OnboardingLayout handles safe area internally | Screens never import useSafeAreaInsets — single responsibility | ✓ Good |
 | borderCurve: continuous alongside every borderRadius | iOS continuous corners throughout the app — STYL-01 convention | ✓ Good |
 | Emoji placeholders for avatar visuals | No real bird assets available — demonstrates dynamic behavior pattern | ⚠️ Revisit |
+| Weight-specific font family names (Rubik_400Regular) | React Native requires family name encoding for static font loading | ✓ Good |
+| @gorhom/bottom-sheet for auth + map drawers | Reanimated 4 peer dep support, smooth gestures, portal rendering | ✓ Good |
+| Standalone layouts for welcome + paywall | Unique screens need full viewport control, not OnboardingLayout wrapper | ✓ Good |
+| NativeTabs → standard Expo Router Tabs fallback | NativeTabs alpha caused runtime issues; planned fallback activated | ✓ Good |
+| BottomSheetModalProvider at root layout | Required for portal rendering above tab bar | ✓ Good |
+| Bird detail screen at root app/ level | Avoids tab routing conflicts — stack push from any context | ✓ Good |
+| 44x44px hit area on map markers | Apple HIG / Android minimum tap target guideline | ✓ Good |
+| Double-tap (not triple-tap) dev panel trigger | Triple-tap too unreliable in testing | ✓ Good |
 
 ---
-*Last updated: 2026-03-09 after v1.1 milestone started*
+*Last updated: 2026-03-10 after v1.1 milestone*
