@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** -- Phases 1-3 (shipped 2026-03-09)
-- :construction: **v1.1 Polish & Refinement** -- Phases 4-7 (in progress)
+- :construction: **v1.1 Polish & Refinement** -- Phases 4-8 (in progress)
 
 ## Phases
 
@@ -26,6 +26,7 @@ See: `.planning/milestones/v1.0-ROADMAP.md` for full details.
 - [x] **Phase 5: Welcome Screen & Auth Drawer** - Auto-scrolling bird mosaic animation and bottom sheet auth drawer with sign-in options (completed 2026-03-10)
 - [x] **Phase 6: Paywall Redesign** - New single paywall with hero image, pricing, bullet points, and dismiss-to-home navigation (completed 2026-03-10)
 - [x] **Phase 7: Native Tabs & Map Drawer** - Native iOS tab bar, debug button repositioning, and full-width swipeable map bird detail drawer (completed 2026-03-10)
+- [ ] **Phase 8: Auth Fix & UI Polish** - Gate login drawer email button, add paywall social proof content, ensure drawer full-width rendering
 
 ## Phase Details
 
@@ -92,6 +93,19 @@ Plans:
 - [ ] 07-02-PLAN.md -- Triple-tap dev panel gesture replacing floating debug button
 - [ ] 07-03-PLAN.md -- Full-width bird drawer with BottomSheet, bird detail push screen, and visual verification
 
+### Phase 8: Auth Fix & UI Polish
+**Goal**: Close all audit gaps — fix auth drawer login mode, add social proof content, and ensure drawer renders full-width above all content
+**Depends on**: Phase 7
+**Requirements**: AUTH-01, PAYW-06, NAV-03, NAV-04
+**Gap Closure:** Closes gaps from v1.1 audit
+**Success Criteria** (what must be TRUE):
+  1. Login drawer shows only Apple and Google options (no Email button)
+  2. Paywall social proof boxes display "400+ happy birders" and "4.7 stars" content
+  3. Bird info drawer touches left, right, and bottom edges with explicit marginHorizontal: 0
+  4. Bird info drawer renders above tab bar and all other content
+
+Plans: TBD
+
 ## Progress
 
 **Execution Order:** Phase 4 -> 5 -> 6 -> 7
@@ -105,3 +119,4 @@ Plans:
 | 5. Welcome Screen & Auth Drawer | 2/2 | Complete   | 2026-03-10 | - |
 | 6. Paywall Redesign | 1/1 | Complete   | 2026-03-10 | - |
 | 7. Native Tabs & Map Drawer | 3/3 | Complete   | 2026-03-10 | - |
+| 8. Auth Fix & UI Polish | v1.1 | 0/0 | Pending | - |
