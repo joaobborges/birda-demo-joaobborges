@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback } from 'react'
-import { View, Text, Pressable, StyleSheet, Dimensions, Animated } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
 import { useRouter } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -27,17 +27,19 @@ export default function WelcomeScreen() {
   const [drawerMode, setDrawerMode] = useState<'login' | 'signup' | null>(null)
   const sheetRef = useRef<BottomSheet>(null)
   const shouldNavigate = useRef(false)
-  const backdropOpacity = useRef(new Animated.Value(0)).current
+  const [backdropVisible, setBackdropVisible] = useState(false)
 
   const handleCreateAccount = () => {
     if (!termsAccepted) return
     setDrawerMode('signup')
+    setBackdropVisible(true)
     sheetRef.current?.expand()
   }
 
   const handleLogin = () => {
     if (!termsAccepted) return
     setDrawerMode('login')
+    setBackdropVisible(true)
     sheetRef.current?.expand()
   }
 
@@ -48,13 +50,8 @@ export default function WelcomeScreen() {
 
   const handleSheetChange = useCallback(
     (index: number) => {
-      Animated.timing(backdropOpacity, {
-        toValue: index >= 0 ? 1 : 0,
-        duration: 200,
-        useNativeDriver: true,
-      }).start()
-
       if (index === -1) {
+        setBackdropVisible(false)
         setDrawerMode(null)
         if (shouldNavigate.current) {
           shouldNavigate.current = false
@@ -62,7 +59,7 @@ export default function WelcomeScreen() {
         }
       }
     },
-    [router, backdropOpacity]
+    [router]
   )
 
   return (
@@ -124,15 +121,12 @@ export default function WelcomeScreen() {
         </View>
       </View>
 
-      <Animated.View
-        style={[styles.backdrop, { opacity: backdropOpacity }]}
-        pointerEvents={drawerMode ? 'auto' : 'none'}
-      >
+      {backdropVisible && (
         <Pressable
-          style={StyleSheet.absoluteFillObject}
+          style={styles.backdrop}
           onPress={() => sheetRef.current?.close()}
         />
-      </Animated.View>
+      )}
 
       <AuthDrawer
         sheetRef={sheetRef}
