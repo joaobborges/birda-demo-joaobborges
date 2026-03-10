@@ -43,23 +43,23 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UFIX-01 | — | Pending |
-| UFIX-02 | — | Pending |
-| UFIX-03 | — | Pending |
-| UFIX-04 | — | Pending |
-| IMG-01 | — | Pending |
-| IMG-02 | — | Pending |
-| IMG-03 | — | Pending |
-| IMG-04 | — | Pending |
-| IMG-05 | — | Pending |
-| IMG-06 | — | Pending |
-| IMG-07 | — | Pending |
+| UFIX-01 | Phase 14 | Pending |
+| UFIX-02 | Phase 14 | Pending |
+| UFIX-03 | Phase 14 | Pending |
+| UFIX-04 | Phase 14 | Pending |
+| IMG-01 | Phase 15 | Pending |
+| IMG-02 | Phase 15 | Pending |
+| IMG-03 | Phase 15 | Pending |
+| IMG-04 | Phase 15 | Pending |
+| IMG-05 | Phase 15 | Pending |
+| IMG-06 | Phase 15 | Pending |
+| IMG-07 | Phase 15 | Pending |
 
 **Coverage:**
 - v1.2 requirements: 11 total
-- Mapped to phases: 0
-- Unmapped: 11 ⚠️
+- Mapped to phases: 11
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-10*
-*Last updated: 2026-03-10 after initial definition*
+*Last updated: 2026-03-10 — traceability added after roadmap creation*
