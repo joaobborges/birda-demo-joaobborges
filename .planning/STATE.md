@@ -2,16 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Polish & Refinement
-status: in-progress
-stopped_at: "06-01 Task 2 checkpoint:human-verify — awaiting visual verification in Expo Go"
-last_updated: "2026-03-10T13:10:22Z"
+status: verifying
+stopped_at: Completed 06-01-PLAN.md — paywall redesign phase complete
+last_updated: "2026-03-10T13:24:20.269Z"
 last_activity: 2026-03-10 — Completed 06-01 Task 1 (paywall rewrite)
 progress:
   total_phases: 4
-  completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
-  percent: 100
+  completed_phases: 3
+  total_plans: 7
+  completed_plans: 7
 ---
 
 # Project State
@@ -50,6 +49,7 @@ Progress: [██████████] In progress
 | Phase 05 P01 | 2min | 2 tasks | 5 files |
 | Phase 05 P02 | 15min | 2 tasks | 3 files |
 | Phase 06 P01 | 2min | 1 task | 1 file |
+| Phase 06-paywall-redesign P01 | 35 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -76,6 +76,9 @@ Recent decisions affecting current work:
 - v1.1: NativeTabs (alpha) last — highest risk, fallback to restyled floating bar available
 - [Phase 04]: Non-standard sizes use fontFamily + literal fontSize with comment annotations
 - [Phase 04]: fontError fallback ensures app loads even if fonts fail (graceful degradation)
+- [Phase 06-paywall-redesign]: 06-01: Feature bullets and headline left-aligned — cleaner reading flow (post-checkpoint tweak)
+- [Phase 06-paywall-redesign]: 06-01: Social proof boxes use flex: 1 not fixed 140px — fills row symmetrically on any screen width
+- [Phase 06-paywall-redesign]: 06-01: fixedBottomCTA paddingBottom token 24->8 — reduced visual weight, applied globally
 
 ### Pending Todos
 
@@ -88,6 +91,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-10T13:10:22Z
-Stopped at: 06-01 Task 2 checkpoint:human-verify — awaiting visual verification in Expo Go
-Resume file: .planning/phases/06-paywall-redesign/06-01-SUMMARY.md
+Last session: 2026-03-10T13:24:20.267Z
+Stopped at: Completed 06-01-PLAN.md — paywall redesign phase complete
+Resume file: None
