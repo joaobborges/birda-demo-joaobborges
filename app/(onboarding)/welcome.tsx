@@ -124,7 +124,10 @@ export default function WelcomeScreen() {
       {backdropVisible && (
         <Pressable
           style={styles.backdrop}
-          onPress={() => sheetRef.current?.close()}
+          onPress={() => {
+            setBackdropVisible(false)
+            sheetRef.current?.close()
+          }}
         />
       )}
 
