@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Polish & Refinement
 status: verifying
-stopped_at: Phase 8 context gathered
-last_updated: "2026-03-10T15:22:23.856Z"
+stopped_at: Completed 08-03 (profile achievements vertical list)
+last_updated: "2026-03-10T15:39:59.349Z"
 last_activity: 2026-03-10 — Completed 06-01 Task 1 (paywall rewrite)
 progress:
   total_phases: 5
   completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 13
+  completed_plans: 12
 ---
 
 # Project State
@@ -54,6 +54,7 @@ Progress: [██████████] In progress
 | Phase 07-native-tabs-map-drawer P02 | 1 | 2 tasks | 2 files |
 | Phase 07-native-tabs-map-drawer P03 | 8 | 2 tasks | 3 files |
 | Phase 07-native-tabs-map-drawer P03 | 8 | 3 tasks | 6 files |
+| Phase 08-auth-fix-ui-polish P03 | 1 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,8 @@ Recent decisions affecting current work:
 - [Phase 07-native-tabs-map-drawer]: 07-03: BottomSheetModalProvider added to root layout — required for portal rendering above tab bar
 - [Phase 07-native-tabs-map-drawer]: 07-03: profile.tsx moved to root app/ — was appearing as tab inside (main)/ group
 - [Phase 07-native-tabs-map-drawer]: 07-03: Dev panel trigger changed triple-tap -> double-tap — triple tap too unreliable in testing
+- [Phase 08-auth-fix-ui-polish]: 08-03: achievementRowLocked uses opacity 0.4 — clearly dimmed but readable
+- [Phase 08-auth-fix-ui-polish]: 08-03: achievementLabel fontSize 12->14 — row layout has more horizontal space than column cards
 
 ### Pending Todos
 
@@ -106,6 +109,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-10T15:22:23.854Z
-Stopped at: Phase 8 context gathered
-Resume file: .planning/phases/08-auth-fix-ui-polish/08-CONTEXT.md
+Last session: 2026-03-10T15:39:50.516Z
+Stopped at: Completed 08-03 (profile achievements vertical list)
+Resume file: None

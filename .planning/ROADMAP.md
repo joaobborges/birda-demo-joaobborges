@@ -105,7 +105,7 @@ Plans:
   4. Active tab color is primary blue, header icons match inactive tab color
   5. Onboarding screens match welcome screen text positioning
   6. Profile achievements display as vertical list with locked items
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] 08-01-PLAN.md -- Paywall content fixes, map marker hit area, tab/navigation styling
@@ -125,4 +125,4 @@ Plans:
 | 5. Welcome Screen & Auth Drawer | 2/2 | Complete   | 2026-03-10 | - |
 | 6. Paywall Redesign | 1/1 | Complete   | 2026-03-10 | - |
 | 7. Native Tabs & Map Drawer | 3/3 | Complete   | 2026-03-10 | - |
-| 8. Auth Fix & UI Polish | v1.1 | 0/3 | Planning | - |
+| 8. Auth Fix & UI Polish | 2/3 | In Progress|  | - |
