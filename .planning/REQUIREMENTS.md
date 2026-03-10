@@ -85,15 +85,15 @@ Requirements for polish & refinement milestone. Each maps to roadmap phases.
 | FOUN-09 | Phase 4 | Complete |
 | WELC-01 | Phase 5 | Complete |
 | WELC-02 | Phase 5 | Complete |
-| AUTH-01 | Phase 8 | Complete |
+| AUTH-01 | Phase 8 (fix: 44d1c17) | Complete |
 | AUTH-02 | Phase 5 | Complete |
 | AUTH-03 | Phase 5 | Complete |
 | ONBR-04 | Phase 4 | Complete |
 | ONBR-05 | Phase 4 | Complete |
 | ONBR-06 | Phase 4 | Complete |
 | ONBR-07 | Phase 4 | Complete |
-| ONBR-08 | Phase 4 | Complete |
-| ONBR-09 | Phase 4 | Complete |
+| ONBR-08 | Phase 4 (fix: 44d1c17) | Complete |
+| ONBR-09 | Phase 4 (fix: 44d1c17) | Complete |
 | ONBR-10 | Phase 4 | Complete |
 | PAYW-04 | Phase 6 | Complete |
 | PAYW-05 | Phase 6 | Complete |
