@@ -4,7 +4,7 @@ milestone: v1.2
 milestone_name: UI Polish & Image Wiring
 status: planning
 stopped_at: Completed 14-ui-fixes-14-02-PLAN.md
-last_updated: "2026-03-10T17:09:37.057Z"
+last_updated: "2026-03-10T17:33:23.335Z"
 last_activity: 2026-03-10 — Roadmap created for v1.2
 progress:
   total_phases: 2

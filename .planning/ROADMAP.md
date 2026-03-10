@@ -79,5 +79,5 @@ Plans:
 | 6. Paywall Redesign | v1.1 | 1/1 | Complete | 2026-03-10 |
 | 7. Native Tabs & Map Drawer | v1.1 | 3/3 | Complete | 2026-03-10 |
 | 8. Auth Fix & UI Polish | v1.1 | 3/3 | Complete | 2026-03-10 |
-| 14. UI Fixes | 2/2 | Complete   | 2026-03-10 | - |
+| 14. UI Fixes | 2/2 | Complete    | 2026-03-10 | - |
 | 15. Image Wiring | v1.2 | 0/? | Not started | - |
