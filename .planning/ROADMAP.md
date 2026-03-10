@@ -71,10 +71,10 @@ Plans:
   2. Paywall shows "Unlock the full experience" headline, 3 feature bullet points, social proof (400+ happy birders, 4.7 stars), and pricing (large monthly rate, small annual line)
   3. CTA reads "Redeem your FREE Week" and footer shows Terms of Use, Restore Purchase, and Privacy Policy links
   4. Tapping the close button dismisses the paywall and lands the user on the home map screen (no onboarding screens in back stack)
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 06-01: TBD
+- [ ] 06-01-PLAN.md -- Complete paywall rewrite: standalone layout with hero, bullets, social proof, pricing, CTA, and dismiss navigation
 
 ### Phase 7: Native Tabs & Map Drawer
 **Goal**: The home screen uses a native iOS tab bar and bird details appear in a full-width swipeable drawer above all content
@@ -102,5 +102,5 @@ Plans:
 | 3. Map and Screens | v1.0 | 3/3 | Complete | 2026-03-09 |
 | 4. Design System & Onboarding Polish | v1.1 | 3/4 | Executing | - |
 | 5. Welcome Screen & Auth Drawer | 2/2 | Complete   | 2026-03-10 | - |
-| 6. Paywall Redesign | v1.1 | 0/? | Not started | - |
+| 6. Paywall Redesign | v1.1 | 0/1 | Planned | - |
 | 7. Native Tabs & Map Drawer | v1.1 | 0/? | Not started | - |
