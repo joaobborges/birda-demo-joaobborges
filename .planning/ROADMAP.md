@@ -26,7 +26,7 @@ See: `.planning/milestones/v1.0-ROADMAP.md` for full details.
 - [x] **Phase 5: Welcome Screen & Auth Drawer** - Auto-scrolling bird mosaic animation and bottom sheet auth drawer with sign-in options (completed 2026-03-10)
 - [x] **Phase 6: Paywall Redesign** - New single paywall with hero image, pricing, bullet points, and dismiss-to-home navigation (completed 2026-03-10)
 - [x] **Phase 7: Native Tabs & Map Drawer** - Native iOS tab bar, debug button repositioning, and full-width swipeable map bird detail drawer (completed 2026-03-10)
-- [ ] **Phase 8: Auth Fix & UI Polish** - Gate login drawer email button, add paywall social proof content, ensure drawer full-width rendering
+- [ ] **Phase 8: Auth Fix & UI Polish** - Auth drawer backdrop fix, paywall social proof, onboarding alignment, navigation styling, profile achievements
 
 ## Phase Details
 
@@ -94,21 +94,27 @@ Plans:
 - [ ] 07-03-PLAN.md -- Full-width bird drawer with BottomSheet, bird detail push screen, and visual verification
 
 ### Phase 8: Auth Fix & UI Polish
-**Goal**: Close all audit gaps — fix auth drawer login mode, add social proof content, and ensure drawer renders full-width above all content
+**Goal**: Close audit gaps and apply UI polish — fix auth drawer backdrop, add social proof content, align onboarding screens, polish navigation styling, and restructure profile achievements
 **Depends on**: Phase 7
 **Requirements**: AUTH-01, PAYW-06, NAV-03, NAV-04
 **Gap Closure:** Closes gaps from v1.1 audit
 **Success Criteria** (what must be TRUE):
-  1. Login drawer shows only Apple and Google options (no Email button)
+  1. Auth drawer backdrop covers full screen including bird mosaic area
   2. Paywall social proof boxes display "400+ happy birders" and "4.7 stars" content
-  3. Bird info drawer touches left, right, and bottom edges with explicit marginHorizontal: 0
-  4. Bird info drawer renders above tab bar and all other content
+  3. Map markers have 44x44px minimum tap target
+  4. Active tab color is primary blue, header icons match inactive tab color
+  5. Onboarding screens match welcome screen text positioning
+  6. Profile achievements display as vertical list with locked items
+**Plans:** 3 plans
 
-Plans: TBD
+Plans:
+- [ ] 08-01-PLAN.md -- Paywall content fixes, map marker hit area, tab/navigation styling
+- [ ] 08-02-PLAN.md -- Auth drawer backdrop fix, onboarding layout alignment, name screen keyboard avoidance
+- [ ] 08-03-PLAN.md -- Profile achievements vertical list with locked items
 
 ## Progress
 
-**Execution Order:** Phase 4 -> 5 -> 6 -> 7
+**Execution Order:** Phase 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -119,4 +125,4 @@ Plans: TBD
 | 5. Welcome Screen & Auth Drawer | 2/2 | Complete   | 2026-03-10 | - |
 | 6. Paywall Redesign | 1/1 | Complete   | 2026-03-10 | - |
 | 7. Native Tabs & Map Drawer | 3/3 | Complete   | 2026-03-10 | - |
-| 8. Auth Fix & UI Polish | v1.1 | 0/0 | Pending | - |
+| 8. Auth Fix & UI Polish | v1.1 | 0/3 | Planning | - |
