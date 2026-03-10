@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: UI Polish & Image Wiring
 status: planning
-stopped_at: Phase 15 context gathered
-last_updated: "2026-03-10T17:45:55.864Z"
+stopped_at: Completed 15-01-PLAN.md (image download and wiring)
+last_updated: "2026-03-10T18:13:56.963Z"
 last_activity: 2026-03-10 — Roadmap created for v1.2
 progress:
   total_phases: 2
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 4
+  completed_plans: 3
   percent: 0
 ---
 
@@ -49,6 +49,8 @@ Recent decisions affecting current work:
 - BottomSheetModalProvider at root layout required for portal rendering above tab bar (Phase 7)
 - [Phase 14-ui-fixes]: Used BottomSheet containerStyle prop to make backdrop portal fill full screen
 - [Phase 14-ui-fixes]: Single shared progress value (0-1) drives all CaptureFAB animations simultaneously for synchronized open/close behavior
+- [Phase 15-image-wiring]: Used Wikipedia API to discover current Wikimedia Commons filenames when original birds.ts URLs returned 404 (many had moved)
+- [Phase 15-image-wiring]: Bird.image type changed from string to ImageSource (expo-image); all consumers use source={bird.image} without uri wrapper
 
 ### Pending Todos
 
@@ -60,6 +62,6 @@ None active.
 
 ## Session Continuity
 
-Last session: 2026-03-10T17:45:55.862Z
-Stopped at: Phase 15 context gathered
-Resume file: .planning/phases/15-image-wiring/15-CONTEXT.md
+Last session: 2026-03-10T18:13:56.962Z
+Stopped at: Completed 15-01-PLAN.md (image download and wiring)
+Resume file: None
