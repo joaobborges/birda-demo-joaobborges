@@ -6,7 +6,7 @@ import MapView, { Marker, Region } from 'react-native-maps'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import Supercluster from 'supercluster'
 import Ionicons from '@expo/vector-icons/Ionicons'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
 import { birds, Bird } from '@/data/birds'
 import { semantic, colors } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
@@ -58,7 +58,7 @@ export default function MapScreen() {
   const router = useRouter()
   const { top } = useSafeAreaInsets()
   const mapRef = useRef<MapView>(null)
-  const sheetRef = useRef<BottomSheet>(null)
+  const sheetRef = useRef<BottomSheetModal>(null)
   const [selectedBird, setSelectedBird] = useState<Bird | null>(null)
 
   const clusterIndex = useMemo(() => {
@@ -96,7 +96,7 @@ export default function MapScreen() {
 
   function handleBirdPress(bird: Bird) {
     setSelectedBird(bird)
-    sheetRef.current?.snapToIndex(0)
+    sheetRef.current?.present()
   }
 
   const handleSheetClose = useCallback(() => {
@@ -105,7 +105,7 @@ export default function MapScreen() {
 
   function handleBirdImagePress() {
     if (!selectedBird) return
-    sheetRef.current?.close()
+    sheetRef.current?.dismiss()
     router.push({ pathname: '/bird-detail', params: { birdId: selectedBird.id } })
   }
 
@@ -166,18 +166,15 @@ export default function MapScreen() {
         </View>
       </Animated.View>
 
-      {/* Bottom sheet drawer — always mounted, renders above all content */}
-      <BottomSheet
+      {/* Bottom sheet modal — renders via Portal above tab bar */}
+      <BottomSheetModal
         ref={sheetRef}
-        index={-1}
-        snapPoints={['50%']}
+        enableDynamicSizing
         enablePanDownToClose
-        backdropComponent={undefined}
-        onClose={handleSheetClose}
-        style={{ marginHorizontal: 0 }}
+        onDismiss={handleSheetClose}
         handleIndicatorStyle={{ backgroundColor: colors.neutral300 }}
       >
-        <BottomSheetView style={{ flex: 1 }}>
+        <BottomSheetView>
           {selectedBird && (
             <BirdDrawerContent
               bird={selectedBird}
@@ -185,7 +182,7 @@ export default function MapScreen() {
             />
           )}
         </BottomSheetView>
-      </BottomSheet>
+      </BottomSheetModal>
     </View>
   )
 }

@@ -1,4 +1,5 @@
 import { View, Text, Pressable, StyleSheet, ViewStyle } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Image } from 'expo-image'
 import { Bird } from '@/data/birds'
 import { semantic } from '@/theme/colors'
@@ -16,9 +17,13 @@ interface BirdDrawerContentProps {
   onImagePress: () => void
 }
 
+const TAB_BAR_HEIGHT = 49
+
 export function BirdDrawerContent({ bird, onImagePress }: BirdDrawerContentProps) {
+  const { bottom } = useSafeAreaInsets()
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: bottom + TAB_BAR_HEIGHT }]}>
       <Pressable onPress={onImagePress}>
         <Image
           source={{ uri: bird.image }}
