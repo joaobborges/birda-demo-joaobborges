@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
+import { AVATAR_IMAGES } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { typography, fontWeights } from '@/theme/typography'
 import { spacing } from '@/theme/spacing'
@@ -36,7 +38,7 @@ export default function NameScreen() {
         }
       >
         <Animated.View entering={FadeIn.delay(100).duration(300)}>
-          <View style={styles.avatarPlaceholder} />
+          <Image source={AVATAR_IMAGES['default']} style={styles.avatarPlaceholder} contentFit="cover" />
           <Text style={styles.heading}>What should we call you?</Text>
           <TextInput
             style={styles.input}

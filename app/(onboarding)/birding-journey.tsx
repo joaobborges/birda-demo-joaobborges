@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { Image, ImageSource } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
+import { AVATAR_IMAGES } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
@@ -19,11 +21,11 @@ const LEVELS = [
 
 type LevelKey = (typeof LEVELS)[number]['key']
 
-const AVATAR_MAP: Record<LevelKey, { emoji: string; size: number; bgColor: string }> = {
-  new: { emoji: '\u{1F95A}', size: 48, bgColor: semantic.bgTinted },
-  garden: { emoji: '\u{1F426}', size: 56, bgColor: semantic.bgTinted },
-  intermediate: { emoji: '\u{1F985}', size: 72, bgColor: semantic.bgTinted },
-  expert: { emoji: '\u{1F989}', size: 88, bgColor: semantic.bgTinted },
+const AVATAR_MAP: Record<LevelKey, { image: ImageSource; size: number; bgColor: string }> = {
+  new: { image: AVATAR_IMAGES['new'], size: 80, bgColor: semantic.bgTinted },
+  garden: { image: AVATAR_IMAGES['garden'], size: 80, bgColor: semantic.bgTinted },
+  intermediate: { image: AVATAR_IMAGES['intermediate'], size: 80, bgColor: semantic.bgTinted },
+  expert: { image: AVATAR_IMAGES['expert'], size: 80, bgColor: semantic.bgTinted },
 }
 
 export default function BirdingJourneyScreen() {
@@ -52,9 +54,11 @@ export default function BirdingJourneyScreen() {
           entering={FadeIn.duration(200)}
           style={styles.avatarPlaceholder}
         >
-          <Text style={[styles.avatarEmoji, { fontSize: selected ? AVATAR_MAP[selected].size : 48 }]}>
-            {selected ? AVATAR_MAP[selected].emoji : '\u{1F95A}'}
-          </Text>
+          <Image
+            source={AVATAR_MAP[selected ?? 'new'].image}
+            style={styles.avatarImage}
+            contentFit="cover"
+          />
         </Animated.View>
         <Text style={styles.heading}>Your birding journey</Text>
         <Text style={styles.description}>
@@ -92,9 +96,11 @@ const styles = StyleSheet.create({
     marginBottom: spacing['6'],
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   },
-  avatarEmoji: {
-    textAlign: 'center',
+  avatarImage: {
+    width: 120,
+    height: 120,
   },
   heading: {
     ...typography.h3,

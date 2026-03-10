@@ -1,8 +1,10 @@
 import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
+import { Image } from 'expo-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { useOnboardingStore } from '@/stores/onboarding'
+import { PAYWALL_HERO } from '@/data/imageManifest'
 import { semantic, colors } from '@/theme/colors'
 import { typography, fontWeights } from '@/theme/typography'
 import { spacing } from '@/theme/spacing'
@@ -30,8 +32,11 @@ export default function PaywallScreen() {
     <View style={styles.root}>
       {/* Zone 1 — Hero */}
       <View style={[styles.hero, { height: HERO_HEIGHT }]}>
-        {/* Blue-tinted placeholder — replace with Image when asset provided */}
-        <View style={[StyleSheet.absoluteFillObject, styles.heroPlaceholder]} />
+        <Image
+          source={PAYWALL_HERO}
+          style={[StyleSheet.absoluteFillObject, styles.heroImage]}
+          contentFit="cover"
+        />
 
         {/* Close button */}
         <Pressable
@@ -145,7 +150,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
   },
-  heroPlaceholder: {
+  heroImage: {
+    // Placeholder tint while image loads; replaced by actual hero art when provided
     backgroundColor: semantic.bgTinted,
   },
   closeButton: {
