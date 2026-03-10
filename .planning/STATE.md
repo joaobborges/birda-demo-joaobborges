@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Polish & Refinement
 status: verifying
-stopped_at: Completed 07-01-PLAN.md
-last_updated: "2026-03-10T14:13:03.797Z"
+stopped_at: Completed 07-02-PLAN.md
+last_updated: "2026-03-10T14:15:36.733Z"
 last_activity: 2026-03-10 — Completed 06-01 Task 1 (paywall rewrite)
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 10
-  completed_plans: 8
+  completed_plans: 9
 ---
 
 # Project State
@@ -51,6 +51,7 @@ Progress: [██████████] In progress
 | Phase 06 P01 | 2min | 1 task | 1 file |
 | Phase 06-paywall-redesign P01 | 35 | 2 tasks | 3 files |
 | Phase 07 P01 | 80 | 2 tasks | 4 files |
+| Phase 07-native-tabs-map-drawer P02 | 1 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,8 @@ Recent decisions affecting current work:
 - [Phase 06-paywall-redesign]: 06-01: fixedBottomCTA paddingBottom token 24->8 — reduced visual weight, applied globally
 - [Phase 07]: NativeTabs iconColor uses neutral400 (inactive) and neutral700 (active) for design system consistency
 - [Phase 07]: selectedBird state retained in index.tsx for Plan 02 bottom sheet drawer wiring
+- [Phase 07-native-tabs-map-drawer]: 07-02: runOnJS(true) on triple-tap gesture — setState must run on JS thread to avoid crash
+- [Phase 07-native-tabs-map-drawer]: 07-02: DevPanel rendered outside GestureDetector — Modal must not be affected by tap gesture
 
 ### Pending Todos
 
@@ -94,6 +97,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-10T14:13:03.794Z
-Stopped at: Completed 07-01-PLAN.md
+Last session: 2026-03-10T14:15:36.732Z
+Stopped at: Completed 07-02-PLAN.md
 Resume file: None
