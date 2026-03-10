@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: UI Polish & Image Wiring
 status: planning
-stopped_at: Completed 14-ui-fixes-14-01-PLAN.md
-last_updated: "2026-03-10T17:08:01.518Z"
+stopped_at: Completed 14-ui-fixes-14-02-PLAN.md
+last_updated: "2026-03-10T17:09:37.057Z"
 last_activity: 2026-03-10 — Roadmap created for v1.2
 progress:
   total_phases: 2
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -48,6 +48,7 @@ Recent decisions affecting current work:
 - NativeTabs → standard Expo Router Tabs fallback (Phase 7)
 - BottomSheetModalProvider at root layout required for portal rendering above tab bar (Phase 7)
 - [Phase 14-ui-fixes]: Used BottomSheet containerStyle prop to make backdrop portal fill full screen
+- [Phase 14-ui-fixes]: Single shared progress value (0-1) drives all CaptureFAB animations simultaneously for synchronized open/close behavior
 
 ### Pending Todos
 
@@ -59,6 +60,6 @@ None active.
 
 ## Session Continuity
 
-Last session: 2026-03-10T17:08:01.516Z
-Stopped at: Completed 14-ui-fixes-14-01-PLAN.md
+Last session: 2026-03-10T17:09:37.055Z
+Stopped at: Completed 14-ui-fixes-14-02-PLAN.md
 Resume file: None
