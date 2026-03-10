@@ -6,10 +6,13 @@ import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
 
 const ACHIEVEMENTS = [
-  { icon: 'sunny-outline' as const, label: 'Early Bird', bg: semantic.rarityUncommonBg },
-  { icon: 'eye-outline' as const, label: 'Sharp Eye', bg: semantic.rarityCommonBg },
-  { icon: 'camera-outline' as const, label: 'Photographer', bg: semantic.rarityRareBg },
-  { icon: 'compass-outline' as const, label: 'Explorer', bg: semantic.statusSuccessBg },
+  { icon: 'sunny-outline' as const, label: 'Early Bird', bg: semantic.rarityUncommonBg, unlocked: true },
+  { icon: 'eye-outline' as const, label: 'Sharp Eye', bg: semantic.rarityCommonBg, unlocked: true },
+  { icon: 'camera-outline' as const, label: 'Photographer', bg: semantic.rarityRareBg, unlocked: true },
+  { icon: 'compass-outline' as const, label: 'Explorer', bg: semantic.statusSuccessBg, unlocked: true },
+  { icon: 'lock-closed-outline' as const, label: 'Night Owl', bg: semantic.bgSurface, unlocked: false },
+  { icon: 'lock-closed-outline' as const, label: 'Migration Tracker', bg: semantic.bgSurface, unlocked: false },
+  { icon: 'lock-closed-outline' as const, label: 'Rare Finder', bg: semantic.bgSurface, unlocked: false },
 ]
 
 export default function ProfileScreen() {
@@ -51,9 +54,9 @@ export default function ProfileScreen() {
       <Text style={styles.sectionTitle}>Achievements</Text>
       <View style={styles.achievements}>
         {ACHIEVEMENTS.map((a) => (
-          <View key={a.label} style={styles.achievement}>
+          <View key={a.label} style={[styles.achievementRow, !a.unlocked && styles.achievementRowLocked]}>
             <View style={[styles.achievementIcon, { backgroundColor: a.bg }]}>
-              <Ionicons name={a.icon} size={24} color={semantic.textPrimary} />
+              <Ionicons name={a.icon} size={24} color={a.unlocked ? semantic.textPrimary : semantic.textMuted} />
             </View>
             <Text style={styles.achievementLabel}>{a.label}</Text>
           </View>
@@ -133,18 +136,21 @@ const styles = StyleSheet.create({
     marginBottom: 14, // no exact token
   },
   achievements: {
-    flexDirection: 'row',
     gap: spacing['3'],
   },
-  achievement: {
-    flex: 1,
+  achievementRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing['2'],
-    backgroundColor: semantic.bgPage,
-    padding: spacing['4'],
+    gap: spacing['4'],
+    paddingVertical: spacing['3'],
+    paddingHorizontal: spacing['4'],
     borderRadius: 16,
     borderCurve: 'continuous',
+    backgroundColor: semantic.bgPage,
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+  },
+  achievementRowLocked: {
+    opacity: 0.4,
   },
   achievementIcon: {
     width: 44,
@@ -156,7 +162,7 @@ const styles = StyleSheet.create({
   },
   achievementLabel: {
     fontFamily: fontWeights.semiBold,
-    fontSize: 12, // no exact token
+    fontSize: 14, // no exact token — slightly larger for row layout
     color: semantic.textBody,
   },
 })
