@@ -50,11 +50,13 @@ export function AuthDrawer({ sheetRef, mode, onSelectOption, onChange }: AuthDra
         <View style={styles.buttons}>
           <AuthOptionButton icon="apple" onPress={onSelectOption} />
           <AuthOptionButton icon="google" onPress={onSelectOption} />
-          <AuthOptionButton
-            icon="email"
-            onPress={onSelectOption}
-            label={mode === 'login' ? 'Log in with Email' : 'Continue with Email'}
-          />
+          {mode !== 'login' && (
+            <AuthOptionButton
+              icon="email"
+              onPress={onSelectOption}
+              label="Continue with Email"
+            />
+          )}
         </View>
       </BottomSheetView>
     </BottomSheet>

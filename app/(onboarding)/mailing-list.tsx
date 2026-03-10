@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { View, Text, Switch, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
-import { useOnboardingStore } from '@/stores/onboarding'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { Button } from '@/components/ui/Button'
 import { semantic } from '@/theme/colors'
@@ -10,18 +9,15 @@ import { spacing } from '@/theme/spacing'
 import { typography } from '@/theme/typography'
 
 export default function MailingListScreen() {
-  const { replace } = useRouter()
-  const { completeOnboarding } = useOnboardingStore()
+  const { push } = useRouter()
   const [mailingList, setMailingList] = useState(false)
 
   const handleSave = () => {
-    completeOnboarding()
-    replace('/(main)')
+    push('/(onboarding)/paywall')
   }
 
   const handleMaybeLater = () => {
-    completeOnboarding()
-    replace('/(main)')
+    push('/(onboarding)/paywall')
   }
 
   return (

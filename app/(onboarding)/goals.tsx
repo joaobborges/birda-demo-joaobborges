@@ -30,7 +30,7 @@ export default function GoalsScreen() {
 
   const handleContinue = () => {
     useOnboardingStore.getState().setGoals(selectedGoals)
-    push('/(onboarding)/paywall')
+    push('/(onboarding)/reminders')
   }
 
   return (
