@@ -26,7 +26,7 @@ export function BirdDrawerContent({ bird, onImagePress }: BirdDrawerContentProps
     <View style={[styles.container, { paddingBottom: bottom + TAB_BAR_HEIGHT }]}>
       <Pressable onPress={onImagePress}>
         <Image
-          source={{ uri: bird.image }}
+          source={bird.image}
           style={styles.birdImage}
           contentFit="cover"
           transition={200}

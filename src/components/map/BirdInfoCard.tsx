@@ -24,7 +24,7 @@ export function BirdInfoCard({ bird, onClose }: BirdInfoCardProps) {
         <Text style={styles.closeText}>✕</Text>
       </Pressable>
       <Image
-        source={{ uri: bird.image }}
+        source={bird.image}
         style={styles.birdImage}
         contentFit="cover"
         transition={200}

@@ -89,7 +89,7 @@ function MosaicColumn({ config }: { config: ColumnConfig }) {
       ]}
     >
       <Image
-        source={{ uri: bird.image }}
+        source={bird.image}
         style={styles.tileImage}
         contentFit="cover"
         priority="low"
@@ -110,7 +110,7 @@ function MosaicColumn({ config }: { config: ColumnConfig }) {
             ]}
           >
             <Image
-              source={{ uri: bird.image }}
+              source={bird.image}
               style={styles.tileImage}
               contentFit="cover"
               priority="low"

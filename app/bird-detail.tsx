@@ -50,7 +50,7 @@ export default function BirdDetailScreen() {
       >
         {/* Hero image */}
         <Image
-          source={{ uri: bird.image }}
+          source={bird.image}
           style={styles.heroImage}
           contentFit="cover"
           transition={300}
