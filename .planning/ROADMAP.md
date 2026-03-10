@@ -25,7 +25,7 @@ See: `.planning/milestones/v1.0-ROADMAP.md` for full details.
 - [ ] **Phase 4: Design System & Onboarding Polish** - Rubik font loading, splash screen, token enforcement across all screens, and onboarding layout fixes
 - [x] **Phase 5: Welcome Screen & Auth Drawer** - Auto-scrolling bird mosaic animation and bottom sheet auth drawer with sign-in options (completed 2026-03-10)
 - [x] **Phase 6: Paywall Redesign** - New single paywall with hero image, pricing, bullet points, and dismiss-to-home navigation (completed 2026-03-10)
-- [ ] **Phase 7: Native Tabs & Map Drawer** - Native iOS tab bar, debug button repositioning, and full-width swipeable map bird detail drawer
+- [x] **Phase 7: Native Tabs & Map Drawer** - Native iOS tab bar, debug button repositioning, and full-width swipeable map bird detail drawer (completed 2026-03-10)
 
 ## Phase Details
 
@@ -85,7 +85,7 @@ Plans:
   2. Debug button is positioned at the top of the screen with styling consistent with the rest of the app
   3. Tapping a bird marker opens a full-width drawer (touching left, right, and bottom edges) that renders above all other content including the debug button
   4. Map drawer supports swipe-to-dismiss gesture and the map remains interactive when the drawer is collapsed
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 07-01-PLAN.md -- Native iOS tab bar with 4 tabs, placeholder Capture/Logbook screens, map cleanup
@@ -104,4 +104,4 @@ Plans:
 | 4. Design System & Onboarding Polish | v1.1 | 3/4 | Executing | - |
 | 5. Welcome Screen & Auth Drawer | 2/2 | Complete   | 2026-03-10 | - |
 | 6. Paywall Redesign | 1/1 | Complete   | 2026-03-10 | - |
-| 7. Native Tabs & Map Drawer | 2/3 | In Progress|  | - |
+| 7. Native Tabs & Map Drawer | 3/3 | Complete   | 2026-03-10 | - |
