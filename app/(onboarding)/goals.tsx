@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import { View, Text, Pressable, StyleSheet, Dimensions } from 'react-native'
-import { Image } from 'expo-image'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useVideoPlayer, VideoView } from 'expo-video'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
-import { ONBOARDING_IMAGES } from '@/data/imageManifest'
+import { AVATAR_VIDEOS } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
@@ -23,7 +24,13 @@ const GOALS = [
 
 export default function GoalsScreen() {
   const { push } = useRouter()
+  const { top } = useSafeAreaInsets()
   const [selectedGoals, setSelectedGoals] = useState<string[]>([])
+
+  const player = useVideoPlayer(AVATAR_VIDEOS['goals'], (p) => {
+    p.loop = true
+    p.play()
+  })
 
   const toggleGoal = (goal: string) => {
     setSelectedGoals((prev) =>
@@ -38,44 +45,62 @@ export default function GoalsScreen() {
 
   return (
     <OnboardingLayout
-      illustration={<Image source={ONBOARDING_IMAGES['goals']} style={styles.illustration} contentFit="cover" />}
+      illustration={
+        <Animated.View entering={FadeIn.delay(100).duration(300)} style={[styles.illustrationContent, { paddingTop: top + spacing['14'] }]}>
+          <View style={styles.avatarPlaceholder}>
+            <VideoView
+              player={player}
+              style={styles.avatarImage}
+              contentFit="contain"
+              nativeControls={false}
+              allowsFullscreen={false}
+              allowsPictureInPicture={false}
+            />
+          </View>
+          <Text style={styles.heading}>What are your goals?</Text>
+        </Animated.View>
+      }
       header={<ProgressDots total={3} current={2} />}
       footer={<Button title="Continue" onPress={handleContinue} />}
     >
-      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.content}>
-        <Text style={styles.heading}>What are your goals?</Text>
-
-        <View style={styles.options}>
-          {GOALS.map((goal) => {
-            const isSelected = selectedGoals.includes(goal)
-            return (
-              <Pressable
-                key={goal}
-                style={[
-                  styles.chip,
-                  isSelected ? styles.chipSelected : styles.chipDefault,
-                ]}
-                onPress={() => toggleGoal(goal)}
-              >
-                <Text style={styles.chipLabel}>{goal}</Text>
-              </Pressable>
-            )
-          })}
-        </View>
-      </Animated.View>
+      <View style={styles.options}>
+        {GOALS.map((goal) => {
+          const isSelected = selectedGoals.includes(goal)
+          return (
+            <Pressable
+              key={goal}
+              style={[
+                styles.chip,
+                isSelected ? styles.chipSelected : styles.chipDefault,
+              ]}
+              onPress={() => toggleGoal(goal)}
+            >
+              <Text style={[styles.chipLabel, isSelected && styles.chipLabelSelected]}>{goal}</Text>
+            </Pressable>
+          )
+        })}
+      </View>
     </OnboardingLayout>
   )
 }
 
-const { height: screenHeight } = Dimensions.get('window')
-
 const styles = StyleSheet.create({
-  illustration: {
-    height: screenHeight * 0.4,
-    backgroundColor: semantic.bgTinted,
+  illustrationContent: {
+    paddingHorizontal: spacing['6'],
+    alignItems: 'center',
   },
-  content: {
-    paddingTop: spacing['6'],
+  avatarPlaceholder: {
+    width: 140,
+    aspectRatio: 544 / 720,
+    backgroundColor: semantic.bgTinted,
+    borderRadius: 8,
+    overflow: 'hidden',
+    alignSelf: 'center',
+    marginBottom: spacing['6'],
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
   },
   heading: {
     ...typography.h3,
@@ -83,15 +108,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   options: {
-    gap: spacing['3'],
-    marginTop: spacing['6'],
+    gap: spacing['2'],
+    marginTop: spacing['4'],
+    marginHorizontal: -spacing['2'],
   },
   chip: {
-    paddingVertical: spacing['3'],
+    height: 44,
     paddingHorizontal: spacing['4'],
     borderRadius: borderRadius.full,
     borderCurve: 'continuous',
     borderWidth: 1.5,
+    justifyContent: 'center',
   },
   chipDefault: {
     borderColor: semantic.borderDefault,
@@ -99,11 +126,14 @@ const styles = StyleSheet.create({
   },
   chipSelected: {
     borderColor: semantic.actionPrimary,
-    backgroundColor: semantic.actionPrimaryBg,
+    backgroundColor: semantic.actionPrimary,
   },
   chipLabel: {
     ...typography.bodySmall,
     fontFamily: fontWeights.semiBold,
     color: semantic.textPrimary,
+  },
+  chipLabelSelected: {
+    color: '#FFFFFF',
   },
 })

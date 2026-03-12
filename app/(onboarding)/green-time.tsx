@@ -17,7 +17,7 @@ export default function GreenTimeScreen() {
   return (
     <OnboardingLayout
       illustration={<Image source={ONBOARDING_IMAGES['green-time']} style={styles.illustration} contentFit="cover" />}
-      header={<ProgressDots total={4} current={1} />}
+      header={<ProgressDots total={4} current={1} variant="light" />}
       footer={
         <Button
           title="Continue"

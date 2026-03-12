@@ -42,9 +42,9 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/bird-logo.png",
+          "image": "./assets/icon.png",
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#1F87FE"
         }
       ],
       "expo-video"

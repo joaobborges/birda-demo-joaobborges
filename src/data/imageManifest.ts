@@ -59,13 +59,14 @@ export const AVATAR_VIDEOS: Record<string, any | null> = {
   garden: require('@/assets/onboarding/garden.mp4'),
   intermediate: require('@/assets/onboarding/intermediate.mp4'),
   expert: require('@/assets/onboarding/expert.mp4'),
+  goals: require('@/assets/onboarding/goals.mp4'),
 }
 
 /**
  * Paywall hero image — full-bleed cover for the paywall hero zone.
  */
 export const PAYWALL_HERO: ImageSource = require('@/assets/paywall-hero.png')
-export const PAYWALL_HAPPY_BIRDERS: ImageSource = require('@/assets/happy birders.png')
+export const PAYWALL_HAPPY_BIRDERS: ImageSource = require('@/assets/happy-birders.png')
 export const PAYWALL_STORE: ImageSource = require('@/assets/store.png')
 
 /**

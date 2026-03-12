@@ -17,7 +17,7 @@ export default function AIBirdIdScreen() {
   return (
     <OnboardingLayout
       illustration={<Image source={ONBOARDING_IMAGES['ai-bird-id']} style={styles.illustration} contentFit="cover" />}
-      header={<ProgressDots total={4} current={0} />}
+      header={<ProgressDots total={4} current={0} variant="light" />}
       footer={
         <Button
           title="Continue"

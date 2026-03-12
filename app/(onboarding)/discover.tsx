@@ -17,7 +17,7 @@ export default function DiscoverScreen() {
   return (
     <OnboardingLayout
       illustration={<Image source={ONBOARDING_IMAGES['discover']} style={styles.illustration} contentFit="cover" />}
-      header={<ProgressDots total={4} current={2} />}
+      header={<ProgressDots total={4} current={2} variant="light" />}
       footer={
         <Button
           title="Continue"

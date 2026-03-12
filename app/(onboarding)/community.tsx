@@ -17,7 +17,7 @@ export default function CommunityScreen() {
   return (
     <OnboardingLayout
       illustration={<Image source={ONBOARDING_IMAGES['community']} style={styles.illustration} contentFit="cover" />}
-      header={<ProgressDots total={4} current={3} />}
+      header={<ProgressDots total={4} current={3} variant="light" />}
       footer={
         <Button
           title="Continue"
