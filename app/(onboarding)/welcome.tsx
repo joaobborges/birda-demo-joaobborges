@@ -101,7 +101,7 @@ export default function WelcomeScreen() {
       <View style={styles.textSection}>
         <Text style={styles.heading}>Welcome to Birda</Text>
         <Text style={styles.description}>
-          Discover, identify, and log birds around you
+          Discover, log and share your favourite species with communities around you.
         </Text>
       </View>
 

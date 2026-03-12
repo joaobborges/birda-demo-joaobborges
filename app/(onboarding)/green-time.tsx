@@ -26,9 +26,9 @@ export default function GreenTimeScreen() {
       }
     >
       <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.content}>
-        <Text style={styles.heading}>Green Time</Text>
+        <Text style={styles.heading}>More Nature, Less Screen</Text>
         <Text style={styles.description}>
-          Turn your screen time into green time
+          Swap scroll time for real-world exploring.{'\n'}Set goals and watch your green time grow.
         </Text>
       </Animated.View>
     </OnboardingLayout>
@@ -39,12 +39,10 @@ const { height: screenHeight } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
   illustration: {
-    height: screenHeight * 0.5,
+    height: screenHeight * 0.45,
     backgroundColor: semantic.bgTinted,
   },
-  content: {
-    paddingTop: spacing['6'],
-  },
+  content: {},
   heading: {
     ...typography.h2,
     color: semantic.textPrimary,

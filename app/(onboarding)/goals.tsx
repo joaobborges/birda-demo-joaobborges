@@ -11,6 +11,7 @@ import { ONBOARDING_IMAGES } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
+import { borderRadius } from '@/theme/components'
 
 const GOALS = [
   'Spend more time outside',
@@ -86,12 +87,11 @@ const styles = StyleSheet.create({
     marginTop: spacing['6'],
   },
   chip: {
-    paddingVertical: spacing['4'],
-    paddingHorizontal: spacing['5'],
-    borderRadius: 16,
+    paddingVertical: spacing['3'],
+    paddingHorizontal: spacing['4'],
+    borderRadius: borderRadius.full,
     borderCurve: 'continuous',
     borderWidth: 1.5,
-    alignItems: 'center',
   },
   chipDefault: {
     borderColor: semantic.borderDefault,

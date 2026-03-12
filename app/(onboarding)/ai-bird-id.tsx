@@ -26,9 +26,9 @@ export default function AIBirdIdScreen() {
       }
     >
       <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.content}>
-        <Text style={styles.heading}>AI Bird ID</Text>
+        <Text style={styles.heading}>Know Every Bird</Text>
         <Text style={styles.description}>
-          Identify birds with AI photo recognition
+          Point your camera at any bird for an instant ID.{'\n'}No field guide needed, just snap and discover.
         </Text>
       </Animated.View>
     </OnboardingLayout>
@@ -39,12 +39,10 @@ const { height: screenHeight } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
   illustration: {
-    height: screenHeight * 0.5,
+    height: screenHeight * 0.45,
     backgroundColor: semantic.bgTinted,
   },
-  content: {
-    paddingTop: spacing['6'],
-  },
+  content: {},
   heading: {
     ...typography.h2,
     color: semantic.textPrimary,

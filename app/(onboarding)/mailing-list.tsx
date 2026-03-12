@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, Text, Switch, StyleSheet } from 'react-native'
+import { View, Text, Switch, StyleSheet, Dimensions } from 'react-native'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
@@ -24,6 +24,7 @@ export default function MailingListScreen() {
 
   return (
     <OnboardingLayout
+      illustration={<Image source={ONBOARDING_IMAGES['mailing-list']} style={styles.illustration} contentFit="cover" />}
       footer={
         <>
           <Button title="Save" onPress={handleSave} />
@@ -31,12 +32,11 @@ export default function MailingListScreen() {
         </>
       }
     >
-      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.content}>
+      <Animated.View entering={FadeIn.delay(100).duration(300)}>
         <Text style={styles.heading}>Join our mailing list</Text>
         <Text style={styles.description}>
           Get weekly birding tips, species spotlights, and community highlights
         </Text>
-        <Image source={ONBOARDING_IMAGES['mailing-list']} style={styles.imagePlaceholder} contentFit="cover" />
         <View style={styles.toggleRow}>
           <Text style={styles.toggleLabel}>Subscribe to newsletter</Text>
           <Switch
@@ -51,14 +51,15 @@ export default function MailingListScreen() {
   )
 }
 
+const { height: screenHeight } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
-  content: {
-    alignItems: 'center',
-    gap: spacing['2'],
-    flexShrink: 1,
+  illustration: {
+    height: screenHeight * 0.45,
+    backgroundColor: semantic.bgTinted,
   },
   heading: {
-    ...typography.h3,
+    ...typography.h2,
     color: semantic.textPrimary,
     textAlign: 'center',
   },
@@ -66,17 +67,7 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: semantic.textSecondary,
     textAlign: 'center',
-    marginTop: spacing['2'],
-  },
-  imagePlaceholder: {
-    height: 200,
-    width: 200,
-    backgroundColor: semantic.bgTinted,
-    borderRadius: 100,
-    borderCurve: 'continuous',
-    alignSelf: 'center',
-    marginVertical: spacing['6'],
-    flexShrink: 1,
+    marginTop: spacing['3'],
   },
   toggleRow: {
     flexDirection: 'row',
@@ -87,6 +78,6 @@ const styles = StyleSheet.create({
   },
   toggleLabel: {
     ...typography.bodySmall,
-    color: semantic.textPrimary,
+    color: semantic.textSecondary,
   },
 })

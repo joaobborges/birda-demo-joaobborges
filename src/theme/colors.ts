@@ -32,9 +32,9 @@ export const colors = {
   statusSuccessBg: '#D4EDDA', // Success background
 
   // ── Rarity ──
-  rarityCommonBg: '#DBEAFE',   // Common rarity badge
-  rarityUncommonBg: '#FEF3C7', // Uncommon rarity badge
-  rarityRareBg: '#FCE7F3',     // Rare rarity badge
+  rarityCommonBg: '#DCFCE7',   // Common rarity badge (green tint)
+  rarityUncommonBg: '#FEF3C7', // Uncommon rarity badge (orange tint)
+  rarityRareBg: '#FEE2E2',    // Rare rarity badge (red tint)
 
   // ── Map Markers ──
   markerCommon: '#22C55E',     // Green -- common birds

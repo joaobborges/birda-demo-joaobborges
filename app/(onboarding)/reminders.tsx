@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
+import { Text } from 'react-native'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
@@ -22,6 +23,7 @@ export default function RemindersScreen() {
 
   return (
     <OnboardingLayout
+      illustration={<Image source={ONBOARDING_IMAGES['reminders']} style={styles.illustration} contentFit="cover" />}
       footer={
         <>
           <Button title="Remind me" onPress={handleRemindMe} />
@@ -29,25 +31,25 @@ export default function RemindersScreen() {
         </>
       }
     >
-      <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.content}>
+      <Animated.View entering={FadeIn.delay(100).duration(300)}>
         <Text style={styles.heading}>Stay in the loop</Text>
         <Text style={styles.description}>
           Get reminders about nearby bird activity and seasonal migrations
         </Text>
-        <Image source={ONBOARDING_IMAGES['reminders']} style={styles.imagePlaceholder} contentFit="cover" />
       </Animated.View>
     </OnboardingLayout>
   )
 }
 
+const { height: screenHeight } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
-  content: {
-    alignItems: 'center',
-    gap: spacing['2'],
-    flexShrink: 1,
+  illustration: {
+    height: screenHeight * 0.45,
+    backgroundColor: semantic.bgTinted,
   },
   heading: {
-    ...typography.h3,
+    ...typography.h2,
     color: semantic.textPrimary,
     textAlign: 'center',
   },
@@ -55,16 +57,6 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: semantic.textSecondary,
     textAlign: 'center',
-    marginTop: spacing['2'],
-  },
-  imagePlaceholder: {
-    height: 200,
-    width: 200,
-    backgroundColor: semantic.bgTinted,
-    borderRadius: 100,
-    borderCurve: 'continuous',
-    alignSelf: 'center',
-    marginVertical: spacing['6'],
-    flexShrink: 1,
+    marginTop: spacing['3'],
   },
 })

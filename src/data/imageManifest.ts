@@ -44,12 +44,29 @@ export const AVATAR_IMAGES: Record<string, ImageSource> = {
   'garden': require('@/assets/avatars/garden.png'),
   'intermediate': require('@/assets/avatars/intermediate.png'),
   'expert': require('@/assets/avatars/expert.png'),
+  'avatar-1': require('@/assets/avatars/avatar-1.png'),
+  'avatar-2': require('@/assets/avatars/avatar-2.png'),
+  'avatar-3': require('@/assets/avatars/avatar-3.png'),
+  'avatar-4': require('@/assets/avatars/avatar-4.png'),
+}
+
+/**
+ * Avatar videos keyed by skill level.
+ * Only levels with an actual MP4 have a value; others are null.
+ */
+export const AVATAR_VIDEOS: Record<string, any | null> = {
+  new: require('@/assets/onboarding/new.mp4'),
+  garden: require('@/assets/onboarding/garden.mp4'),
+  intermediate: require('@/assets/onboarding/intermediate.mp4'),
+  expert: require('@/assets/onboarding/expert.mp4'),
 }
 
 /**
  * Paywall hero image — full-bleed cover for the paywall hero zone.
  */
 export const PAYWALL_HERO: ImageSource = require('@/assets/paywall-hero.png')
+export const PAYWALL_HAPPY_BIRDERS: ImageSource = require('@/assets/happy birders.png')
+export const PAYWALL_STORE: ImageSource = require('@/assets/store.png')
 
 /**
  * Bird species images keyed by bird ID (matches birds.ts id field).
@@ -181,6 +198,38 @@ export const AVATAR_MANIFEST: ImageAsset[] = [
     height: 120,
     location: 'src/assets/avatars/expert.png',
     status: 'placeholder',
+  },
+  {
+    source: AVATAR_IMAGES['avatar-1'],
+    filename: 'avatar-1.png',
+    width: 120,
+    height: 120,
+    location: 'src/assets/avatars/avatar-1.png',
+    status: 'exists',
+  },
+  {
+    source: AVATAR_IMAGES['avatar-2'],
+    filename: 'avatar-2.png',
+    width: 120,
+    height: 120,
+    location: 'src/assets/avatars/avatar-2.png',
+    status: 'exists',
+  },
+  {
+    source: AVATAR_IMAGES['avatar-3'],
+    filename: 'avatar-3.png',
+    width: 120,
+    height: 120,
+    location: 'src/assets/avatars/avatar-3.png',
+    status: 'exists',
+  },
+  {
+    source: AVATAR_IMAGES['avatar-4'],
+    filename: 'avatar-4.png',
+    width: 120,
+    height: 120,
+    location: 'src/assets/avatars/avatar-4.png',
+    status: 'exists',
   },
 ]
 

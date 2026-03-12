@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import Animated, {
   useSharedValue,
@@ -11,6 +11,7 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography } from '@/theme/typography'
+import { useFabStore } from '@/stores/fab'
 
 type MenuItemConfig = {
   icon: keyof typeof Ionicons.glyphMap
@@ -28,7 +29,8 @@ const ITEM_SPACING = 16
 const FADE_DURATION = 200
 
 export function CaptureFAB(): React.ReactElement {
-  const [isOpen, setIsOpen] = useState(false)
+  const isOpen = useFabStore((s) => s.isOpen)
+  const setIsOpen = useFabStore((s) => s.setIsOpen)
   const progress = useSharedValue(0)
 
   function toggleMenu() {
@@ -41,6 +43,7 @@ export function CaptureFAB(): React.ReactElement {
     setIsOpen(false)
     progress.value = withTiming(0, { duration: FADE_DURATION })
   }
+
 
   const overlayStyle = useAnimatedStyle(() => ({
     opacity: interpolate(progress.value, [0, 1], [0, 1], Extrapolation.CLAMP),

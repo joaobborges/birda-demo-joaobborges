@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { useOnboardingStore } from '@/stores/onboarding'
-import { PAYWALL_HERO } from '@/data/imageManifest'
+import { PAYWALL_HERO, PAYWALL_HAPPY_BIRDERS, PAYWALL_STORE } from '@/data/imageManifest'
 import { semantic, colors } from '@/theme/colors'
 import { typography, fontWeights } from '@/theme/typography'
 import { spacing } from '@/theme/spacing'
@@ -53,7 +53,7 @@ export default function PaywallScreen() {
         {/* Nature Day banner */}
         <View style={styles.natureDayBanner}>
           <Text style={styles.natureDayText}>
-            Nature Day Special — <Text style={styles.natureDayBold}>10% off</Text>
+            Nature Day Special — <Text style={styles.natureDayBold}>Save €4,00/year</Text>
           </Text>
         </View>
       </View>
@@ -75,35 +75,32 @@ export default function PaywallScreen() {
 
         {/* Social proof placeholders */}
         <View style={styles.socialRow}>
-          {/* Replace with Image when asset provided — maintain 140x72 dimensions */}
-          <View style={styles.socialBox}>
-            <Text style={styles.socialText}>400+ happy birders</Text>
-          </View>
-          {/* Replace with Image when asset provided — maintain 140x72 dimensions */}
-          <View style={styles.socialBox}>
-            <Text style={styles.socialText}>4.7 stars</Text>
-          </View>
+          <Image source={PAYWALL_HAPPY_BIRDERS} style={styles.socialBox} contentFit="contain" />
+          <Image source={PAYWALL_STORE} style={styles.socialBox} contentFit="contain" />
         </View>
 
-        {/* Unlock pill */}
-        <View style={styles.unlockPill}>
-          <Ionicons name="ribbon" size={14} color={semantic.textSecondary} />
-          <Text style={styles.unlockPillText}>Unlock all features</Text>
-          <View style={styles.discountBadge}>
-            <Text style={styles.discountBadgeText}>10% off</Text>
+        {/* Unlock pill + Pricing */}
+        <View style={styles.pricingSection}>
+          <View style={styles.unlockPill}>
+            <Ionicons name="flash" size={14} color={semantic.textSecondary} />
+            <Text style={styles.unlockPillText}>Unlock all features</Text>
+            <View style={styles.discountBadge}>
+              <Text style={styles.discountBadgeText}>10% off</Text>
+            </View>
           </View>
-        </View>
 
-        {/* Pricing block */}
-        <View style={styles.pricingBlock}>
-          {/* 32px — non-standard size per project convention (no exact token) */}
-          <Text style={styles.priceMain}>€3,00 /month</Text>
-          <Text style={styles.priceAnnual}>€35,99 billed annually after trial</Text>
+          <View style={styles.pricingBlock}>
+            <View style={styles.priceRow}>
+              <Text style={styles.priceMain}>€3,00</Text>
+              <Text style={styles.pricePeriod}>/month</Text>
+            </View>
+            <Text style={styles.priceAnnual}>€35,99 billed annually after trial</Text>
+          </View>
         </View>
 
         {/* Trust line */}
         <View style={styles.trustLine}>
-          <Ionicons name="checkmark-circle" size={16} color={colors.markerCommon} />
+          <Ionicons name="shield-checkmark" size={16} color={colors.markerCommon} />
           <Text style={styles.trustText}>No payment required · Cancel anytime</Text>
         </View>
       </View>
@@ -201,7 +198,6 @@ const styles = StyleSheet.create({
     ...typography.h2,
     color: semantic.textPrimary,
     textAlign: 'left',
-    letterSpacing: -0.5,
   },
   featuresContainer: {
     gap: 14, // no exact token
@@ -214,7 +210,7 @@ const styles = StyleSheet.create({
   },
   featureText: {
     ...typography.bodySmall,
-    color: semantic.textBody,
+    color: semantic.textSecondary,
   },
   socialRow: {
     flexDirection: 'row',
@@ -223,19 +219,13 @@ const styles = StyleSheet.create({
   },
   socialBox: {
     flex: 1,
-    height: 72,
-    backgroundColor: semantic.bgTinted,
+    height: 50,
     borderRadius: 12, // no exact token
     borderCurve: 'continuous',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  socialText: {
-    fontFamily: fontWeights.semiBold,
-    fontSize: 13, // no exact token
-    color: semantic.textSecondary,
-    textAlign: 'center',
-    padding: spacing['3'],
+  pricingSection: {
+    alignItems: 'center',
+    gap: 12,
   },
   unlockPill: {
     flexDirection: 'row',
@@ -249,7 +239,7 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
   },
   unlockPillText: {
-    fontFamily: fontWeights.semiBold,
+    fontFamily: fontWeights.medium,
     fontSize: 13, // no exact token
     color: semantic.textSecondary,
   },
@@ -269,10 +259,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4, // no exact token
   },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 4,
+  },
   priceMain: {
     fontFamily: fontWeights.bold,
     fontSize: 32, // no exact token — non-standard size per project convention
     color: semantic.textPrimary,
+  },
+  pricePeriod: {
+    fontFamily: fontWeights.regular,
+    fontSize: 12, // no exact token — matches trustText
+    color: semantic.textMuted,
   },
   priceAnnual: {
     ...typography.caption,
@@ -286,8 +286,8 @@ const styles = StyleSheet.create({
   },
   trustText: {
     fontFamily: fontWeights.regular,
-    fontSize: 12, // no exact token
-    color: semantic.textMuted,
+    fontSize: 14, // no exact token
+    color: semantic.textSecondary,
   },
 
   // ── Zone 3: Footer ──
@@ -314,12 +314,12 @@ const styles = StyleSheet.create({
   },
   footerLink: {
     fontFamily: fontWeights.regular,
-    fontSize: 12, // no exact token
-    color: semantic.textMuted,
+    fontSize: 14, // no exact token
+    color: semantic.textSecondary,
   },
   footerDot: {
     fontFamily: fontWeights.regular,
-    fontSize: 12, // no exact token
-    color: semantic.textMuted,
+    fontSize: 14, // no exact token
+    color: semantic.textSecondary,
   },
 })

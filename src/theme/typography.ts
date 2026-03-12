@@ -16,36 +16,43 @@ export const typography = {
     fontFamily: fontWeights.light,
     fontSize: 65,
     lineHeight: 78,
+    letterSpacing: -0.2,
   },
   display: {
     fontFamily: fontWeights.light,
     fontSize: 50,
     lineHeight: 60,
+    letterSpacing: -0.2,
   },
   sectionHeading: {
     fontFamily: fontWeights.regular,
     fontSize: 42,
     lineHeight: 50,
+    letterSpacing: -0.2,
   },
   h1: {
     fontFamily: fontWeights.regular,
     fontSize: 34,
     lineHeight: 41,
+    letterSpacing: -0.2,
   },
   h2: {
     fontFamily: fontWeights.regular,
     fontSize: 30,
     lineHeight: 36,
+    letterSpacing: -0.6,
   },
   h3: {
     fontFamily: fontWeights.regular,
     fontSize: 26,
     lineHeight: 31,
+    letterSpacing: -0.5,
   },
   subheading: {
     fontFamily: fontWeights.medium,
     fontSize: 22,
     lineHeight: 31,
+    letterSpacing: -0.2,
   },
   bodyLarge: {
     fontFamily: fontWeights.light,
@@ -60,7 +67,7 @@ export const typography = {
   bodySmall: {
     fontFamily: fontWeights.regular,
     fontSize: 16,
-    lineHeight: 22,
+    lineHeight: 24,
   },
   caption: {
     fontFamily: fontWeights.regular,

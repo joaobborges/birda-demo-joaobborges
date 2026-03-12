@@ -5,9 +5,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MapView, { Marker, Region } from 'react-native-maps'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import Supercluster from 'supercluster'
+import { Image } from 'expo-image'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
 import { birds, Bird } from '@/data/birds'
+import { AVATAR_IMAGES } from '@/data/imageManifest'
+import { useOnboardingStore } from '@/stores/onboarding'
 import { semantic, colors } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
@@ -58,6 +61,7 @@ export default function MapScreen() {
   const { push } = useRouter()
   const router = useRouter()
   const { top } = useSafeAreaInsets()
+  const avatar = useOnboardingStore((s) => s.avatar)
   const mapRef = useRef<MapView>(null)
   const sheetRef = useRef<BottomSheetModal>(null)
   const [selectedBird, setSelectedBird] = useState<Bird | null>(null)
@@ -104,7 +108,7 @@ export default function MapScreen() {
     setSelectedBird(null)
   }, [])
 
-  function handleBirdImagePress() {
+  function handleViewMore() {
     if (!selectedBird) return
     sheetRef.current?.dismiss()
     router.push({ pathname: '/bird-detail', params: { birdId: selectedBird.id } })
@@ -158,8 +162,11 @@ export default function MapScreen() {
 
       {/* Floating top bar — Profile (left) and Notification (right) remain */}
       <Animated.View entering={FadeIn.delay(300)} style={[styles.topBar, { top: top + spacing['3'] }]}>
-        <Pressable style={styles.iconButton} onPress={() => push('/profile')}>
-          <Ionicons name="person-circle" size={24} color={colors.neutral400} />
+        <Pressable style={[styles.iconButton, styles.avatarButton]} onPress={() => push('/profile')}>
+          <Image
+            source={AVATAR_IMAGES[avatar]}
+            style={styles.avatarImage}
+          />
         </Pressable>
         <View style={styles.iconButton}>
           <Ionicons name="notifications" size={22} color={colors.neutral400} />
@@ -172,16 +179,17 @@ export default function MapScreen() {
       {/* Bottom sheet modal — renders via Portal above tab bar */}
       <BottomSheetModal
         ref={sheetRef}
+        snapPoints={['85%']}
         enableDynamicSizing
         enablePanDownToClose
         onDismiss={handleSheetClose}
         handleIndicatorStyle={{ backgroundColor: colors.neutral300 }}
       >
-        <BottomSheetView>
+        <BottomSheetView style={styles.sheetContent}>
           {selectedBird ? (
             <BirdDrawerContent
               bird={selectedBird}
-              onImagePress={handleBirdImagePress}
+              onViewMore={handleViewMore}
             />
           ) : null}
         </BottomSheetView>
@@ -213,6 +221,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
+  },
+  avatarButton: {
+    overflow: 'hidden',
+  },
+  avatarImage: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
   },
   notificationBadge: {
     position: 'absolute',
@@ -260,5 +276,8 @@ const styles = StyleSheet.create({
     fontFamily: fontWeights.semiBold,
     fontSize: 15,
     color: semantic.textInverse,
+  },
+  sheetContent: {
+    flex: 1,
   },
 })

@@ -70,6 +70,26 @@ export default function BirdDetailScreen() {
           {/* Species */}
           <Text style={styles.birdSpecies}>{bird.species}</Text>
 
+          {/* Quick facts row */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.factsScroll} contentContainerStyle={styles.factsRow}>
+            <View style={styles.factCard}>
+              <Text style={styles.factValue}>{bird.length}</Text>
+              <Text style={styles.factLabel}>Length</Text>
+            </View>
+            <View style={styles.factCard}>
+              <Text style={styles.factValue}>{bird.wingspan}</Text>
+              <Text style={styles.factLabel}>Wingspan</Text>
+            </View>
+            <View style={styles.factCard}>
+              <Text style={styles.factValue}>{bird.weight}</Text>
+              <Text style={styles.factLabel}>Weight</Text>
+            </View>
+            <View style={styles.factCard}>
+              <Text style={styles.factValue}>{bird.conservationStatus === 'Least Concern' ? 'LC' : bird.conservationStatus}</Text>
+              <Text style={styles.factLabel}>Status</Text>
+            </View>
+          </ScrollView>
+
           {/* Description */}
           <Text style={styles.birdDescription}>{bird.description}</Text>
 
@@ -78,11 +98,23 @@ export default function BirdDetailScreen() {
 
           {/* Habitat & Behavior section */}
           <Text style={styles.sectionTitle}>Habitat & Behavior</Text>
-          <Text style={styles.sectionBody}>
-            This species is commonly found in parks, gardens, and woodland edges across the Iberian
-            Peninsula. Known for its distinctive call and foraging behavior, it can often be
-            observed in the early morning hours.
-          </Text>
+          <Text style={styles.sectionBody}>{bird.habitat}</Text>
+
+          {/* Divider */}
+          <View style={styles.divider} />
+
+          {/* Diet section */}
+          <Text style={styles.sectionTitle}>Diet</Text>
+          <Text style={styles.sectionBody}>{bird.diet}</Text>
+
+          {/* Divider */}
+          <View style={styles.divider} />
+
+          {/* Fun Fact callout */}
+          <View style={styles.funFactCard}>
+            <Text style={styles.funFactLabel}>Fun Fact</Text>
+            <Text style={styles.funFactText}>{bird.funFact}</Text>
+          </View>
 
           {/* Divider */}
           <View style={styles.divider} />
@@ -188,6 +220,50 @@ const styles = StyleSheet.create({
   birdDescription: {
     ...typography.bodySmall,
     color: semantic.textBody,
+    lineHeight: 22,
+  },
+  factsScroll: {
+    marginHorizontal: -spacing['5'],
+  },
+  factsRow: {
+    paddingHorizontal: spacing['5'],
+    gap: spacing['2'],
+  },
+  factCard: {
+    backgroundColor: semantic.bgSurface,
+    borderRadius: 12,
+    borderCurve: 'continuous',
+    paddingHorizontal: spacing['3'],
+    paddingVertical: spacing['2'],
+    alignItems: 'center',
+    minWidth: 80,
+  },
+  factValue: {
+    fontFamily: fontWeights.semiBold,
+    fontSize: 14,
+    color: semantic.textPrimary,
+  },
+  factLabel: {
+    ...typography.caption,
+    color: semantic.textSecondary,
+    marginTop: 2,
+  },
+  funFactCard: {
+    backgroundColor: semantic.bgTinted,
+    borderRadius: 12,
+    borderCurve: 'continuous',
+    padding: spacing['4'],
+    gap: spacing['2'],
+  },
+  funFactLabel: {
+    fontFamily: fontWeights.semiBold,
+    fontSize: 13,
+    color: semantic.actionPrimary,
+  },
+  funFactText: {
+    ...typography.bodySmall,
+    color: semantic.textBody,
+    fontStyle: 'italic',
     lineHeight: 22,
   },
   divider: {

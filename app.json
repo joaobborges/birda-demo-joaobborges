@@ -39,11 +39,15 @@
           ]
         }
       ],
-      ["expo-splash-screen", {
-        "image": "./src/assets/bird-logo.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff"
-      }]
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/bird-logo.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-video"
     ]
   }
 }

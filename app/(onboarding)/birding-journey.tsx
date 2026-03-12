@@ -1,16 +1,17 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
-import { Image, ImageSource } from 'expo-image'
+import { useVideoPlayer, VideoView } from 'expo-video'
 import { useRouter } from 'expo-router'
 import Animated, { FadeIn } from 'react-native-reanimated'
 import { OnboardingLayout } from '@/components/onboarding/OnboardingLayout'
 import { ProgressDots } from '@/components/onboarding/ProgressDots'
 import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
-import { AVATAR_IMAGES } from '@/data/imageManifest'
+import { AVATAR_VIDEOS } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
+import { borderRadius } from '@/theme/components'
 
 const LEVELS = [
   { key: 'new', label: 'New', description: "I'm new to birding" },
@@ -21,45 +22,52 @@ const LEVELS = [
 
 type LevelKey = (typeof LEVELS)[number]['key']
 
-const AVATAR_MAP: Record<LevelKey, { image: ImageSource; size: number; bgColor: string }> = {
-  new: { image: AVATAR_IMAGES['new'], size: 80, bgColor: semantic.bgTinted },
-  garden: { image: AVATAR_IMAGES['garden'], size: 80, bgColor: semantic.bgTinted },
-  intermediate: { image: AVATAR_IMAGES['intermediate'], size: 80, bgColor: semantic.bgTinted },
-  expert: { image: AVATAR_IMAGES['expert'], size: 80, bgColor: semantic.bgTinted },
-}
-
 export default function BirdingJourneyScreen() {
   const { push } = useRouter()
-  const [selected, setSelected] = useState<LevelKey | null>(null)
+  const [selected, setSelected] = useState<LevelKey>('new')
+  const lastSelected = useRef<LevelKey>('new')
+
+  const player = useVideoPlayer(AVATAR_VIDEOS['new'], (p) => {
+    p.loop = false
+    p.play()
+  })
+
+  const handleSelect = useCallback(async (key: LevelKey) => {
+    if (key === lastSelected.current) {
+      player.currentTime = 0
+      player.play()
+    } else {
+      await player.replaceAsync(AVATAR_VIDEOS[key])
+      player.play()
+    }
+
+    lastSelected.current = key
+    setSelected(key)
+  }, [player])
 
   const handleContinue = () => {
-    if (selected) {
-      useOnboardingStore.getState().setBirdingJourney(selected)
-      push('/(onboarding)/goals')
-    }
+    useOnboardingStore.getState().setBirdingJourney(selected)
+    push('/(onboarding)/goals')
   }
 
   return (
     <OnboardingLayout
       header={<ProgressDots total={3} current={1} />}
       footer={
-        <View style={{ opacity: selected ? 1 : 0.5 }}>
-          <Button title="Continue" onPress={handleContinue} />
-        </View>
+        <Button title="Continue" onPress={handleContinue} />
       }
     >
       <Animated.View entering={FadeIn.delay(100).duration(300)}>
-        <Animated.View
-          key={selected ?? 'default'}
-          entering={FadeIn.duration(200)}
-          style={styles.avatarPlaceholder}
-        >
-          <Image
-            source={AVATAR_MAP[selected ?? 'new'].image}
+        <View style={styles.avatarPlaceholder}>
+          <VideoView
+            player={player}
             style={styles.avatarImage}
-            contentFit="cover"
+            contentFit="contain"
+            nativeControls={false}
+            allowsFullscreen={false}
+            allowsPictureInPicture={false}
           />
-        </Animated.View>
+        </View>
         <Text style={styles.heading}>Your birding journey</Text>
         <Text style={styles.description}>
           What best describes your experience?
@@ -73,7 +81,7 @@ export default function BirdingJourneyScreen() {
                 styles.chip,
                 selected === level.key ? styles.chipSelected : styles.chipDefault,
               ]}
-              onPress={() => setSelected(level.key)}
+              onPress={() => handleSelect(level.key)}
             >
               <Text style={styles.chipLabel}>{level.label}</Text>
               <Text style={styles.chipDescription}>{level.description}</Text>
@@ -87,20 +95,17 @@ export default function BirdingJourneyScreen() {
 
 const styles = StyleSheet.create({
   avatarPlaceholder: {
-    height: 120,
-    width: 120,
+    width: 140,
+    aspectRatio: 544 / 720,
     backgroundColor: semantic.bgTinted,
-    borderRadius: 60,
-    borderCurve: 'continuous',
+    borderRadius: 8,
+    overflow: 'hidden',
     alignSelf: 'center',
     marginBottom: spacing['6'],
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
   },
   avatarImage: {
-    width: 120,
-    height: 120,
+    width: '100%',
+    height: '100%',
   },
   heading: {
     ...typography.h3,
@@ -119,9 +124,9 @@ const styles = StyleSheet.create({
   },
   chip: {
     flexDirection: 'row',
-    paddingVertical: spacing['4'],
-    paddingHorizontal: spacing['5'],
-    borderRadius: 16,
+    paddingVertical: spacing['3'],
+    paddingHorizontal: spacing['4'],
+    borderRadius: borderRadius.full,
     borderCurve: 'continuous',
     borderWidth: 1.5,
     alignItems: 'center',

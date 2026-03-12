@@ -26,9 +26,9 @@ export default function CommunityScreen() {
       }
     >
       <Animated.View entering={FadeIn.delay(100).duration(300)} style={styles.content}>
-        <Text style={styles.heading}>Community</Text>
+        <Text style={styles.heading}>Share & Connect</Text>
         <Text style={styles.description}>
-          Join a community of bird watchers
+          Join challenges and share your sightings.{'\n'}Connect with birders in your community.
         </Text>
       </Animated.View>
     </OnboardingLayout>
@@ -39,12 +39,10 @@ const { height: screenHeight } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
   illustration: {
-    height: screenHeight * 0.5,
+    height: screenHeight * 0.45,
     backgroundColor: semantic.bgTinted,
   },
-  content: {
-    paddingTop: spacing['6'],
-  },
+  content: {},
   heading: {
     ...typography.h2,
     color: semantic.textPrimary,

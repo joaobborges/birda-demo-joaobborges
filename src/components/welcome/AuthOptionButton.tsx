@@ -8,6 +8,7 @@ import { borderRadius } from '@/theme/components'
 interface AuthOptionButtonProps {
   icon: 'apple' | 'google' | 'email'
   onPress: () => void
+  label?: string
 }
 
 const AUTH_OPTIONS = {
@@ -37,7 +38,7 @@ const AUTH_OPTIONS = {
   },
 } as const
 
-export function AuthOptionButton({ icon, onPress }: AuthOptionButtonProps) {
+export function AuthOptionButton({ icon, onPress, label }: AuthOptionButtonProps) {
   const config = AUTH_OPTIONS[icon]
 
   return (
@@ -66,7 +67,7 @@ export function AuthOptionButton({ icon, onPress }: AuthOptionButtonProps) {
           { color: config.textColor },
         ]}
       >
-        {config.label}
+        {label ?? config.label}
       </Text>
       {/* Spacer to balance icon on left for centered text */}
       <View style={styles.iconContainer} />

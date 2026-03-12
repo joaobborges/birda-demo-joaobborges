@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet } from 'react-native'
+import { Image } from 'expo-image'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useOnboardingStore } from '@/stores/onboarding'
+import { AVATAR_IMAGES } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
 import { typography, fontWeights } from '@/theme/typography'
@@ -16,13 +18,16 @@ const ACHIEVEMENTS = [
 ]
 
 export default function ProfileScreen() {
-  const { name, birdingJourney } = useOnboardingStore()
+  const { name, avatar, birdingJourney } = useOnboardingStore()
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.avatar}>
-          <Ionicons name="person" size={40} color={semantic.actionPrimary} />
+          <Image
+            source={AVATAR_IMAGES[avatar]}
+            style={styles.avatarImage}
+          />
         </View>
         <Text style={styles.name}>{name || 'Birder'}</Text>
         {birdingJourney ? (
@@ -85,6 +90,12 @@ const styles = StyleSheet.create({
     backgroundColor: semantic.actionPrimaryBg,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+  },
+  avatarImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
   name: {
     ...typography.h3,
