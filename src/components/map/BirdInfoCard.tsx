@@ -27,6 +27,7 @@ export function BirdInfoCard({ bird, onClose }: BirdInfoCardProps) {
         source={bird.image}
         style={styles.birdImage}
         contentFit="cover"
+        contentPosition="top"
         transition={200}
       />
       <View style={styles.infoCardContent}>

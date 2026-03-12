@@ -92,6 +92,7 @@ function MosaicColumn({ config }: { config: ColumnConfig }) {
         source={bird.image}
         style={styles.tileImage}
         contentFit="cover"
+        contentPosition="top"
         priority="low"
       />
     </View>
@@ -113,6 +114,7 @@ function MosaicColumn({ config }: { config: ColumnConfig }) {
               source={bird.image}
               style={styles.tileImage}
               contentFit="cover"
+              contentPosition="top"
               priority="low"
             />
           </View>

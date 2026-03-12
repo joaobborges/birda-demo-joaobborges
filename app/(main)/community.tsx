@@ -30,7 +30,7 @@ const SIGHTINGS: Sighting[] = [
 function SightingItem({ item }: { item: Sighting }) {
   return (
     <View style={styles.item}>
-      <Image source={item.image} style={styles.birdImage} contentFit="cover" transition={200} />
+      <Image source={item.image} style={styles.birdImage} contentFit="cover" contentPosition="top" transition={200} />
       <View style={styles.itemContent}>
         <View style={styles.nameRow}>
           <Text style={styles.birdName}>{item.birdName}</Text>

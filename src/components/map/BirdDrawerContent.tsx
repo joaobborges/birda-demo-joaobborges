@@ -29,6 +29,7 @@ export function BirdDrawerContent({ bird, onImagePress }: BirdDrawerContentProps
           source={bird.image}
           style={styles.birdImage}
           contentFit="cover"
+          contentPosition="top"
           transition={200}
         />
       </Pressable>

@@ -53,6 +53,7 @@ export default function BirdDetailScreen() {
           source={bird.image}
           style={styles.heroImage}
           contentFit="cover"
+          contentPosition="top"
           transition={300}
         />
 
