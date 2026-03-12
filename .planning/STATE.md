@@ -4,7 +4,7 @@ milestone: v1.2
 milestone_name: UI Polish & Image Wiring
 status: planning
 stopped_at: Completed 15-03-PLAN.md (UAT gap closure)
-last_updated: "2026-03-12T09:18:45.386Z"
+last_updated: "2026-03-12T09:23:51.440Z"
 last_activity: 2026-03-10 — Roadmap created for v1.2
 progress:
   total_phases: 2
