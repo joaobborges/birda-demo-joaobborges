@@ -1,9 +1,9 @@
 ---
-status: diagnosed
+status: resolved
 phase: 15-image-wiring
 source: 15-01-SUMMARY.md, 15-02-SUMMARY.md
 started: 2026-03-10T19:00:00Z
-updated: 2026-03-10T19:00:00Z
+updated: 2026-03-12T00:00:00Z
 ---
 
 ## Current Test
@@ -62,7 +62,7 @@ skipped: 1
 ## Gaps
 
 - truth: "Bird images in mosaic show the bird's face centered/visible in the container"
-  status: failed
+  status: resolved
   reason: "User reported: some images have the bird's face out of the composition — needs repositioning so the face of all birds is more towards the center of the container"
   severity: minor
   test: 1
@@ -83,7 +83,7 @@ skipped: 1
   debug_session: ".planning/debug/bird-image-cropping.md"
 
 - truth: "Tapping a bird pin on the map opens the BirdInfoCard"
-  status: failed
+  status: resolved
   reason: "User reported: pin is not tappable at all — regression from when the tappable area radius was increased in a previous change, which broke pin tapping entirely"
   severity: major
   test: 2
@@ -96,7 +96,7 @@ skipped: 1
   debug_session: ".planning/debug/map-pins-not-tappable.md"
 
 - truth: "Name screen title uses same heading style as other onboarding screens"
-  status: failed
+  status: resolved
   reason: "User reported: title uses bold font that doesn't match heading style of other onboarding screens"
   severity: cosmetic
   test: 6
