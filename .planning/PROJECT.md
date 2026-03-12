@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Birda is a bird watching companion app prototype built for an interview demo. It features a polished onboarding flow with auto-scrolling bird mosaic welcome screen, bottom-sheet auth drawer, conversion-optimized paywall, native tab bar, and a map home screen with Supercluster clustering and full-width swipeable bird detail drawer. All data is local — no API, no backend. Built with Expo (SDK 55) + React Native + EAS Dev Client.
+Birda is a bird watching companion app prototype built for an interview demo. It features a polished onboarding flow with auto-scrolling bird mosaic welcome screen, bottom-sheet auth drawer, conversion-optimized paywall, native tab bar, and a map home screen with Supercluster clustering and full-width swipeable bird detail drawer. All images are wired to named local assets via imageManifest.ts — 20 real bird species photos from Wikimedia Commons plus named placeholders for onboarding/paywall illustrations ready for drop-in replacement. All data is local — no API, no backend. Built with Expo (SDK 55) + React Native + EAS Dev Client.
 
 ## Core Value
 
@@ -54,18 +54,21 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 - ✓ Dev panel via double-tap gesture — v1.1 (NAV-02)
 - ✓ Full-width swipeable bird detail drawer above all content — v1.1 (NAV-03, NAV-04, NAV-05)
 
+- ✓ Auth backdrop covers full welcome screen including mosaic grid — v1.2 (UFIX-01)
+- ✓ Onboarding inactive progress dots blue at 50% opacity — v1.2 (UFIX-02)
+- ✓ Capture tab replaced with floating action button on Map tab — v1.2 (UFIX-03)
+- ✓ FAB opens animated speed-dial menu (Camera/Mic/Notes) — v1.2 (UFIX-04)
+- ✓ Welcome screen mosaic wired to 20 local bird image assets — v1.2 (IMG-01)
+- ✓ Onboarding screens wired to hero/cover image assets — v1.2 (IMG-02)
+- ✓ Name screen wired to avatar image asset — v1.2 (IMG-03)
+- ✓ Map markers wired to species thumbnail assets — v1.2 (IMG-04)
+- ✓ Bird detail drawer wired to species thumbnail — v1.2 (IMG-05)
+- ✓ Bird detail screen wired to species hero image — v1.2 (IMG-06)
+- ✓ Complete image manifest with filenames, dimensions, locations — v1.2 (IMG-07)
+
 ### Active
 
-## Current Milestone: v1.2 UI Polish & Image Wiring
-
-**Goal:** Fix UI issues (auth backdrop, stepper colors, capture FAB) and wire all placeholder elements to named image assets so real photos can be dropped in.
-
-**Target features:**
-- Full-screen auth backdrop overlay on welcome mosaic
-- Onboarding stepper inactive dots → blue at 50% opacity
-- Floating capture button on Map tab with animated option menu (replaces Capture tab)
-- Complete image audit: define filenames, wire require() paths, deliver image manifest
-- Image wiring across welcome grid, onboarding heroes, avatar, map markers, bird detail drawer/screen
+(No active requirements — all shipped through v1.2)
 
 ### Out of Scope
 
@@ -85,9 +88,9 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 ## Context
 
 - **Purpose:** Interview demo prototype to showcase mobile engineering craft
-- **Shipped:** v1.1 Polish & Refinement on 2026-03-10 (5 phases, 13 plans, 2 days)
-- **Previous:** v1.0 MVP on 2026-03-09 (3 phases, 10 plans, 4 days)
-- **Codebase:** 3,671 LOC TypeScript/TSX
+- **Shipped:** v1.2 UI Polish & Image Wiring on 2026-03-12 (2 phases, 5 plans, 3 days)
+- **Previous:** v1.1 Polish & Refinement on 2026-03-10, v1.0 MVP on 2026-03-09
+- **Codebase:** 4,059 LOC TypeScript/TSX
 - **Stack:** Expo SDK 55, React Native 0.83, Zustand, Reanimated, react-native-maps, Supercluster, Ionicons, @gorhom/bottom-sheet, @expo-google-fonts/rubik
 - **Design workflow:** Code-first approach, synced to Paper.design via MCP for visual refinement
 - **PRD reference:** `PRD-CLAUDE/01-PRD.md`
@@ -120,7 +123,7 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 | No custom babel.config.js | babel-preset-expo handles React Compiler + Reanimated plugin ordering | ✓ Good |
 | OnboardingLayout handles safe area internally | Screens never import useSafeAreaInsets — single responsibility | ✓ Good |
 | borderCurve: continuous alongside every borderRadius | iOS continuous corners throughout the app — STYL-01 convention | ✓ Good |
-| Emoji placeholders for avatar visuals | No real bird assets available — demonstrates dynamic behavior pattern | ⚠️ Revisit |
+| Emoji placeholders for avatar visuals | Resolved in v1.2 — avatars now use ImageSource from imageManifest | ✓ Good |
 | Weight-specific font family names (Rubik_400Regular) | React Native requires family name encoding for static font loading | ✓ Good |
 | @gorhom/bottom-sheet for auth + map drawers | Reanimated 4 peer dep support, smooth gestures, portal rendering | ✓ Good |
 | Standalone layouts for welcome + paywall | Unique screens need full viewport control, not OnboardingLayout wrapper | ✓ Good |
@@ -129,6 +132,14 @@ A polished, production-grade mobile prototype that demonstrates real-world mobil
 | Bird detail screen at root app/ level | Avoids tab routing conflicts — stack push from any context | ✓ Good |
 | 44x44px hit area on map markers | Apple HIG / Android minimum tap target guideline | ✓ Good |
 | Double-tap (not triple-tap) dev panel trigger | Triple-tap too unreliable in testing | ✓ Good |
+| BottomSheet containerStyle for full-screen auth backdrop | containerStyle (not style) fills portal to full screen | ✓ Good |
+| Single shared progress value (0-1) for CaptureFAB animations | All animations synchronized from one useSharedValue | ✓ Good |
+| Wikipedia API for Wikimedia Commons URL discovery | Original birds.ts URLs returned 404 (files renamed/moved) | ✓ Good |
+| Bird.image: ImageSource from expo-image | Accepts require() return type natively, no uri wrapper needed | ✓ Good |
+| imageManifest.ts as single source of truth | All require() references in one file; screens import from manifest | ✓ Good |
+| Minimal 1x1 transparent PNG placeholders | Metro requires files to exist at build time; Buffer-based generation | ✓ Good |
+| contentPosition=top on all bird images | Bird heads stay visible across all container shapes and sizes | ✓ Good |
+| Direct Marker children (no wrapper View) | Removed 44x44 hitArea wrapper that caused iOS annotation overlap | ✓ Good |
 
 ---
-*Last updated: 2026-03-10 after v1.2 milestone start*
+*Last updated: 2026-03-12 after v1.2 milestone completion*

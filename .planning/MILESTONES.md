@@ -1,5 +1,27 @@
 # Milestones
 
+## v1.2 UI Polish & Image Wiring (Shipped: 2026-03-12)
+
+**Phases completed:** 2 phases, 5 plans, 12 tasks
+**Timeline:** 3 days (2026-03-10 → 2026-03-12)
+**LOC:** 4,059 TypeScript/TSX | 78 files changed (+2,874 / -166)
+
+**Key accomplishments:**
+- Full-screen auth backdrop via BottomSheet containerStyle and blue inactive progress dots at 50% opacity
+- Animated capture FAB speed-dial menu (Camera/Mic/Notes) replacing Capture tab on Map screen
+- 20 bird species JPEGs downloaded from Wikimedia Commons and wired via expo-image ImageSource
+- imageManifest.ts as single source of truth for all require() references with full metadata
+- All onboarding/paywall screens wired to named placeholder assets (drop-in replacement ready)
+- Bird head visibility restored (contentPosition=top) and map pin tap regression fixed
+
+**Tech debt (non-blocking):**
+- SUMMARY frontmatter missing `requirements_completed` for 6 requirements across plans 14-01 and 15-02
+- `BirdInfoCard.tsx` is dead code (superseded by BirdDrawerContent, never imported)
+- Paywall social proof boxes have placeholder comments (deliberate, awaiting design assets)
+- Community feed uses inline `require()` instead of imageManifest (deliberate design decision)
+
+---
+
 ## v1.1 Polish & Refinement (Shipped: 2026-03-10)
 
 **Phases completed:** 5 phases, 13 plans

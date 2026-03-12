@@ -92,6 +92,52 @@
 
 ---
 
+## Milestone: v1.2 — UI Polish & Image Wiring
+
+**Shipped:** 2026-03-12
+**Phases:** 2 | **Plans:** 5 | **Timeline:** 3 days
+
+### What Was Built
+- Full-screen auth backdrop, blue inactive progress dots, 3-tab layout with Capture tab removed
+- Animated capture FAB speed-dial (Camera/Mic/Notes) with Reanimated spring animations
+- 20 bird species JPEGs downloaded from Wikimedia Commons and wired via expo-image ImageSource
+- imageManifest.ts as single source of truth for all image require() references with metadata
+- All onboarding/paywall screens wired to named placeholder assets (drop-in replacement)
+- Bird head visibility (contentPosition=top) and map pin tap regression fixed via UAT gap closure
+
+### What Worked
+- Milestone audit caught BirdInfoCard dead code and SUMMARY frontmatter gaps before archival
+- UAT gap closure plan (15-03) caught 3 real runtime issues: map pin overlap, bird cropping, heading style
+- imageManifest single-source-of-truth pattern makes asset replacement trivial (no code changes needed)
+- Wikipedia API fallback for Wikimedia URLs — pragmatic approach when original URLs were stale
+- contentPosition=top as universal pattern for bird photos across all container shapes
+
+### What Was Inefficient
+- SUMMARY frontmatter `requirements_completed` still not consistently tracked (carried from v1.0, v1.1)
+- Nyquist validation skipped entirely for both phases — no VALIDATION.md files
+- BirdInfoCard.tsx updated during image wiring but is dead code (never imported) — wasted effort
+- Phase 15 completed date in ROADMAP progress table had formatting issues (columns misaligned)
+
+### Patterns Established
+- `contentPosition="top"` on all bird photo Image components for head visibility
+- imageManifest.ts exports: ONBOARDING_IMAGES, AVATAR_IMAGES, PAYWALL_HERO, BIRD_IMAGES + metadata manifests
+- Minimal 1x1 transparent PNG placeholders via Buffer for Metro build-time resolution
+- Direct Marker children pattern (no wrapper View) for correct iOS annotation tappability
+- Bird.image typed as ImageSource — all consumers use `source={bird.image}` without uri wrapper
+
+### Key Lessons
+1. Dead code detection should happen before work begins — BirdInfoCard was updated unnecessarily
+2. UAT gap closure continues to be the most valuable quality gate — caught 3/3 runtime issues
+3. Wikimedia Commons URLs are unstable — Wikipedia API discovery is the reliable approach
+4. Metro bundler's static require() resolution means placeholder files must exist even when empty
+5. Small milestone (2 phases, 5 plans) completed cleanly — right scope for a polish/wiring milestone
+
+### Cost Observations
+- Sessions: ~3-4 across 3 days
+- Notable: Fastest plans yet (3-11 minutes each) — well-established patterns from v1.0/v1.1
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -100,6 +146,7 @@
 |-----------|----------|--------|-------|------------|
 | v1.0 | 4 days | 3 | 10 | Baseline — UAT gap closure pattern established |
 | v1.1 | 2 days | 5 | 13 | Milestone audit + gap closure phase; NativeTabs fallback |
+| v1.2 | 3 days | 2 | 5 | Image wiring + asset manifest; contentPosition pattern |
 
 ### Cumulative Quality
 
@@ -107,3 +154,4 @@
 |-----------|-------------|----------|-----------------|
 | v1.0 | 16/16 | 100% | 4 (non-blocking) |
 | v1.1 | 29/29 | 100% | 4 (non-blocking) |
+| v1.2 | 11/11 | 100% | 4 (non-blocking) |
