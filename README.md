@@ -10,7 +10,8 @@ _Coming soon_
 
 ## Tech Stack
 
-- **React Native** + **Expo** (Expo Router, expo-image, expo-video)
+- **React Native** + **Expo** / **Expo Go** (Expo Router, expo-image, expo-video)
+- **Native iOS builds** for on-device testing
 - **Claude Code** — AI-assisted development
 - **Figma** — Design concepts and UI exploration
 - **Midjourney** — Image and video generation for assets
@@ -21,8 +22,11 @@ _Coming soon_
 # Install dependencies
 npm install
 
-# Start the dev server
+# Start with Expo Go
 npx expo start
+
+# Build natively for iOS
+npx expo run:ios
 ```
 
 ## Author
