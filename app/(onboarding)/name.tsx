@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button'
 import { useOnboardingStore } from '@/stores/onboarding'
 import { AVATAR_IMAGES } from '@/data/imageManifest'
 import { semantic } from '@/theme/colors'
-import { typography, fontWeights } from '@/theme/typography'
+import { typography } from '@/theme/typography'
 import { spacing } from '@/theme/spacing'
 import { borderRadius } from '@/theme/components'
 
@@ -66,9 +66,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing['10'],
   },
   heading: {
-    ...typography.subheading,
-    fontFamily: fontWeights.bold,
-    fontSize: 24,
+    ...typography.h3,
     color: semantic.textPrimary,
     textAlign: 'center',
   },
